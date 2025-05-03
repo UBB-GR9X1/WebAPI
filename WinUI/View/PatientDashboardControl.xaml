@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="WinUI.View.PatientDashboardControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinUI.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="using:WinUI.View"
+    mc:Ignorable="d">
+
+    <Grid Padding="20" Background="Black">
+
+        <!-- Top Nav Buttons -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Row for navigation buttons -->
+            <RowDefinition Height="400"/>
+            <!-- Row for the image -->
+            <RowDefinition Height="*"/>
+            <!-- Remaining space for form controls -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row for the Update Button -->
+        </Grid.RowDefinitions>
+
+        <!-- Nav Buttons in the Top Row -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal"  HorizontalAlignment="Center" Margin="0,10">
+            <Canvas Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" ZIndex="2">
+            <!--
+                
+                <views:SearchDoctorsView x:Name="searchDoctorsView" Width="600" Height="400" Canvas.Left="-620" Canvas.Top="0" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Visible"/>
+                
+            -->
+            </Canvas>
+            <Button Content="Home" Width="80" Margin="5" VerticalAlignment="Top"/>
+            <Button Content="Profile" Width="80" Margin="5" VerticalAlignment="Top"/>
+            <Button Content="Appointments" Width="120" Margin="5" VerticalAlignment="Top"/>
+            <Button Content="Medical History" Width="120" Margin="5" VerticalAlignment="Top"/>
+            <Button Content="Billing" Width="80" Margin="5" VerticalAlignment="Top"/>
+            <Button Content="Logout" Width="80" Margin="5" VerticalAlignment="Top" Click="OnLogoutButtonClick"/>
+            <Canvas Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" ZIndex="2">
+            <!--
+                
+                <views:RecommendationView x:Name="recommendationView" Width="600" Height="400" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="Visible" Canvas.Top="-20" Canvas.Left="140"/>
+            
+            -->
+            </Canvas>
+        </StackPanel>
+
+        <!-- Image Row: Profile Image or Placeholder -->
+        <Grid Grid.Row="1">
+            <Image Source="/Assets/default-profile.png"
+           Width="100" Height="100" 
+           HorizontalAlignment="Center" 
+           VerticalAlignment="Center" 
+           Margin="0,0,0,20"/>
+        </Grid>
+
+        <!-- Patient Info Grid (Fields) -->
+        <Grid Grid.Row="2" HorizontalAlignment="Center">
+            <!-- Define the grid columns (4 columns for titles and input fields) -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Define row heights -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Name" Foreground="White" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBox Text="{Binding Name, Mode=TwoWay}" Width="300" Grid.Row="1" Grid.Column="0" Margin="30,0,30,30"/>
+
+            <TextBlock Text="Mail" Foreground="White" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBox Text="{Binding Email, Mode=TwoWay}" Width="400" Grid.Row="1" Grid.Column="1" Margin="30,0,30,30"/>
+
+            <TextBlock Text="Password" Foreground="White" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBox Text="{Binding Password, Mode=TwoWay}" Width="400" Grid.Row="1" Grid.Column="2" Margin="30,0,30,30"/>
+
+            <TextBlock Text="Username" Foreground="White" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBox Text="{Binding Username, Mode=TwoWay}" Width="300" Grid.Row="1" Grid.Column="3" Margin="30,0,30,30"/>
+
+            <!-- Row 2 -->
+            <TextBlock Text="Address" Foreground="White" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBox Text="{Binding Address, Mode=TwoWay}" Width="300" Grid.Row="3" Grid.Column="0" Margin="30,0,30,30"/>
+
+            <TextBlock Text="Phone Number" Foreground="White" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBox Text="{Binding PhoneNumber, Mode=TwoWay}" Width="400" MaxLength="10" Grid.Row="3" Grid.Column="1" Margin="30,0,30,30"/>
+
+            <TextBlock Text="Emergency Contact" Foreground="White" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBox Text="{Binding EmergencyContact, Mode=TwoWay}" Width="400" MaxLength="10" Grid.Row="3" Grid.Column="2" Margin="30,0,30,30"/>
+
+            <TextBlock Text="Weight" Foreground="White" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBox Text="{Binding Weight, Mode=TwoWay}" Width="300" Grid.Row="3" Grid.Column="3" Margin="30,0,30,30"/>
+
+            <!-- Row 3 -->
+            <TextBlock Text="Height" Foreground="White" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBox Text="{Binding Height, Mode=TwoWay}" Width="300" Grid.Row="5" Grid.Column="0" Margin="30,0,30,30"/>
+
+            <TextBlock Text="Blood Type" Foreground="White" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBlock Text="{Binding BloodType}" Width="300" Grid.Row="5" Grid.Column="1" Margin="30,0,30,30"/>
+
+            <TextBlock Text="Allergies" Foreground="White" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBlock Text="{Binding Allergies}" Width="300" Grid.Row="5" Grid.Column="2" Margin="30,0,30,30"/>
+
+            <TextBlock Text="Birth Date" Foreground="White" Grid.Row="4" Grid.Column="3" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBlock Text="{Binding BirthDate}" Width="300" Grid.Row="5" Grid.Column="3" Margin="30,0,30,30"/>
+
+            <!-- Row 4 -->
+            <TextBlock Text="CNP" Foreground="White" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBlock Text="{Binding Cnp}" Width="400" Grid.Row="7" Grid.Column="0" Margin="30,0,30,30"/>
+
+            <TextBlock Text="Registration Date" Foreground="White" Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" Margin="30,0,30,0"/>
+            <TextBlock Text="{Binding RegistrationDate}" Width="300" Grid.Row="7" Grid.Column="1" Margin="30,0,30,0"/>
+
+        </Grid>
+
+        <!-- Update Button -->
+        <Button Content="Update Patient Info" 
+        HorizontalAlignment="Center" 
+        VerticalAlignment="Center" 
+        Grid.Row="3" Grid.ColumnSpan="8"
+        Click="OnUpdateButtonClick" 
+        Margin="0,20"/>
+
+    </Grid>
+</UserControl>
