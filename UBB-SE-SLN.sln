@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinUI", "WinUI\WinUI.csproj", "{89F52E0F-2033-C198-A17E-5E07761E4E75}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F5AB970B-D7AC-480A-837C-1DF1C85413EB} = {F5AB970B-D7AC-480A-837C-1DF1C85413EB}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebAPI\WebApi.csproj", "{8D6B33C5-CEE1-20B5-A207-99CBB61F699C}"
 EndProject

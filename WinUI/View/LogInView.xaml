@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="WinUI.View.LogInView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinUI.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <!-- Login Panel -->
+        <StackPanel x:Name="LoginPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
+            <TextBlock Text="Login" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+            <!-- Username Field -->
+            <TextBlock Text="Username:" Margin="0,5,0,5"/>
+            <TextBox x:Name="UsernameTextField" Margin="0,0,0,10"/>
+
+            <!-- Password Field -->
+            <TextBlock Text="Password:" Margin="0,5,0,5"/>
+            <PasswordBox x:Name="PasswordTextField" Margin="0,0,0,20"/>
+
+            <!-- Buttons -->
+            <Button x:Name="LoginButton" Content="Login" Click="loginButtonClick" 
+            HorizontalAlignment="Stretch" Margin="0,0,0,10"/>
+            <Button x:Name="CreateAccountButton" Content="Create Account" Click="createAccountButtonClick" 
+            HorizontalAlignment="Stretch"/>
+        </StackPanel>
+
+        <!-- Frame for Page Navigation -->
+        <Frame x:Name="LoginFrame"/>
+    </Grid>
+</Page>

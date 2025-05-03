@@ -10,7 +10,6 @@
     Title="WinUI">
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
-        <TextBlock x:Name="responseText" Margin="10" />
+        <Frame x:Name="root_frame" NavigationFailed="onNavigationFailed"></Frame>
     </StackPanel>
 </Window>
