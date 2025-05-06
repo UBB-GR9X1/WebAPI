@@ -13,24 +13,24 @@ namespace ClassLibrary.IRepository
         /// Gets all doctors.
         /// </summary>
         /// <returns>A list of doctors</returns>
-        Task<List<Doctor>> GetAllDoctorsAsync();
+        Task<List<Doctor>> getAllDoctorsAsync();
 
         /// <summary>
         /// Gets a doctor by its unique identifier.
         /// </summary>
         /// <param name="id">The id of the user</param>
         /// <returns>The doctor with the given user id.</returns>
-        Task<Doctor> GetDoctorByUserIdAsync(int id);
+        Task<Doctor> getDoctorByUserIdAsync(int id);
 
         /// <summary>
         /// Gets a list of doctors by department id.
         /// </summary>
         /// <param name="departmentId">The id of the departemnt</param>
         /// <returns>The list of doctors with the given department id</returns>
-        Task<List<Doctor>> GetDoctorsByDepartmentIdAsync(int departmentId);
+        Task<List<Doctor>> getDoctorsByDepartmentIdAsync(int departmentId);
 
-        Task AddDoctorAsync(Doctor doctor);
+        Task addDoctorAsync(Doctor doctor);
 
-        Task DeleteDoctorAsync(int id);
+        Task deleteDoctorAsync(int id);
     }
 }

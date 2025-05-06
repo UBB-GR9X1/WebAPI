@@ -8,31 +8,31 @@
         /// <summary>
         /// Gets or sets the unique identifier for the user.
         /// </summary>
-        public int UserId { get; set; }
+        public int userId { get; set; }
 
         /// <summary>
         /// Gets or sets the blood type of the patient.
         /// </summary>
-        public string BloodType { get; set; }
+        public string bloodType { get; set; }
 
         /// <summary>
         /// Gets or sets the emergency contact information of the patient.
         /// </summary>
-        public string EmergencyContact { get; set; }
+        public string emergencyContact { get; set; }
 
         /// <summary>
         /// Gets or sets the allergies of the patient.
         /// </summary>
-        public string Allergies { get; set; }
+        public string allergies { get; set; }
 
         /// <summary>
         /// Gets or sets the weight of the patient
         /// </summary>
-        public double Weight { get; set; }
+        public double weight { get; set; }
 
         /// <summary>
         /// Gets or sets the height of the patient
         /// </summary>
-        public int Height { get; set; }
+        public int height { get; set; }
     }
 }

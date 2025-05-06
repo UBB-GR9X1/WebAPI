@@ -26,7 +26,7 @@ namespace Controllers
         {
             try
             {
-                List<Notification> notifications = await this.notificationRepository.GetAllNotificationsAsync();
+                List<Notification> notifications = await this.notificationRepository.getAllNotificationsAsync();
                 return this.Ok(notifications);
             }
             catch (Exception ex)
@@ -47,7 +47,7 @@ namespace Controllers
         {
             try
             {
-                var notifications = await this.notificationRepository.GetNotificationsByUserIdAsync(userId);
+                var notifications = await this.notificationRepository.getNotificationsByUserIdAsync(userId);
                 return this.Ok(notifications);
             }
             catch (Exception ex)
@@ -74,8 +74,8 @@ namespace Controllers
 
             try
             {
-                await this.notificationRepository.AddNotificationAsync(notification);
-                return this.CreatedAtAction(nameof(GetAllNotifications), new { id = notification.NotificationId }, notification);
+                await this.notificationRepository.addNotificationAsync(notification);
+                return this.CreatedAtAction(nameof(GetAllNotifications), new { id = notification.notificationId }, notification);
             }
             catch (Exception ex)
             {
@@ -96,7 +96,7 @@ namespace Controllers
         {
             try
             {
-                await this.notificationRepository.DeleteNotificationAsync(id);
+                await this.notificationRepository.deleteNotificationAsync(id);
                 return this.NoContent();
             }
             catch (KeyNotFoundException)

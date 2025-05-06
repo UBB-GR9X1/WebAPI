@@ -29,12 +29,12 @@ namespace WebApi.Repository
 
             return patientEntities.Select(p => new Patient
             {
-                UserId = p.UserId,
-                BloodType = p.BloodType,
+                userId = p.UserId,
+                bloodType = p.BloodType,
                 EmergencyContact = p.EmergencyContact,
-                Allergies = p.Allergies,
-                Weight = p.Weight,
-                Height = p.Height
+                allergies = p.Allergies,
+                weight = p.Weight,
+                height = p.Height
             }).ToList();
         }
 
@@ -50,19 +50,19 @@ namespace WebApi.Repository
 
             return new Patient
             {
-                UserId = patientEntity.UserId,
-                BloodType = patientEntity.BloodType,
+                userId = patientEntity.UserId,
+                bloodType = patientEntity.BloodType,
                 EmergencyContact = patientEntity.EmergencyContact,
-                Allergies = patientEntity.Allergies,
-                Weight = patientEntity.Weight,
-                Height = patientEntity.Height
+                allergies = patientEntity.Allergies,
+                weight = patientEntity.Weight,
+                height = patientEntity.Height
             };
         }
 
         /// <inheritdoc/>
         public async Task addPatientAsync(Patient patient)
         {
-            var existingDoctor = await dbContext.Doctors.FindAsync(patient.UserId);
+            var existingDoctor = await dbContext.Doctors.FindAsync(patient.userId);
             if (existingDoctor != null)
             {
                 throw new InvalidOperationException("User is already registered as a doctor and cannot be a patient.");
@@ -70,12 +70,12 @@ namespace WebApi.Repository
 
             var patientEntity = new PatientEntity
             {
-                UserId = patient.UserId,
-                BloodType = patient.BloodType,
+                UserId = patient.userId,
+                BloodType = patient.bloodType,
                 EmergencyContact = patient.EmergencyContact,
-                Allergies = patient.Allergies,
-                Weight = patient.Weight,
-                Height = patient.Height
+                Allergies = patient.allergies,
+                Weight = patient.weight,
+                Height = patient.height
             };
 
             dbContext.Patients.Add(patientEntity);

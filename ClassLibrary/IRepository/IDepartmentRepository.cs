@@ -10,27 +10,27 @@ namespace ClassLibrary.IRepository
         /// Gets all departments.
         /// </summary>
         /// <returns>A list of departments.</returns>
-        Task<List<Department>> GetAllDepartmentsAsync();
+        Task<List<Department>> getAllDepartmentsAsync();
 
         /// <summary>
         /// Gets a department by its unique identifier.
         /// </summary>
         /// <param name="id">The unique identifier of the department.</param>
         /// <returns>A department object if found, otherwise null.</returns>
-        Task<Department> GetDepartmentByIdAsync(int id);
+        Task<Department> getDepartmentByIdAsync(int id);
 
         /// <summary>
         /// Adds a new department to the system.
         /// </summary>
         /// <param name="department">The department to add.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        Task AddDepartmentAsync(Department department);
+        Task addDepartmentAsync(Department department);
 
         /// <summary>
         /// Deletes a department by its unique identifier.
         /// </summary>
         /// <param name="id">The unique identifier of the department to delete.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        Task DeleteDepartmentAsync(int id);
+        Task deleteDepartmentAsync(int id);
     }
 }

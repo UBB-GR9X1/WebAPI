@@ -83,7 +83,7 @@ namespace Controllers
             try
             {
                 await this.patientRepository.addPatientAsync(patient);
-                return this.CreatedAtAction(nameof(GetPatientById), new { id = patient.UserId }, patient);
+                return this.CreatedAtAction(nameof(GetPatientById), new { id = patient.userId }, patient);
             }
             catch (Exception ex)
             {

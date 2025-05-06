@@ -28,7 +28,7 @@
         }
 
         /// <inheritdoc/>
-        public async Task<List<Department>> GetAllDepartmentsAsync()
+        public async Task<List<Department>> getAllDepartmentsAsync()
         {
             // Retrieve all departments from the database.
             List<DepartmentEntity> departmentEntities = await this.dbContext.Departments.ToListAsync();
@@ -37,8 +37,8 @@
             List<Department> departments = departmentEntities
                 .Select(departmentEntity => new Department
                 {
-                    Id = departmentEntity.Id,
-                    Name = departmentEntity.Name
+                    id = departmentEntity.Id,
+                    name = departmentEntity.Name
                 })
                 .ToList();
 
@@ -46,7 +46,7 @@
         }
 
         /// <inheritdoc/>
-        public async Task<Department> GetDepartmentByIdAsync(int id)
+        public async Task<Department> getDepartmentByIdAsync(int id)
         {
             // Retrieve a department by its ID from the database.
             var departmentEntity = await this.dbContext.Departments.FindAsync(id);
@@ -59,18 +59,18 @@
             // Return a new Department object (mapping from Entity to Domain model).
             return new Department
             {
-                Id = departmentEntity.Id,
-                Name = departmentEntity.Name
+                id = departmentEntity.Id,
+                name = departmentEntity.Name
             };
         }
 
         /// <inheritdoc/>
-        public async Task AddDepartmentAsync(Department department)
+        public async Task addDepartmentAsync(Department department)
         {
             // Map the Department model to the DepartmentEntity.
             var departmentEntity = new DepartmentEntity
             {
-                Name = department.Name
+                Name = department.name
             };
 
             // Add the department to the database.
@@ -78,11 +78,11 @@
             await this.dbContext.SaveChangesAsync();
 
             // Set the department's Id after it's saved.
-            department.Id = departmentEntity.Id;
+            department.id = departmentEntity.Id;
         }
 
         /// <inheritdoc/>
-        public async Task DeleteDepartmentAsync(int id)
+        public async Task deleteDepartmentAsync(int id)
         {
             // Find the department by its ID.
             var departmentEntity = await this.dbContext.Departments.FindAsync(id);

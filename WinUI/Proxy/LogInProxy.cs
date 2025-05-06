@@ -15,14 +15,24 @@ namespace WinUI.Proxy
 {
     internal class LogInProxy : ILogInRepository
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = "http://localhost:5005/";
+        private readonly HttpClient _http_client;
+        private readonly string _base_url = "http://localhost:5005/";
 
-        public LogInProxy(HttpClient httpClient)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogInProxy"/> class with the specified HTTP client.
+        /// </summary>
+        /// <param name="http_client">The HTTP client instance to use for API communication.</param>
+        public LogInProxy(HttpClient http_client)
         {
-            this._httpClient = httpClient;
+            this._http_client = http_client;
         }
 
+        /// <summary>
+        /// Sends a log entry for user authentication actions (login or logout) to the API.
+        /// </summary>
+        /// <param name="_user_id">The ID of the user performing the action.</param>
+        /// <param name="_action_type_login_or_logout">The type of action (login or logout).</param>
+        /// <returns>True if the log was successfully sent; otherwise, throws an exception.</returns>
         public async Task<bool> authenticationLogService(int _user_id, ActionType _action_type_login_or_logout)
         {
             UserLogHttpModel log = new UserLogHttpModel
@@ -33,18 +43,24 @@ namespace WinUI.Proxy
                 timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
             };
 
-            string logJson = JsonSerializer.Serialize(log);
-            StringContent content = new StringContent(logJson, Encoding.UTF8, "application/json");
+            string log_json = JsonSerializer.Serialize(log);
+            StringContent content = new StringContent(log_json, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await _httpClient.PostAsync(_baseUrl + "api/log", content);
+            HttpResponseMessage response = await _http_client.PostAsync(_base_url + "api/log", content);
             response.EnsureSuccessStatusCode();
 
             return true;
         }
 
+        /// <summary>
+        /// Creates a new user account by sending user details to the API. Checks for duplicates before creation.
+        /// </summary>
+        /// <param name="_model_for_creating_user_account">The model containing user account details.</param>
+        /// <returns>True if the account was successfully created; otherwise, false if the user already exists.</returns>
+        /// <exception cref="AuthenticationException">Thrown if a user with the same username, CNP, or email already exists.</exception>
         public async Task<bool> createAccount(UserCreateAccountModel _model_for_creating_user_account)
         {
-            HttpResponseMessage _response = await this._httpClient.GetAsync(this._baseUrl + "api/user");
+            HttpResponseMessage _response = await this._http_client.GetAsync(this._base_url + "api/user");
             _response.EnsureSuccessStatusCode();
 
             string _response_body = await _response.Content.ReadAsStringAsync();
@@ -84,9 +100,15 @@ namespace WinUI.Proxy
             return true;
         }
 
+        /// <summary>
+        /// Retrieves a user by username from the API.
+        /// </summary>
+        /// <param name="_username">The username to search for.</param>
+        /// <returns>A <see cref="UserAuthModel"/> representing the user if found.</returns>
+        /// <exception cref="AuthenticationException">Thrown if no user is found with the given username.</exception>
         public async Task<UserAuthModel> getUserByUsername(string _username)
         {
-            HttpResponseMessage _response = await this._httpClient.GetAsync(this._baseUrl + "api/user");
+            HttpResponseMessage _response = await this._http_client.GetAsync(this._base_url + "api/user");
             _response.EnsureSuccessStatusCode();
 
             string _response_body = await _response.Content.ReadAsStringAsync();

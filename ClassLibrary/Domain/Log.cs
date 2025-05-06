@@ -8,21 +8,21 @@
         /// <summary>
         /// Gets or sets the unique identifier for the log entry.
         /// </summary>
-        public int LogId { get; set; }
+        public int logId { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the user associated with the log entry.
         /// </summary>
-        public int UserId { get; set; }
+        public int userId { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the action type fot the log entry.
         /// </summary>
-        public string ActionType{ get; set; }
+        public string actionType { get; set; }
 
         /// <summary>
         /// Gets or sets the timestemp of the log entry.
         /// </summary>
-        public DateTime Timestamp { get; set; }
+        public DateTime timestamp { get; set; }
     }
 }

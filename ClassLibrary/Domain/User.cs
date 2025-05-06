@@ -8,56 +8,56 @@
         /// <summary>
         /// Gets or sets the unique identifier for the user.
         /// </summary>
-        public int UserId { get; set; }
+        public int userId { get; set; }
 
         /// <summary>
         /// Gets or sets the username of the user.
         /// </summary>
-        public string Username { get; set; }
+        public string username { get; set; }
 
         /// <summary>
         /// Gets or sets the password of the user.
         /// </summary>
-        public string Password { get; set; }
+        public string password { get; set; }
 
         /// <summary>
         /// Gets or sets the email address of the user.
         /// </summary>
-        public string Mail { get; set; }
+        public string mail { get; set; }
 
         /// <summary>
         /// Gets or sets the role of the user.
         /// </summary>
-        public string Role { get; set; }
+        public string role { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the user.
         /// </summary>
-        public string Name { get; set; }
+        public string name { get; set; }
 
         /// <summary>
         /// Gets or sets the date of birth of the user.
         /// </summary>
-        public DateOnly BirthDate { get; set; }
+        public DateOnly birthDate { get; set; }
 
         /// <summary>
         /// Gets or sets the CNP of the user.
         /// </summary>
-        public string CNP { get; set; }
+        public string cnp { get; set; }
 
         /// <summary>
         /// Gets or sets the address of the user.
         /// </summary>
-        public string Address { get; set; }
+        public string address { get; set; }
 
         /// <summary>
         /// Gets or sets the phone number of the user.
         /// </summary>
-        public string PhoneNumber { get; set; }
+        public string phoneNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the registration date of the user.
         /// </summary>
-        public DateTime RegistrationDate { get; set; }
+        public DateTime registrationDate { get; set; }
     }
 }

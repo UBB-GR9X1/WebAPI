@@ -17,28 +17,28 @@ namespace WinUI.Repository
         /// <summary>
         /// Checks the action the user makes, loging in or loging out and adds it to the database.
         /// </summary>
-        /// <param name="_user_id">The id (unique) of the user we are checking.</param>
-        /// <param name="_action_type_login_or_logout">The acction the user makes: loging in / loging out.</param>
+        /// <param name="user_id">The id (unique) of the user we are checking.</param>
+        /// <param name="action_type_login_or_logout">The acction the user makes: loging in / loging out.</param>
         /// <returns> 1 of the rows were modified.</returns>
         /// <exception cref="AuthenticationException">Throws exception if the type was not valid or if 
         /// there was a logger action error.</exception>
-        Task<bool> authenticationLogService(int _user_id, ActionType _action_type_login_or_logout);
+        Task<bool> authenticationLogService(int user_id, ActionType action_type_login_or_logout);
 
         /// <summary>
         /// Creates a user account with the given information and adds it to the database.
         /// </summary>
-        /// <param name="_model_for_creating_user_account">The "model" for creating an account - domain.</param>
+        /// <param name="model_for_creating_user_account">The "model" for creating an account - domain.</param>
         /// <returns> 1 if the user account was created, 0 otherwise.</returns>
         /// <exception cref="AuthenticationException">Throws an exception if the user already exists
         /// or if there was a database error.</exception>
-        Task<bool> createAccount(UserCreateAccountModel _model_for_creating_user_account);
+        Task<bool> createAccount(UserCreateAccountModel model_for_creating_user_account);
 
         /// <summary>
         /// Gets a user's information from the database based on the username.
         /// </summary>
-        /// <param name="_username">The username of the user we are searching for.</param>
+        /// <param name="username">The username of the user we are searching for.</param>
         /// <returns>The user of type UserAuthModel.</returns>
         /// <exception cref="AuthenticationException">Exception in case the username was not found in the table.</exception>
-        Task<UserAuthModel> getUserByUsername(string _username);
+        Task<UserAuthModel> getUserByUsername(string username);
     }
 }

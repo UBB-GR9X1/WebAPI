@@ -75,12 +75,12 @@ namespace WinUI.Proxy
         {
             return new Patient
             {
-                UserId = _http_model.user_id,
-                BloodType = _http_model.blood_type,
-                EmergencyContact = _http_model.emergency_contact,
-                Allergies = _http_model.allergies,
-                Weight = _http_model.weight,
-                Height = _http_model.height
+                userId = _http_model.user_id,
+                bloodType = _http_model.blood_type,
+                emergencyContact = _http_model.emergency_contact,
+                allergies = _http_model.allergies,
+                weight = _http_model.weight,
+                height = _http_model.height
             };
         }
 
@@ -88,12 +88,12 @@ namespace WinUI.Proxy
         {
             return new PatientHttpModel
             {
-                user_id = _domain_model.UserId,
-                blood_type = _domain_model.BloodType,
-                emergency_contact = _domain_model.EmergencyContact,
-                allergies = _domain_model.Allergies,
-                weight = _domain_model.Weight,
-                height = _domain_model.Height
+                user_id = _domain_model.userId,
+                blood_type = _domain_model.bloodType,
+                emergency_contact = _domain_model.emergencyContact,
+                allergies = _domain_model.allergies,
+                weight = _domain_model.weight,
+                height = _domain_model.height
             };
         }
 

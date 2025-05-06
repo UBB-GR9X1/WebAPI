@@ -16,8 +16,8 @@ public class PatientControllerTest
         var _mock_repo = new Mock<IPatientRepository>();
         var _fake_patients = new List<Patient>
         {
-            new Patient { UserId = 1, BloodType = "AB+", EmergencyContact = "Mom", Allergies = "cats, dogs", Weight = 72.6, Height = 167 },
-            new Patient { UserId = 2, BloodType = "A-", EmergencyContact = "Dad", Allergies = "cats, dogs", Weight = 92.6, Height = 199 }
+            new Patient { userId = 1, bloodType = "AB+", EmergencyContact = "Mom", allergies = "cats, dogs", weight = 72.6, height = 167 },
+            new Patient { userId = 2, bloodType = "A-", EmergencyContact = "Dad", allergies = "cats, dogs", weight = 92.6, height = 199 }
         };
         _mock_repo.Setup(_repo => _repo.getAllPatientsAsync()).ReturnsAsync(_fake_patients);
 
@@ -39,7 +39,7 @@ public class PatientControllerTest
         // Arrange
         var _patient_id = 2;
         var _mock_repo = new Mock<IPatientRepository>();
-        var _fake_patient = new Patient { UserId = 2, BloodType = "A-", EmergencyContact = "Dad", Allergies = "cats, dogs", Weight = 92.6, Height = 199 };
+        var _fake_patient = new Patient { userId = 2, bloodType = "A-", EmergencyContact = "Dad", allergies = "cats, dogs", weight = 92.6, height = 199 };
 
         _mock_repo.Setup(_repo => _repo.getPatientByUserIdAsync(_patient_id)).ReturnsAsync(_fake_patient);
 
@@ -52,7 +52,7 @@ public class PatientControllerTest
         // Assert
         Assert.IsNotNull(_ok_result);
         var _returned_patient = _ok_result.Value as Patient;
-        Assert.AreEqual(2, _returned_patient.UserId);
+        Assert.AreEqual(2, _returned_patient.userId);
     }
 
     [TestMethod]
@@ -60,7 +60,7 @@ public class PatientControllerTest
     {
         // Arrange
         var _mock_repo = new Mock<IPatientRepository>();
-        var _fake_patient = new Patient { UserId = 2, BloodType = "A-", EmergencyContact = "Dad", Allergies = "cats, dogs", Weight = 92.6, Height = 199 };
+        var _fake_patient = new Patient { userId = 2, bloodType = "A-", EmergencyContact = "Dad", allergies = "cats, dogs", weight = 92.6, height = 199 };
         _mock_repo.Setup(repo => repo.addPatientAsync(_fake_patient)).Returns(Task.CompletedTask);
 
         var _controller = new PatientController(_mock_repo.Object);
@@ -71,7 +71,7 @@ public class PatientControllerTest
 
         // Assert
         Assert.IsNotNull(_created_at);
-        Assert.AreEqual(_fake_patient.UserId, ((Patient)_created_at.Value).UserId);
+        Assert.AreEqual(_fake_patient.userId, ((Patient)_created_at.Value).userId);
     }
 
     [TestMethod]

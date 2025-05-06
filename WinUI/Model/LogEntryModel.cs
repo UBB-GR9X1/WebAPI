@@ -41,9 +41,9 @@ namespace WinUI.Model
 
     static class ActionTypeMethods
     {
-        public static String convertToString(this ActionType s1)
+        public static String convertToString(this ActionType action_type)
         {
-            switch (s1)
+            switch (action_type)
             {
                 case ActionType.LOGIN:
                     return "LOGIN";

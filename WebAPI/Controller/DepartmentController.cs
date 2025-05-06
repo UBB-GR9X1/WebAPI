@@ -29,7 +29,7 @@ namespace Controllers
         {
             try
             {
-                List<Department> departments = await this.departmentRepository.GetAllDepartmentsAsync();
+                List<Department> departments = await this.departmentRepository.getAllDepartmentsAsync();
                 return this.Ok(departments);
             }
             catch (Exception ex)
@@ -56,8 +56,8 @@ namespace Controllers
 
             try
             {
-                await this.departmentRepository.AddDepartmentAsync(department);
-                return this.CreatedAtAction(nameof(GetAllDepartments), new { id = department.Id }, department);
+                await this.departmentRepository.addDepartmentAsync(department);
+                return this.CreatedAtAction(nameof(GetAllDepartments), new { id = department.id }, department);
             }
             catch (Exception ex)
             {
@@ -78,7 +78,7 @@ namespace Controllers
         {
             try
             {
-                await this.departmentRepository.DeleteDepartmentAsync(id);
+                await this.departmentRepository.deleteDepartmentAsync(id);
                 return this.NoContent();
             }
             catch (KeyNotFoundException)

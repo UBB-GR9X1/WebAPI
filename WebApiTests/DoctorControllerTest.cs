@@ -19,10 +19,10 @@ namespace WebApiTests
             var _mock_repo = new Mock<IDoctorRepository>();
             var _fake_doctors = new List<Doctor>
             {
-                new Doctor { UserId = 1, DepartmentId = 1, DoctorRating = 5.9, LicenseNumber = "numar" },
-                new Doctor { UserId = 2, DepartmentId = 1, DoctorRating = 7.9, LicenseNumber = "alt_numar" },
+                new Doctor { userId = 1, departmentId = 1, doctorRating = 5.9, licenseNumber = "numar" },
+                new Doctor { userId = 2, departmentId = 1, doctorRating = 7.9, licenseNumber = "alt_numar" },
             };
-            _mock_repo.Setup(_repo => _repo.GetAllDoctorsAsync()).ReturnsAsync(_fake_doctors);
+            _mock_repo.Setup(_repo => _repo.getAllDoctorsAsync()).ReturnsAsync(_fake_doctors);
 
             var _controller = new DoctorController(_mock_repo.Object);
 
@@ -41,9 +41,9 @@ namespace WebApiTests
         {
             // Arrange
             var _mock_repo = new Mock<IDoctorRepository>();
-            var _fake_doctor = new Doctor { UserId = 1, DepartmentId = 1, DoctorRating = 5.9, LicenseNumber = "numar" };
+            var _fake_doctor = new Doctor { userId = 1, departmentId = 1, doctorRating = 5.9, licenseNumber = "numar" };
             
-            _mock_repo.Setup(_repo => _repo.GetDoctorByUserIdAsync(1)).ReturnsAsync(_fake_doctor);
+            _mock_repo.Setup(_repo => _repo.getDoctorByUserIdAsync(1)).ReturnsAsync(_fake_doctor);
 
             var _controller = new DoctorController(_mock_repo.Object);
 
@@ -54,7 +54,7 @@ namespace WebApiTests
             // Assert
             Assert.IsNotNull(_ok_result);
             var _returned_doctor = _ok_result.Value as Doctor;
-            Assert.AreEqual(1, _returned_doctor.UserId);
+            Assert.AreEqual(1, _returned_doctor.userId);
         }
 
         [TestMethod]
@@ -64,11 +64,11 @@ namespace WebApiTests
             var _mock_repo = new Mock<IDoctorRepository>();
             var _fake_doctors = new List<Doctor>
             {
-                new Doctor { UserId = 1, DepartmentId = 1, DoctorRating = 5.9, LicenseNumber = "numar" },
-                new Doctor { UserId = 2, DepartmentId = 1, DoctorRating = 7.9, LicenseNumber = "alt_numar" },
-                new Doctor { UserId = 3, DepartmentId = 2, DoctorRating = 7.9, LicenseNumber = "alt_alt_numar" },
+                new Doctor { userId = 1, departmentId = 1, doctorRating = 5.9, licenseNumber = "numar" },
+                new Doctor { userId = 2, departmentId = 1, doctorRating = 7.9, licenseNumber = "alt_numar" },
+                new Doctor { userId = 3, departmentId = 2, doctorRating = 7.9, licenseNumber = "alt_alt_numar" },
             };
-            _mock_repo.Setup(repo => repo.GetDoctorsByDepartmentIdAsync(1)).ReturnsAsync(_fake_doctors.Where(d => d.DepartmentId == 1).ToList());
+            _mock_repo.Setup(repo => repo.getDoctorsByDepartmentIdAsync(1)).ReturnsAsync(_fake_doctors.Where(d => d.departmentId == 1).ToList());
 
             var _controller = new DoctorController(_mock_repo.Object);
 
@@ -87,9 +87,9 @@ namespace WebApiTests
         {
             // Arrange
             var _mock_repo = new Mock<IDoctorRepository>();
-            var _new_doctor = new Doctor { UserId = 5, DepartmentId = 2, DoctorRating = 9.0, LicenseNumber = "abc123" };
+            var _new_doctor = new Doctor { userId = 5, departmentId = 2, doctorRating = 9.0, licenseNumber = "abc123" };
 
-            _mock_repo.Setup(_repo => _repo.AddDoctorAsync(_new_doctor)).Returns(Task.CompletedTask);
+            _mock_repo.Setup(_repo => _repo.addDoctorAsync(_new_doctor)).Returns(Task.CompletedTask);
 
             var _controller = new DoctorController(_mock_repo.Object);
 
@@ -100,10 +100,10 @@ namespace WebApiTests
             var _created_at = _result as CreatedAtActionResult;
             Assert.IsNotNull(_created_at);
             Assert.AreEqual(nameof(_controller.GetDoctorByUserId), _created_at.ActionName);
-            Assert.AreEqual(_new_doctor.UserId, ((Doctor)_created_at.Value).UserId);
+            Assert.AreEqual(_new_doctor.userId, ((Doctor)_created_at.Value).userId);
 
             // Verify that AddDoctorAsync was called once
-            _mock_repo.Verify(_repo => _repo.AddDoctorAsync(_new_doctor), Times.Once);
+            _mock_repo.Verify(_repo => _repo.addDoctorAsync(_new_doctor), Times.Once);
         }
 
         [TestMethod]
@@ -114,7 +114,7 @@ namespace WebApiTests
             int _doctor_id = 1;
 
             // No setup needed if the method succeeds (completes without exception)
-            _mock_repo.Setup(_repo => _repo.DeleteDoctorAsync(_doctor_id)).Returns(Task.CompletedTask);
+            _mock_repo.Setup(_repo => _repo.deleteDoctorAsync(_doctor_id)).Returns(Task.CompletedTask);
 
             var _controller = new DoctorController(_mock_repo.Object);
 
@@ -123,7 +123,7 @@ namespace WebApiTests
 
             // Assert
             Assert.IsInstanceOfType(_result, typeof(NoContentResult));
-            _mock_repo.Verify(_repo => _repo.DeleteDoctorAsync(_doctor_id), Times.Once);
+            _mock_repo.Verify(_repo => _repo.deleteDoctorAsync(_doctor_id), Times.Once);
         }
 
     }

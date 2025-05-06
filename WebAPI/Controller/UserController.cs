@@ -28,7 +28,7 @@ namespace Controllers
         {
             try
             {
-                List<User> users = await this.userRepository.GetAllUsersAsync();
+                List<User> users = await this.userRepository.getAllUsersAsync();
                 return this.Ok(users);
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace Controllers
         {
             try
             {
-                User user = await this.userRepository.GetUserByIdAsync(id);
+                User user = await this.userRepository.getUserByIdAsync(id);
                 if (user == null)
                 {
                     return this.NotFound($"User with ID {id} was not found.");
@@ -81,8 +81,8 @@ namespace Controllers
 
             try
             {
-                await this.userRepository.AddUserAsync(user);
-                return this.CreatedAtAction(nameof(GetUserById), new { id = user.UserId }, user);
+                await this.userRepository.addUserAsync(user);
+                return this.CreatedAtAction(nameof(GetUserById), new { id = user.userId }, user);
             }
             catch (Exception ex)
             {
@@ -103,7 +103,7 @@ namespace Controllers
         {
             try
             {
-                await this.userRepository.DeleteUserAsync(id);
+                await this.userRepository.deleteUserAsync(id);
                 return this.NoContent();
             }
             catch (KeyNotFoundException)

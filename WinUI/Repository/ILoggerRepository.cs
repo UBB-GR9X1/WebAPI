@@ -23,16 +23,16 @@ namespace WinUI.Repository
         /// <summary>
         /// Gets logs for a specific user.
         /// </summary>
-        /// <param name="userId">The ID of the user whose logs to retrieve.</param>
+        /// <param name="user_id">The ID of the user whose logs to retrieve.</param>
         /// <returns>A task representing the asynchronous operation with a list of log entries.</returns>
-        Task<List<LogEntryModel>> getLogsByUserId(int userId);
+        Task<List<LogEntryModel>> getLogsByUserId(int user_id);
 
         /// <summary>
         /// Gets logs by action type.
         /// </summary>
-        /// <param name="actionType">The action type to filter by.</param>
+        /// <param name="action_type">The action type to filter by.</param>
         /// <returns>A task representing the asynchronous operation with a list of log entries.</returns>
-        Task<List<LogEntryModel>> getLogsByActionType(ActionType actionType);
+        Task<List<LogEntryModel>> getLogsByActionType(ActionType action_type);
 
         /// <summary>
         /// Gets logs from before a specific timestamp.
@@ -44,11 +44,11 @@ namespace WinUI.Repository
         /// <summary>
         /// Gets logs matching specific parameters.
         /// </summary>
-        /// <param name="userId">The user ID to filter by.</param>
-        /// <param name="actionType">The action type to filter by.</param>
+        /// <param name="user_id">The user ID to filter by.</param>
+        /// <param name="action_type">The action type to filter by.</param>
         /// <param name="timestamp">The timestamp to filter by.</param>
         /// <returns>A task representing the asynchronous operation with a list of log entries.</returns>
-        Task<List<LogEntryModel>> getLogsWithParameters(int userId, ActionType actionType, DateTime timestamp);
+        Task<List<LogEntryModel>> getLogsWithParameters(int user_id, ActionType action_type, DateTime timestamp);
 
         /// <summary>
         /// Gets logs matching specific parameters without filtering by user ID.
@@ -61,9 +61,9 @@ namespace WinUI.Repository
         /// <summary>
         /// Records a new action in the log.
         /// </summary>
-        /// <param name="userId">The ID of the user who performed the action.</param>
-        /// <param name="actionType">The type of action performed.</param>
+        /// <param name="user_id">The ID of the user who performed the action.</param>
+        /// <param name="action_type">The type of action performed.</param>
         /// <returns>A task representing the asynchronous operation with a boolean indicating success.</returns>
-        Task<bool> logAction(int userId, ActionType actionType);
+        Task<bool> logAction(int user_id, ActionType action_type);
     }
 }

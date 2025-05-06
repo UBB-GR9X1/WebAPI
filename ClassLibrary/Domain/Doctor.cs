@@ -8,21 +8,21 @@
         /// <summary>
         /// Gets or sets the unique identifier for the user.
         /// </summary>
-        public int UserId { get; set; }
+        public int userId { get; set; }
 
         /// <summary>
         /// Gets or sets the departement identifier for the doctor.
         /// </summary>
-        public int DepartmentId { get; set; }
+        public int departmentId { get; set; }
 
         /// <summary>
         /// Gets or sets doctor rating for the doctor.
         /// </summary>
-        public double DoctorRating { get; set; }
+        public double doctorRating { get; set; }
 
         /// <summary>
         /// Gets or sets the License number for the doctor.
         /// </summary>
-        public string LicenseNumber { get; set; }
+        public string licenseNumber { get; set; }
     }
 }

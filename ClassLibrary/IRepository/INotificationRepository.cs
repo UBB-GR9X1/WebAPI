@@ -13,34 +13,34 @@ namespace ClassLibrary.IRepository
         /// Gets all notifications.
         /// </summary>
         /// <returns>A list of notifications</returns>
-        Task<List<Notification>> GetAllNotificationsAsync();
+        Task<List<Notification>> getAllNotificationsAsync();
 
         /// <summary>
         /// Gets a list of notifications by the user's unique identifier.
         /// </summary>
         /// <param name="id">The id of the user</param>
         /// <returns>The notifications for the given user id.</returns>
-        Task<List<Notification>> GetNotificationsByUserIdAsync(int userId);
+        Task<List<Notification>> getNotificationsByUserIdAsync(int userId);
 
         /// <summary>
         /// Gets a notification by its id.
         /// </summary>
         /// <param name="id">The id of the notification</param>
         /// <returns>The notifocation with the given id</returns>
-        Task<Notification> GetNotificationByIdAsync(int id);
+        Task<Notification> getNotificationByIdAsync(int id);
 
         /// <summary>
         /// Adds a new notification to the database.
         /// </summary>
         /// <param name="notification">The notification to be added.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        Task AddNotificationAsync(Notification notification);
+        Task addNotificationAsync(Notification notification);
 
         /// <summary>
         /// Deletes a notification by its unique identifier.
         /// </summary>
         /// <param name="id">The id of the notification</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        Task DeleteNotificationAsync(int id);
+        Task deleteNotificationAsync(int id);
     }
 }

@@ -54,9 +54,9 @@ namespace WinUI.Model
 
     static class BloodTypeMethods
     {
-        public static String convertToString(this BloodType s1)
+        public static String convertToString(this BloodType blood_type)
         {
-            switch (s1)
+            switch (blood_type)
             {
                 case BloodType.A_POSITIVE:
                     return "A+";

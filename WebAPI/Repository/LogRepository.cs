@@ -33,10 +33,10 @@ namespace WebApi.Repository
 
             return logEntities.Select(log => new Log
             {
-                LogId = log.LogId,
-                UserId = (int)log.UserId,
-                ActionType = log.ActionType,
-                Timestamp = log.Timestamp
+                logId = log.LogId,
+                userId = (int)log.UserId,
+                actionType = log.ActionType,
+                timestamp = log.Timestamp
             }).ToList();
         }
 
@@ -51,10 +51,10 @@ namespace WebApi.Repository
 
             return new Log
             {
-                LogId = logEntity.LogId,
-                UserId = (int)logEntity.UserId,
-                ActionType = logEntity.ActionType,
-                Timestamp = logEntity.Timestamp
+                logId = logEntity.LogId,
+                userId = (int)logEntity.UserId,
+                actionType = logEntity.ActionType,
+                timestamp = logEntity.Timestamp
             };
         }
 
@@ -71,10 +71,10 @@ namespace WebApi.Repository
 
             return new Log
             {
-                LogId = logEntity.LogId,
-                UserId = (int)logEntity.UserId,
-                ActionType = logEntity.ActionType,
-                Timestamp = logEntity.Timestamp
+                logId = logEntity.LogId,
+                userId = (int)logEntity.UserId,
+                actionType = logEntity.ActionType,
+                timestamp = logEntity.Timestamp
             };
         }
 
@@ -83,15 +83,15 @@ namespace WebApi.Repository
         {
             var logEntity = new LogEntity
             {
-                UserId = log.UserId,
-                ActionType = log.ActionType,
-                Timestamp = log.Timestamp
+                UserId = log.userId,
+                ActionType = log.actionType,
+                Timestamp = log.timestamp
             };
 
             dbContext.Logs.Add(logEntity);
             await dbContext.SaveChangesAsync();
 
-            log.LogId = logEntity.LogId;
+            log.logId = logEntity.LogId;
         }
 
         /// <inheritdoc/>

@@ -19,10 +19,10 @@ namespace WebApiTests
             var _mock_repo = new Mock<IDepartmentRepository>();
             var _fake_departments = new List<Department>
             {
-                new Department { Id = 1, Name = "John" },
-                new Department { Id = 2, Name = "Johnny" },
+                new Department { id = 1, name = "John" },
+                new Department { id = 2, name = "Johnny" },
             };
-            _mock_repo.Setup(_repo => _repo.GetAllDepartmentsAsync()).ReturnsAsync(_fake_departments);
+            _mock_repo.Setup(_repo => _repo.getAllDepartmentsAsync()).ReturnsAsync(_fake_departments);
 
             var _controller = new DepartmentController(_mock_repo.Object);
 
@@ -41,8 +41,8 @@ namespace WebApiTests
         {
             // Arrange
             var _mock_repo = new Mock<IDepartmentRepository>();
-            var _fake_department = new Department { Id = 1, Name = "John" };
-            _mock_repo.Setup(_repo => _repo.AddDepartmentAsync(_fake_department)).Returns(Task.CompletedTask);
+            var _fake_department = new Department { id = 1, name = "John" };
+            _mock_repo.Setup(_repo => _repo.addDepartmentAsync(_fake_department)).Returns(Task.CompletedTask);
 
             var _controller = new DepartmentController(_mock_repo.Object);
 
@@ -52,7 +52,7 @@ namespace WebApiTests
 
             // Assert
             Assert.IsNotNull(_created_at);
-            Assert.AreEqual(_fake_department.Id, ((Department)_created_at.Value).Id);
+            Assert.AreEqual(_fake_department.id, ((Department)_created_at.Value).id);
         }
 
         [TestMethod]
@@ -63,7 +63,7 @@ namespace WebApiTests
             int _doctor_id = 1;
 
             // No setup needed if the method succeeds (completes without exception)
-            _mock_repo.Setup(_repo => _repo.DeleteDepartmentAsync(_doctor_id)).Returns(Task.CompletedTask);
+            _mock_repo.Setup(_repo => _repo.deleteDepartmentAsync(_doctor_id)).Returns(Task.CompletedTask);
 
             var _controller = new DepartmentController(_mock_repo.Object);
 
@@ -72,7 +72,7 @@ namespace WebApiTests
 
             // Assert
             Assert.IsInstanceOfType(_result, typeof(NoContentResult));
-            _mock_repo.Verify(repo => repo.DeleteDepartmentAsync(_doctor_id), Times.Once);
+            _mock_repo.Verify(repo => repo.deleteDepartmentAsync(_doctor_id), Times.Once);
         }
     }
 }

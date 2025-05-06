@@ -82,7 +82,7 @@ namespace Controllers
             try
             {
                 await this.logRepository.addLogAsync(log);
-                return this.CreatedAtAction(nameof(GetLogById), new { id = log.LogId }, log);
+                return this.CreatedAtAction(nameof(GetLogById), new { id = log.logId }, log);
             }
             catch (Exception ex)
             {

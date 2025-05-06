@@ -28,7 +28,7 @@ namespace Controllers
         {
             try
             {
-                List<Doctor> doctors = await this.doctorRepository.GetAllDoctorsAsync();
+                List<Doctor> doctors = await this.doctorRepository.getAllDoctorsAsync();
                 return this.Ok(doctors);
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace Controllers
         {
             try
             {
-                Doctor doctor = await this.doctorRepository.GetDoctorByUserIdAsync(id);
+                Doctor doctor = await this.doctorRepository.getDoctorByUserIdAsync(id);
                 if (doctor == null)
                 {
                     return this.NotFound($"Doctor with user ID {id} was not found.");
@@ -75,7 +75,7 @@ namespace Controllers
         {
             try
             {
-                List<Doctor> doctors = await this.doctorRepository.GetDoctorsByDepartmentIdAsync(departmentId);
+                List<Doctor> doctors = await this.doctorRepository.getDoctorsByDepartmentIdAsync(departmentId);
                 return this.Ok(doctors);
             }
             catch (Exception ex)
@@ -102,8 +102,8 @@ namespace Controllers
 
             try
             {
-                await this.doctorRepository.AddDoctorAsync(doctor);
-                return this.CreatedAtAction(nameof(GetDoctorByUserId), new { id = doctor.UserId }, doctor);
+                await this.doctorRepository.addDoctorAsync(doctor);
+                return this.CreatedAtAction(nameof(GetDoctorByUserId), new { id = doctor.userId }, doctor);
             }
             catch (Exception ex)
             {
@@ -124,7 +124,7 @@ namespace Controllers
         {
             try
             {
-                await this.doctorRepository.DeleteDoctorAsync(id);
+                await this.doctorRepository.deleteDoctorAsync(id);
                 return this.NoContent();
             }
             catch (KeyNotFoundException)
