@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using ClassLibrary.Domain;
 using WinUI.Exceptions;
 using WinUI.Model;
 using WinUI.Repository;
@@ -106,6 +107,26 @@ namespace WinUI.Proxy
 
             throw new AuthenticationException("No user found with given username");
         }
+
+        public async Task<UserAuthModel> getUserById(int _user_id)
+        {
+            HttpResponseMessage _response = await this._httpClient.GetAsync(this._baseUrl + "api/user");
+            _response.EnsureSuccessStatusCode();
+            string _response_body = await _response.Content.ReadAsStringAsync();
+            List<UserHttpModel> _users = JsonSerializer.Deserialize<List<UserHttpModel>>(_response_body, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            for (int i = 0; i < _users.Count; i++)
+            {
+                if (_users[i].user_id == _user_id)
+                {
+                    return new UserAuthModel(_users[i].user_id, _users[i].username, _users[i].password, _users[i].mail, _users[i].role);
+                }
+            }
+            throw new AuthenticationException("No user found with given id");
+        }
+
 
         private class UserHttpModel
         {

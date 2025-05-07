@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="WinUI.View.SearchDoctorsDashboard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinUI.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:WinUI.Model"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="DoctorCardTemplate" x:DataType="model:DoctorModel">
+            <Grid Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                  CornerRadius="8" 
+                  Padding="15" 
+                  Margin="0,5" 
+                  BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                  BorderThickness="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Doctor Image -->
+                <PersonPicture Grid.Column="0" 
+                               ProfilePicture="{x:Bind AvatarUrl}" 
+                               Width="70" 
+                               Height="70" 
+                               Margin="0,0,15,0"/>
+
+                <!-- Doctor Information -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="{x:Bind DoctorName}" 
+                               Style="{StaticResource SubtitleTextBlockStyle}" 
+                               FontWeight="SemiBold"/>
+                    <TextBlock Text="{x:Bind DepartmentName}" 
+                               Style="{StaticResource BodyTextBlockStyle}" 
+                               Opacity="0.8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <RatingControl Value="{x:Bind Rating}" 
+                                      IsReadOnly="True"/>
+                        <TextBlock Text="{x:Bind Rating}" 
+                                   VerticalAlignment="Center" 
+                                   Margin="5,0,0,0" 
+                                   Style="{StaticResource CaptionTextBlockStyle}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- View Profile Button -->
+                <Button Grid.Column="2" 
+                        Content="View Profile" 
+                        Click="OnViewProfile_Click" 
+                        Tag="{x:Bind}" 
+                        VerticalAlignment="Center"/>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Find Doctors" 
+                       Style="{StaticResource TitleTextBlockStyle}" 
+                       FontWeight="Bold" 
+                       FontSize="28"/>
+            <TextBlock Text="Search for doctors by department name" 
+                       Style="{StaticResource SubtitleTextBlockStyle}" 
+                       Opacity="0.6" 
+                       Margin="0,5,0,0"/>
+        </StackPanel>
+
+        <!-- Search Controls -->
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0"
+                     PlaceholderText="Enter department name..."
+                     Text="{x:Bind ViewModel.DepartmentPartialName, Mode=TwoWay}"
+                     Margin="0,0,10,0"/>
+
+            <Button Grid.Column="1"
+                    Content="Search"
+                    Click="OnSearch_Click"
+                    Style="{StaticResource AccentButtonStyle}"/>
+        </Grid>
+
+        <!-- Results List -->
+        <ListView Grid.Row="2"
+                  ItemsSource="{x:Bind ViewModel.Doctors, Mode=OneWay}"
+                  ItemTemplate="{StaticResource DoctorCardTemplate}"
+                  SelectionMode="None"
+                  IsItemClickEnabled="False"
+                  Margin="0,10,0,0">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0,5"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <!-- Doctor Profile Details Flyout -->
+        <ContentDialog x:Name="DoctorProfileDialog"
+                      CloseButtonText="Close"
+                      DefaultButton="Close"
+                      IsSecondaryButtonEnabled="False"
+                      Title="Doctor Profile"
+                      FullSizeDesired="False"
+                      Visibility="{x:Bind ViewModel.IsProfileOpen, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+           <Grid MinWidth="600" MaxWidth="800">
+               <Grid.RowDefinitions>
+                   <RowDefinition Height="Auto"/>
+                   <RowDefinition Height="*"/>
+               </Grid.RowDefinitions>
+
+               <Grid Grid.Row="0">
+                   <Grid.ColumnDefinitions>
+                       <ColumnDefinition Width="Auto"/>
+                       <ColumnDefinition Width="*"/>
+                   </Grid.ColumnDefinitions>
+
+                   <!-- Doctor Image -->
+                   <PersonPicture Grid.Column="0" 
+                                  ProfilePicture="{x:Bind ViewModel.SelectedDoctor.AvatarUrl, Mode=OneWay}" 
+                                  Width="150" 
+                                  Height="150" 
+                                  Margin="0,0,20,0"/>
+
+                   <!-- Basic Information -->
+                   <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                       <TextBlock Text="{x:Bind ViewModel.SelectedDoctor.DoctorName, Mode=OneWay}" 
+                                  Style="{StaticResource SubtitleTextBlockStyle}" 
+                                  FontSize="20" 
+                                  FontWeight="SemiBold"/>
+
+                       <TextBlock Text="{x:Bind ViewModel.SelectedDoctor.DepartmentName, Mode=OneWay}" 
+                                  Style="{StaticResource BodyTextBlockStyle}" 
+                                  Opacity="0.8"
+                                  Margin="0,5,0,0"/>
+
+                       <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                           <RatingControl Value="{x:Bind ViewModel.SelectedDoctor.Rating, Mode=OneWay}" 
+                                         IsReadOnly="True"/>
+                           <TextBlock Text="{x:Bind ViewModel.SelectedDoctor.Rating, Mode=OneWay}" 
+                                      VerticalAlignment="Center" 
+                                      Margin="10,0,0,0"/>
+                       </StackPanel>
+
+                       <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                           <FontIcon Glyph="&#xE715;" 
+                                    Margin="0,0,10,0"/>
+                           <TextBlock Text="{x:Bind ViewModel.SelectedDoctor.PhoneNumber, Mode=OneWay}"/>
+                       </StackPanel>
+
+                       <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                           <FontIcon Glyph="&#xE715;" 
+                                    Margin="0,0,10,0"/>
+                           <TextBlock Text="{x:Bind ViewModel.SelectedDoctor.Mail, Mode=OneWay}"/>
+                       </StackPanel>
+                   </StackPanel>
+               </Grid>
+
+               <!-- Career Information -->
+               <ScrollViewer Grid.Row="1" Margin="0,20,0,0" MaxHeight="200">
+                   <StackPanel>
+                       <TextBlock Text="Career Information" 
+                                  Style="{StaticResource SubtitleTextBlockStyle}"
+                                  FontWeight="SemiBold"
+                                  Margin="0,0,0,5"/>
+
+                       <TextBlock Text="{x:Bind ViewModel.SelectedDoctor.CareerInfo, Mode=OneWay}" 
+                                  Style="{StaticResource BodyTextBlockStyle}" 
+                                  TextWrapping="Wrap"/>
+                   </StackPanel>
+               </ScrollViewer>
+           </Grid>
+        </ContentDialog>
+    </Grid>
+</Page>

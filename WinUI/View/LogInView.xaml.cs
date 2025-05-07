@@ -111,17 +111,18 @@ namespace WinUI.View
                     NavigationService.navigate(typeof(PatientDashboardView), parameters);
                     return;
                 }
-                //else if (this.loginPageViewModel.GetUserRole() == "Doctor")
-                //{
-                //    IDoctorRepository doctorRepository = new DoctorRepository();
-                //    IDoctorService doctorService = new DoctorService(doctorRepository);
-                //    IDoctorViewModel doctorViewModel = new DoctorViewModel(doctorService, this.loginPageViewModel.AuthService.allUserInformation.user_id);
+                else if (this._login_page_view_model.getUserRole() == "Doctor")
+                {
+                    IDoctorRepository doctorRepository = new DoctorsProxy(new HttpClient());
+                    IUserRepository userRepository = new UserProxy(new HttpClient());
+                    IDoctorService doctorService = new DoctorService(doctorRepository, userRepository);
+                    IDoctorViewModel doctorViewModel = new DoctorViewModel(doctorService, this._login_page_view_model.auth_service.all_user_information.user_id);
 
-                //    var parameters = new Tuple<IDoctorViewModel, AuthViewModel>(doctorViewModel, this.loginPageViewModel);
-                //    this.mainFrame.navigate(typeof(DoctorDashboardPage), parameters);
-                //    return;
-                //}
-                
+                    var parameters = new Tuple<IDoctorViewModel, IAuthViewModel>(doctorViewModel, this._login_page_view_model);
+                    NavigationService.navigate(typeof(DoctorDashboard), parameters);
+                    return;
+                }
+
                 //  Admin Dashboard is done
                 else if (this._login_page_view_model.getUserRole() == "Admin")
                 {
