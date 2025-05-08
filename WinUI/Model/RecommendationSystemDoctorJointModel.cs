@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace WinUI.Model
 {
@@ -43,10 +44,12 @@ namespace WinUI.Model
 
         public string GetDoctorName()
         {
+            Debug.WriteLine($"GetDoctorName called - DoctorName: {DoctorName}");
             return DoctorName;
         }
         public double GetDoctorRating()
         {
+            Debug.WriteLine($"GetDoctorRating called - Rating: {Rating}");
             return Rating;
         }
         public DateOnly GetBirthDate()
@@ -59,7 +62,7 @@ namespace WinUI.Model
         }
         public string GetDoctorDepartment()
         {
-            return DepartmentId switch
+            var department = DepartmentId switch
             {
                 1 => "Cardiology",
                 2 => "Neurology",
@@ -70,6 +73,8 @@ namespace WinUI.Model
                 7 => "Dermatology",
                 _ => "Unknown"
             };
+            Debug.WriteLine($"GetDoctorDepartment called - DepartmentId: {DepartmentId}, Department: {department}");
+            return department;
         }
         public override string ToString()
         {

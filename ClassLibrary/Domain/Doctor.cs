@@ -24,5 +24,10 @@
         /// Gets or sets the License number for the doctor.
         /// </summary>
         public string LicenseNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the doctor.
+        /// </summary>
+        public string Name { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WinUI.Model;
+using System.Diagnostics;
 
 namespace WinUI.ViewModel
 {
@@ -204,16 +205,27 @@ namespace WinUI.ViewModel
 
         private async Task RecommendDoctorAsync()
         {
+            Debug.WriteLine("Starting doctor recommendation...");
             var doctor = await this.recommendationSystem.RecommendDoctorAsynchronous(this);
+            Debug.WriteLine($"Received doctor: {doctor?.ToString() ?? "null"}");
 
             if (doctor != null)
             {
-                this.DoctorName = $"Doctor: {doctor.GetDoctorName()}";
-                this.DoctorDepartment = $"Department: {doctor.GetDoctorDepartment()}";
-                this.DoctorRating = $"Rating: {doctor.GetDoctorRating():0.0}";
+                var doctorName = doctor.GetDoctorName();
+                var department = doctor.GetDoctorDepartment();
+                var rating = doctor.GetDoctorRating();
+                
+                Debug.WriteLine($"Doctor details - Name: {doctorName}, Department: {department}, Rating: {rating}");
+                
+                this.DoctorName = $"Doctor: {doctorName}";
+                this.DoctorDepartment = $"Department: {department}";
+                this.DoctorRating = $"Rating: {rating:0.0}";
+                
+                Debug.WriteLine($"Updated UI - Name: {this.DoctorName}, Department: {this.DoctorDepartment}, Rating: {this.DoctorRating}");
             }
             else
             {
+                Debug.WriteLine("No doctor found");
                 this.DoctorName = "No suitable doctor found";
                 this.DoctorDepartment = string.Empty;
                 this.DoctorRating = string.Empty;

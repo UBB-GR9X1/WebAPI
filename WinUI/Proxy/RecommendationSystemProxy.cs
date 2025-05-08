@@ -45,26 +45,19 @@ namespace WinUI.Proxy
         {
             try
             {
-                var queryParams = new Dictionary<string, string>
-                {
-                    { "primarySymptom", primarySymptom },
-                    { "secondarySymptom", secondarySymptom },
-                    { "tertiarySymptom", tertiarySymptom },
-                    { "discomfortArea", discomfortArea },
-                    { "symptomStart", symptomStart }
-                };
-
-                var queryString = string.Join("&", queryParams.Select(x => $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
-                var url = $"{_baseApiUrl}/doctor/recommend?{queryString}";
-                Debug.WriteLine($"Attempting to call API endpoint: {url}");
-
-                var response = await _httpClient.GetAsync(url);
-                Debug.WriteLine($"API Response Status: {response.StatusCode}");
+                // For now, we'll get all doctors and filter them client-side
+                Debug.WriteLine("Getting all doctors for symptom-based recommendation");
+                var allDoctors = await GetAllDoctors();
                 
-                response.EnsureSuccessStatusCode();
-                var result = await response.Content.ReadFromJsonAsync<List<RecommendationSystemDoctorModel>>();
-                Debug.WriteLine($"Successfully retrieved {result?.Count ?? 0} doctors");
-                return result;
+                // Convert to the expected model type
+                return allDoctors.Select(d => new RecommendationSystemDoctorModel
+                {
+                    DoctorId = d.DoctorId,
+                    DoctorName = d.DoctorName,
+                    DepartmentId = d.DepartmentId,
+                    DepartmentName = d.GetDoctorDepartment(),
+                    Rating = d.Rating
+                }).ToList();
             }
             catch (Exception ex)
             {
@@ -76,40 +69,116 @@ namespace WinUI.Proxy
 
         public async Task<List<RecommendationSystemDoctorModel>> GetDoctorsByDepartmentPartialName(string departmentPartialName)
         {
-            var response = await _httpClient.GetAsync($"{_baseApiUrl}/doctor/department-partial?name={Uri.EscapeDataString(departmentPartialName)}");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<List<RecommendationSystemDoctorModel>>();
+            try
+            {
+                Debug.WriteLine($"Getting doctors by department partial name: {departmentPartialName}");
+                // Get all doctors and filter by department name
+                var allDoctors = await GetAllDoctors();
+                return allDoctors
+                    .Where(d => d.GetDoctorDepartment()?.Contains(departmentPartialName, StringComparison.OrdinalIgnoreCase) ?? false)
+                    .Select(d => new RecommendationSystemDoctorModel
+                    {
+                        DoctorId = d.DoctorId,
+                        DoctorName = d.DoctorName,
+                        DepartmentId = d.DepartmentId,
+                        DepartmentName = d.GetDoctorDepartment(),
+                        Rating = d.Rating
+                    })
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in GetDoctorsByDepartmentPartialName: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<List<RecommendationSystemDoctorModel>> GetDoctorsByPartialDoctorName(string doctorPartialName)
         {
-            var response = await _httpClient.GetAsync($"{_baseApiUrl}/doctor/name-partial?name={Uri.EscapeDataString(doctorPartialName)}");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<List<RecommendationSystemDoctorModel>>();
+            try
+            {
+                Debug.WriteLine($"Getting doctors by partial name: {doctorPartialName}");
+                // Get all doctors and filter by name
+                var allDoctors = await GetAllDoctors();
+                return allDoctors
+                    .Where(d => d.DoctorName?.Contains(doctorPartialName, StringComparison.OrdinalIgnoreCase) ?? false)
+                    .Select(d => new RecommendationSystemDoctorModel
+                    {
+                        DoctorId = d.DoctorId,
+                        DoctorName = d.DoctorName,
+                        DepartmentId = d.DepartmentId,
+                        DepartmentName = d.GetDoctorDepartment(),
+                        Rating = d.Rating
+                    })
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in GetDoctorsByPartialDoctorName: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<List<RecommendationSystemDoctorJointModel>> GetDoctorsByDepartment(int departmentId)
         {
-            var response = await _httpClient.GetAsync($"{_baseApiUrl}/doctor/department/{departmentId}");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<List<RecommendationSystemDoctorJointModel>>();
+            try
+            {
+                Debug.WriteLine($"Getting doctors by department ID: {departmentId}");
+                var response = await _httpClient.GetAsync($"{_baseApiUrl}/doctor/doctor/{departmentId}");
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadFromJsonAsync<List<RecommendationSystemDoctorJointModel>>();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in GetDoctorsByDepartment: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<List<RecommendationSystemDoctorJointModel>> GetAllDoctors()
         {
-            var response = await _httpClient.GetAsync($"{_baseApiUrl}/doctor");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<List<RecommendationSystemDoctorJointModel>>();
+            try
+            {
+                Debug.WriteLine("Getting all doctors");
+                var response = await _httpClient.GetAsync($"{_baseApiUrl}/doctor");
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadFromJsonAsync<List<RecommendationSystemDoctorJointModel>>();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in GetAllDoctors: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<RecommendationSystemDoctorModel> GetDoctorById(int doctorId)
         {
-            var response = await _httpClient.GetAsync($"{_baseApiUrl}/doctor/{doctorId}");
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                return null;
+            try
+            {
+                Debug.WriteLine($"Getting doctor by ID: {doctorId}");
+                var response = await _httpClient.GetAsync($"{_baseApiUrl}/doctor/{doctorId}");
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return null;
 
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<RecommendationSystemDoctorModel>();
+                response.EnsureSuccessStatusCode();
+                var doctor = await response.Content.ReadFromJsonAsync<RecommendationSystemDoctorJointModel>();
+                if (doctor == null)
+                    return null;
+
+                return new RecommendationSystemDoctorModel
+                {
+                    DoctorId = doctor.DoctorId,
+                    DoctorName = doctor.DoctorName,
+                    DepartmentId = doctor.DepartmentId,
+                    DepartmentName = doctor.GetDoctorDepartment(),
+                    Rating = doctor.Rating
+                };
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in GetDoctorById: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<bool> UpdateDoctorName(int userId, string name)

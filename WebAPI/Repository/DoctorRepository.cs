@@ -25,14 +25,18 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task<List<Doctor>> GetAllDoctorsAsync()
         {
-            List<DoctorEntity> doctorEntities = await dbContext.Doctors.Include(d => d.Department).ToListAsync();
+            List<DoctorEntity> doctorEntities = await dbContext.Doctors
+                .Include(d => d.Department)
+                .Include(d => d.User)
+                .ToListAsync();
 
             List<Doctor> doctors = doctorEntities.Select(d => new Doctor
             {
                 UserId = d.UserId,
                 DepartmentId = d.DepartmentId,
                 DoctorRating = d.DoctorRating,
-                LicenseNumber = d.LicenseNumber
+                LicenseNumber = d.LicenseNumber,
+                Name = d.User.Name
             }).ToList();
 
             return doctors;
@@ -43,6 +47,7 @@ namespace WebApi.Repository
         {
             var doctorEntity = await dbContext.Doctors
                 .Include(d => d.Department)
+                .Include(d => d.User)
                 .FirstOrDefaultAsync(d => d.UserId == id);
 
             if (doctorEntity == null)
@@ -55,7 +60,8 @@ namespace WebApi.Repository
                 UserId = doctorEntity.UserId,
                 DepartmentId = doctorEntity.DepartmentId,
                 DoctorRating = doctorEntity.DoctorRating,
-                LicenseNumber = doctorEntity.LicenseNumber
+                LicenseNumber = doctorEntity.LicenseNumber,
+                Name = doctorEntity.User.Name
             };
         }
 
@@ -63,6 +69,8 @@ namespace WebApi.Repository
         public async Task<List<Doctor>> GetDoctorsByDepartmentIdAsync(int departmentId)
         {
             var doctorEntities = await dbContext.Doctors
+                .Include(d => d.Department)
+                .Include(d => d.User)
                 .Where(d => d.DepartmentId == departmentId)
                 .ToListAsync();
 
@@ -71,7 +79,8 @@ namespace WebApi.Repository
                 UserId = d.UserId,
                 DepartmentId = d.DepartmentId,
                 DoctorRating = d.DoctorRating,
-                LicenseNumber = d.LicenseNumber
+                LicenseNumber = d.LicenseNumber,
+                Name = d.User.Name
             }).ToList();
         }
 
