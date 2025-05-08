@@ -1,0 +1,25 @@
+<Page
+    x:Class="WinUI.View.RecommendationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Padding="20">
+        <StackPanel Spacing="10" HorizontalAlignment="Center">
+            <TextBlock Text="Select Symptoms" FontSize="20" FontWeight="Bold" />
+
+            <ComboBox ItemsSource="{Binding SymptomStartOptions}" SelectedItem="{Binding SelectedSymptomStart, Mode=TwoWay}" PlaceholderText="When did the symptoms start?" />
+            <ComboBox ItemsSource="{Binding DiscomfortAreaOptions}" SelectedItem="{Binding SelectedDiscomfortArea, Mode=TwoWay}" PlaceholderText="Affected body area" />
+            <ComboBox ItemsSource="{Binding SymptomTypeOptions}" SelectedItem="{Binding SelectedSymptomPrimary, Mode=TwoWay}" PlaceholderText="Primary symptom" />
+            <ComboBox ItemsSource="{Binding SymptomTypeOptions}" SelectedItem="{Binding SelectedSymptomSecondary, Mode=TwoWay}" PlaceholderText="Secondary symptom" />
+            <ComboBox ItemsSource="{Binding SymptomTypeOptions}" SelectedItem="{Binding SelectedSymptomTertiary, Mode=TwoWay}" PlaceholderText="Tertiary symptom" />
+
+            <Button Content="Find Matching Doctor" Command="{Binding RecommendCommand}" />
+
+            <StackPanel Visibility="Visible" Spacing="5">
+                <TextBlock Text="{Binding DoctorName}" FontSize="16" FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding DoctorDepartment}" FontSize="14"/>
+                <TextBlock Text="{Binding DoctorRating}" FontSize="14" Foreground="Green"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

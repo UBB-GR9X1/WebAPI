@@ -73,6 +73,9 @@
 	  <Page Update="View\CreateAccountView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
+	  <Page Update="View\RecommendationView.xaml">
+	    <SubType>Designer</SubType>
+	  </Page>
 	</ItemGroup>
    <ItemGroup>
 	  <Page Update="View\PatientDashboardView.xaml">
