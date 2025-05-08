@@ -14,34 +14,34 @@ namespace WinUI.ViewModel
 {
     internal class RecommendationSystemViewModel : INotifyPropertyChanged
     {
-        private const string NoSymptomSelected = "None";
-        private readonly RecommendationSystemModel recommendationSystem;
+        private const string NO_SYMPTOM_SELECTED = "None";
+        private readonly RecommendationSystemModel _recommendation_system;
 
-        private string selectedSymptomStart = string.Empty;
-        private string selectedDiscomfortArea = string.Empty;
-        private string selectedSymptomPrimary = NoSymptomSelected;
-        private string selectedSymptomSecondary = NoSymptomSelected;
-        private string selectedSymptomTertiary = NoSymptomSelected;
+        private string _selected_symptom_start = string.Empty;
+        private string _selected_discomfort_area = string.Empty;
+        private string _selected_symptom_primary = NO_SYMPTOM_SELECTED;
+        private string _selected_symptom_secondary = NO_SYMPTOM_SELECTED;
+        private string _selected_symptom_tertiary = NO_SYMPTOM_SELECTED;
 
-        private string doctorName;
-        private string doctorDepartment;
-        private string doctorRating;
+        private string _doctor_name;
+        private string _doctor_department;
+        private string _doctor_rating;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RecommendationSystemFormViewModel"/> class.
         /// </summary>
-        /// <param name="recommendationSystem">The model for the view model.</param>
-        public RecommendationSystemViewModel(RecommendationSystemModel recommendationSystem)
+        /// <param name="recommendation_system">The model for the view model.</param>
+        public RecommendationSystemViewModel(RecommendationSystemModel recommendation_system)
         {
-            this.recommendationSystem = recommendationSystem;
+            this._recommendation_system = recommendation_system;
 
-            this.doctorName = string.Empty;
-            this.doctorDepartment = string.Empty;
-            this.doctorRating = string.Empty;
+            this._doctor_name = string.Empty;
+            this._doctor_department = string.Empty;
+            this._doctor_rating = string.Empty;
 
             this.SymptomStartOptions = new ObservableCollection<string> { "Suddenly", "After Waking Up", "After Incident", "After Meeting Someone", "After Ingestion" };
             this.DiscomfortAreaOptions = new ObservableCollection<string> { "Head", "Eyes", "Neck", "Stomach", "Chest", "Arm", "Leg", "Back", "Shoulder", "Foot" };
-            this.SymptomTypeOptions = new ObservableCollection<string> { "Pain", "Numbness", "Inflammation", "Tenderness", "Coloration", "Itching", "Burning", NoSymptomSelected };
+            this.SymptomTypeOptions = new ObservableCollection<string> { "Pain", "Numbness", "Inflammation", "Tenderness", "Coloration", "Itching", "Burning", NO_SYMPTOM_SELECTED };
 
             this.RecommendCommand = new RelayCommand(async () => await this.RecommendDoctorAsync());
         }
@@ -71,9 +71,10 @@ namespace WinUI.ViewModel
         /// </summary>
         public string SelectedSymptomStart
         {
-            get => this.selectedSymptomStart; set
+            get => this._selected_symptom_start;
+            set
             {
-                this.selectedSymptomStart = value;
+                this._selected_symptom_start = value;
                 this.OnPropertyChanged();
             }
         }
@@ -83,9 +84,10 @@ namespace WinUI.ViewModel
         /// </summary>
         public string SelectedDiscomfortArea
         {
-            get => this.selectedDiscomfortArea; set
+            get => this._selected_discomfort_area;
+            set
             {
-                this.selectedDiscomfortArea = value;
+                this._selected_discomfort_area = value;
                 this.OnPropertyChanged();
             }
         }
@@ -95,9 +97,10 @@ namespace WinUI.ViewModel
         /// </summary>
         public string SelectedSymptomPrimary
         {
-            get => this.selectedSymptomPrimary; set
+            get => this._selected_symptom_primary;
+            set
             {
-                this.selectedSymptomPrimary = value;
+                this._selected_symptom_primary = value;
                 this.OnPropertyChanged();
                 this.ValidateSymptomSelection();
             }
@@ -108,9 +111,10 @@ namespace WinUI.ViewModel
         /// </summary>
         public string SelectedSymptomSecondary
         {
-            get => this.selectedSymptomSecondary; set
+            get => this._selected_symptom_secondary;
+            set
             {
-                this.selectedSymptomSecondary = value;
+                this._selected_symptom_secondary = value;
                 this.OnPropertyChanged();
                 this.ValidateSymptomSelection();
             }
@@ -121,9 +125,10 @@ namespace WinUI.ViewModel
         /// </summary>
         public string SelectedSymptomTertiary
         {
-            get => this.selectedSymptomTertiary; set
+            get => this._selected_symptom_tertiary;
+            set
             {
-                this.selectedSymptomTertiary = value;
+                this._selected_symptom_tertiary = value;
                 this.OnPropertyChanged();
                 this.ValidateSymptomSelection();
             }
@@ -134,9 +139,10 @@ namespace WinUI.ViewModel
         /// </summary>
         public string DoctorName
         {
-            get => this.doctorName; set
+            get => this._doctor_name;
+            set
             {
-                this.doctorName = value;
+                this._doctor_name = value;
                 this.OnPropertyChanged();
             }
         }
@@ -146,9 +152,10 @@ namespace WinUI.ViewModel
         /// </summary>
         public string DoctorDepartment
         {
-            get => this.doctorDepartment; set
+            get => this._doctor_department;
+            set
             {
-                this.doctorDepartment = value;
+                this._doctor_department = value;
                 this.OnPropertyChanged();
             }
         }
@@ -158,9 +165,10 @@ namespace WinUI.ViewModel
         /// </summary>
         public string DoctorRating
         {
-            get => this.doctorRating; set
+            get => this._doctor_rating;
+            set
             {
-                this.doctorRating = value;
+                this._doctor_rating = value;
                 this.OnPropertyChanged();
             }
         }
@@ -181,7 +189,7 @@ namespace WinUI.ViewModel
                 return null;
             }
 
-            return await this.recommendationSystem.RecommendDoctorAsynchronous(this);
+            return await this._recommendation_system.RecommendDoctorAsynchronous(this);
         }
 
         /// <summary>
@@ -199,25 +207,25 @@ namespace WinUI.ViewModel
                 this.SelectedSymptomTertiary,
             };
 
-            var nonEmptySymptoms = symptoms.Where(s => !string.IsNullOrEmpty(s)).ToList();
-            return nonEmptySymptoms.Distinct().Count() == nonEmptySymptoms.Count;
+            var non_empty_symptoms = symptoms.Where(s => !string.IsNullOrEmpty(s)).ToList();
+            return non_empty_symptoms.Distinct().Count() == non_empty_symptoms.Count;
         }
 
         private async Task RecommendDoctorAsync()
         {
             Debug.WriteLine("Starting doctor recommendation...");
-            var doctor = await this.recommendationSystem.RecommendDoctorAsynchronous(this);
+            var doctor = await this._recommendation_system.RecommendDoctorAsynchronous(this);
             Debug.WriteLine($"Received doctor: {doctor?.ToString() ?? "null"}");
 
             if (doctor != null)
             {
-                var doctorName = doctor.GetDoctorName();
+                var doctor_name = doctor.GetDoctorName();
                 var department = doctor.GetDoctorDepartment();
                 var rating = doctor.GetDoctorRating();
                 
-                Debug.WriteLine($"Doctor details - Name: {doctorName}, Department: {department}, Rating: {rating}");
+                Debug.WriteLine($"Doctor details - Name: {doctor_name}, Department: {department}, Rating: {rating}");
                 
-                this.DoctorName = $"Doctor: {doctorName}";
+                this.DoctorName = $"Doctor: {doctor_name}";
                 this.DoctorDepartment = $"Department: {department}";
                 this.DoctorRating = $"Rating: {rating:0.0}";
                 

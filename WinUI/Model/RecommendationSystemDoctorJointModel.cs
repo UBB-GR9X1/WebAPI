@@ -23,6 +23,7 @@ namespace WinUI.Model
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime RegistrationDate { get; set; }
+        public string DepartmentName { get; set; }
 
         public RecommendationSystemDoctorJointModel(int doctorId, int userId, string doctorName, int departmentId, double rating, string licenseNumber, string username, string password, string mail, DateOnly birthDate, string cnp, string address, string phoneNumber, DateTime registrationDate)
         {
@@ -76,9 +77,18 @@ namespace WinUI.Model
             Debug.WriteLine($"GetDoctorDepartment called - DepartmentId: {DepartmentId}, Department: {department}");
             return department;
         }
+        public string GetDepartmentName()
+        {
+            return DepartmentName;
+        }
         public override string ToString()
         {
             return $"{DoctorName} (Department ID: {DepartmentId}, Rating: {Rating})";
+        }
+
+        public double GetRating()
+        {
+            return Rating;
         }
     }
 }

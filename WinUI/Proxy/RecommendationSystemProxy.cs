@@ -17,10 +17,10 @@ namespace WinUI.Proxy
 {
     internal class RecommendationSystemProxy : IRecommendationSystemDoctorRepository
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _baseApiUrl = "http://localhost:5005/api";
+        private readonly HttpClient _http_client;
+        private readonly string _base_api_url = "http://localhost:5005/api";
 
-        public RecommendationSystemProxy(HttpClient httpClient)
+        public RecommendationSystemProxy(HttpClient http_client)
         {
             try
             {
@@ -31,8 +31,8 @@ namespace WinUI.Proxy
                 };
                 
                 // Create a new HttpClient with the custom handler
-                _httpClient = new HttpClient(handler);
-                Debug.WriteLine($"RecommendationSystemProxy initialized with base URL: {_baseApiUrl}");
+                this._http_client = new HttpClient(handler);
+                Debug.WriteLine($"RecommendationSystemProxy initialized with base URL: {this._base_api_url}");
             }
             catch (Exception ex)
             {
@@ -41,16 +41,16 @@ namespace WinUI.Proxy
             }
         }
 
-        public async Task<List<RecommendationSystemDoctorModel>> GetDoctorsBySymptoms(string primarySymptom, string secondarySymptom, string tertiarySymptom, string discomfortArea, string symptomStart)
+        public async Task<List<RecommendationSystemDoctorModel>> GetDoctorsBySymptoms(string primary_symptom, string secondary_symptom, string tertiary_symptom, string discomfort_area, string symptom_start)
         {
             try
             {
                 // For now, we'll get all doctors and filter them client-side
                 Debug.WriteLine("Getting all doctors for symptom-based recommendation");
-                var allDoctors = await GetAllDoctors();
+                var all_doctors = await this.GetAllDoctors();
                 
                 // Convert to the expected model type
-                return allDoctors.Select(d => new RecommendationSystemDoctorModel
+                return all_doctors.Select(d => new RecommendationSystemDoctorModel
                 {
                     DoctorId = d.DoctorId,
                     DoctorName = d.DoctorName,
@@ -67,15 +67,15 @@ namespace WinUI.Proxy
             }
         }
 
-        public async Task<List<RecommendationSystemDoctorModel>> GetDoctorsByDepartmentPartialName(string departmentPartialName)
+        public async Task<List<RecommendationSystemDoctorModel>> GetDoctorsByDepartmentPartialName(string department_partial_name)
         {
             try
             {
-                Debug.WriteLine($"Getting doctors by department partial name: {departmentPartialName}");
+                Debug.WriteLine($"Getting doctors by department partial name: {department_partial_name}");
                 // Get all doctors and filter by department name
-                var allDoctors = await GetAllDoctors();
-                return allDoctors
-                    .Where(d => d.GetDoctorDepartment()?.Contains(departmentPartialName, StringComparison.OrdinalIgnoreCase) ?? false)
+                var all_doctors = await this.GetAllDoctors();
+                return all_doctors
+                    .Where(d => d.GetDoctorDepartment()?.Contains(department_partial_name, StringComparison.OrdinalIgnoreCase) ?? false)
                     .Select(d => new RecommendationSystemDoctorModel
                     {
                         DoctorId = d.DoctorId,
@@ -93,15 +93,15 @@ namespace WinUI.Proxy
             }
         }
 
-        public async Task<List<RecommendationSystemDoctorModel>> GetDoctorsByPartialDoctorName(string doctorPartialName)
+        public async Task<List<RecommendationSystemDoctorModel>> GetDoctorsByPartialDoctorName(string doctor_partial_name)
         {
             try
             {
-                Debug.WriteLine($"Getting doctors by partial name: {doctorPartialName}");
+                Debug.WriteLine($"Getting doctors by partial name: {doctor_partial_name}");
                 // Get all doctors and filter by name
-                var allDoctors = await GetAllDoctors();
-                return allDoctors
-                    .Where(d => d.DoctorName?.Contains(doctorPartialName, StringComparison.OrdinalIgnoreCase) ?? false)
+                var all_doctors = await this.GetAllDoctors();
+                return all_doctors
+                    .Where(d => d.DoctorName?.Contains(doctor_partial_name, StringComparison.OrdinalIgnoreCase) ?? false)
                     .Select(d => new RecommendationSystemDoctorModel
                     {
                         DoctorId = d.DoctorId,
@@ -119,12 +119,12 @@ namespace WinUI.Proxy
             }
         }
 
-        public async Task<List<RecommendationSystemDoctorJointModel>> GetDoctorsByDepartment(int departmentId)
+        public async Task<List<RecommendationSystemDoctorJointModel>> GetDoctorsByDepartment(int department_id)
         {
             try
             {
-                Debug.WriteLine($"Getting doctors by department ID: {departmentId}");
-                var response = await _httpClient.GetAsync($"{_baseApiUrl}/doctor/doctor/{departmentId}");
+                Debug.WriteLine($"Getting doctors by department ID: {department_id}");
+                var response = await this._http_client.GetAsync($"{this._base_api_url}/doctor/doctor/{department_id}");
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadFromJsonAsync<List<RecommendationSystemDoctorJointModel>>();
             }
@@ -140,7 +140,7 @@ namespace WinUI.Proxy
             try
             {
                 Debug.WriteLine("Getting all doctors");
-                var response = await _httpClient.GetAsync($"{_baseApiUrl}/doctor");
+                var response = await this._http_client.GetAsync($"{this._base_api_url}/doctor");
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadFromJsonAsync<List<RecommendationSystemDoctorJointModel>>();
             }
@@ -151,12 +151,12 @@ namespace WinUI.Proxy
             }
         }
 
-        public async Task<RecommendationSystemDoctorModel> GetDoctorById(int doctorId)
+        public async Task<RecommendationSystemDoctorModel> GetDoctorById(int doctor_id)
         {
             try
             {
-                Debug.WriteLine($"Getting doctor by ID: {doctorId}");
-                var response = await _httpClient.GetAsync($"{_baseApiUrl}/doctor/{doctorId}");
+                Debug.WriteLine($"Getting doctor by ID: {doctor_id}");
+                var response = await this._http_client.GetAsync($"{this._base_api_url}/doctor/{doctor_id}");
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                     return null;
 
@@ -181,51 +181,51 @@ namespace WinUI.Proxy
             }
         }
 
-        public async Task<bool> UpdateDoctorName(int userId, string name)
+        public async Task<bool> UpdateDoctorName(int user_id, string name)
         {
-            var response = await _httpClient.PutAsJsonAsync($"{_baseApiUrl}/doctor/{userId}/name", name);
+            var response = await this._http_client.PutAsJsonAsync($"{this._base_api_url}/doctor/{user_id}/name", name);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateDoctorEmail(int userId, string email)
+        public async Task<bool> UpdateDoctorEmail(int user_id, string email)
         {
-            var response = await _httpClient.PutAsJsonAsync($"{_baseApiUrl}/doctor/{userId}/email", email);
+            var response = await this._http_client.PutAsJsonAsync($"{this._base_api_url}/doctor/{user_id}/email", email);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateDoctorCareerInfo(int userId, string careerInfo)
+        public async Task<bool> UpdateDoctorCareerInfo(int user_id, string career_info)
         {
-            var response = await _httpClient.PutAsJsonAsync($"{_baseApiUrl}/doctor/{userId}/career-info", careerInfo);
+            var response = await this._http_client.PutAsJsonAsync($"{this._base_api_url}/doctor/{user_id}/career-info", career_info);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateDoctorDepartment(int userId, int departmentId)
+        public async Task<bool> UpdateDoctorDepartment(int user_id, int department_id)
         {
-            var response = await _httpClient.PutAsJsonAsync($"{_baseApiUrl}/doctor/{userId}/department", departmentId);
+            var response = await this._http_client.PutAsJsonAsync($"{this._base_api_url}/doctor/{user_id}/department", department_id);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateDoctorRating(int userId, double rating)
+        public async Task<bool> UpdateDoctorRating(int user_id, double rating)
         {
-            var response = await _httpClient.PutAsJsonAsync($"{_baseApiUrl}/doctor/{userId}/rating", rating);
+            var response = await this._http_client.PutAsJsonAsync($"{this._base_api_url}/doctor/{user_id}/rating", rating);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateDoctorAvatarUrl(int userId, string newAvatarUrl)
+        public async Task<bool> UpdateDoctorAvatarUrl(int user_id, string new_avatar_url)
         {
-            var response = await _httpClient.PutAsJsonAsync($"{_baseApiUrl}/doctor/{userId}/avatar", newAvatarUrl);
+            var response = await this._http_client.PutAsJsonAsync($"{this._base_api_url}/doctor/{user_id}/avatar", new_avatar_url);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateDoctorPhoneNumber(int userId, string newPhoneNumber)
+        public async Task<bool> UpdateDoctorPhoneNumber(int user_id, string new_phone_number)
         {
-            var response = await _httpClient.PutAsJsonAsync($"{_baseApiUrl}/doctor/{userId}/phone", newPhoneNumber);
+            var response = await this._http_client.PutAsJsonAsync($"{this._base_api_url}/doctor/{user_id}/phone", new_phone_number);
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> UpdateLogService(int userId, ActionType type)
+        public async Task<bool> UpdateLogService(int user_id, ActionType type)
         {
-            var response = await _httpClient.PostAsJsonAsync($"{_baseApiUrl}/doctor/{userId}/log", type);
+            var response = await this._http_client.PostAsJsonAsync($"{this._base_api_url}/doctor/{user_id}/log", type);
             return response.IsSuccessStatusCode;
         }
     }

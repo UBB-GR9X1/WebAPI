@@ -9,36 +9,39 @@ namespace WinUI.Model
 {
     internal class RecommendationSystemModel
     {
-        private const int Cardiology = 1;
-        private const int Neurology = 2;
-        private const int Pediatrics = 3;
-        private const int Ophthalmology = 4;
-        private const int Gastroenterology = 5;
-        private const int Orthopedics = 6;
-        private const int Dermatology = 7;
+        private enum Department
+        {
+            Cardiology = 1,
+            Neurology = 2,
+            Pediatrics = 3,
+            Ophthalmology = 4,
+            Gastroenterology = 5,
+            Orthopedics = 6,
+            Dermatology = 7
+        }
 
-        private readonly RecommendationSystemService doctorService;
-        private Dictionary<string, Dictionary<int, int>> symptomToDepartmentScoreMapping;
+        private readonly RecommendationSystemService _doctor_service;
+        private Dictionary<string, Dictionary<int, int>> _symptom_to_department_score_mapping;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RecommendationSystemModel"/> class.
         /// </summary>
-        /// <param name="doctorService">The doctor service containing all methods needed to find the optimal department.</param>
-        public RecommendationSystemModel(RecommendationSystemService doctorService)
+        /// <param name="doctor_service">The doctor service containing all methods needed to find the optimal department.</param>
+        public RecommendationSystemModel(RecommendationSystemService doctor_service)
         {
-            this.doctorService = doctorService;
-            this.symptomToDepartmentScoreMapping = new Dictionary<string, Dictionary<int, int>>();
+            this._doctor_service = doctor_service;
+            this._symptom_to_department_score_mapping = new Dictionary<string, Dictionary<int, int>>();
             this.InitializeSymptomToDepartmentScores();
         }
 
         /// <summary>
         /// Method to recommend doctors.
         /// </summary>
-        /// <param name="viewModel">The view model for the model.</param>
+        /// <param name="view_model">The view model for the model.</param>
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
-        public async Task<RecommendationSystemDoctorJointModel?> RecommendDoctorAsynchronous(ViewModel.RecommendationSystemViewModel viewModel)
+        public async Task<RecommendationSystemDoctorJointModel?> RecommendDoctorAsynchronous(ViewModel.RecommendationSystemViewModel view_model)
         {
-            Dictionary<int, int> departmentScores = new Dictionary<int, int>();
+            Dictionary<int, int> department_scores = new Dictionary<int, int>();
 
             void AddSymptomScore(string symptom)
             {
@@ -47,33 +50,33 @@ namespace WinUI.Model
                     return;
                 }
 
-                if (this.symptomToDepartmentScoreMapping.TryGetValue(symptom.Trim(), out var scores))
+                if (this._symptom_to_department_score_mapping.TryGetValue(symptom.Trim(), out var scores))
                 {
-                    foreach (var keyValuePair in scores)
+                    foreach (var key_value_pair in scores)
                     {
-                        if (!departmentScores.ContainsKey(keyValuePair.Key))
+                        if (!department_scores.ContainsKey(key_value_pair.Key))
                         {
-                            departmentScores[keyValuePair.Key] = 0;
+                            department_scores[key_value_pair.Key] = 0;
                         }
 
-                        departmentScores[keyValuePair.Key] += keyValuePair.Value;
+                        department_scores[key_value_pair.Key] += key_value_pair.Value;
                     }
                 }
             }
 
-            AddSymptomScore(viewModel.SelectedSymptomStart);
-            AddSymptomScore(viewModel.SelectedDiscomfortArea);
-            AddSymptomScore(viewModel.SelectedSymptomPrimary);
-            AddSymptomScore(viewModel.SelectedSymptomSecondary);
-            AddSymptomScore(viewModel.SelectedSymptomTertiary);
+            AddSymptomScore(view_model.SelectedSymptomStart);
+            AddSymptomScore(view_model.SelectedDiscomfortArea);
+            AddSymptomScore(view_model.SelectedSymptomPrimary);
+            AddSymptomScore(view_model.SelectedSymptomSecondary);
+            AddSymptomScore(view_model.SelectedSymptomTertiary);
 
-            if (departmentScores.Count == 0)
+            if (department_scores.Count == 0)
             {
                 return null;
             }
 
-            int bestDepartmentId = departmentScores.OrderByDescending(department => department.Value).First().Key;
-            var doctors = await this.doctorService.GetDoctorsByDepartment(bestDepartmentId);
+            int best_department_id = department_scores.OrderByDescending(department => department.Value).First().Key;
+            var doctors = await this._doctor_service.GetDoctorsByDepartment(best_department_id);
 
             return doctors
                 .OrderByDescending(doctor => doctor.GetRegistrationDate())
@@ -81,26 +84,27 @@ namespace WinUI.Model
                 .ThenBy(doctor => doctor.GetDoctorRating())
                 .FirstOrDefault();
         }
+
         private void InitializeSymptomToDepartmentScores()
         {
-            this.symptomToDepartmentScoreMapping = new Dictionary<string, Dictionary<int, int>>
+            this._symptom_to_department_score_mapping = new Dictionary<string, Dictionary<int, int>>
             {
-                { "Suddenly", new Dictionary<int, int> { { Cardiology, 3 }, { Neurology, 3 }, { Pediatrics, 2 } } },
-                { "After Waking Up", new Dictionary<int, int> { { Neurology, 0 }, { Gastroenterology, 3 } } },
-                { "After Incident", new Dictionary<int, int> { { Orthopedics, 4 }, { Neurology, 3 } } },
-                { "After Meeting Someone", new Dictionary<int, int> { { Dermatology, 5 }, { Ophthalmology, 2 } } },
-                { "After Ingestion", new Dictionary<int, int> { { Gastroenterology, 4 }, { Pediatrics, 4 }, { Cardiology, 2 } } },
-                { "Eyes", new Dictionary<int, int> { { Ophthalmology, 5 }, { Neurology, 3 }, { Dermatology, 2 } } },
-                { "Head", new Dictionary<int, int> { { Neurology, 5 }, { Cardiology, 4 }, { Pediatrics, 3 } } },
-                { "Chest", new Dictionary<int, int> { { Cardiology, 6 }, { Neurology, 0 }, { Gastroenterology, 2 } } },
-                { "Stomach", new Dictionary<int, int> { { Gastroenterology, 5 }, { Pediatrics, 4 }, { Neurology, 2 } } },
-                { "Arm", new Dictionary<int, int> { { Orthopedics, 5 }, { Dermatology, 3 }, { Neurology, 2 } } },
-                { "Leg", new Dictionary<int, int> { { Orthopedics, 5 }, { Dermatology, 3 }, { Cardiology, 2 } } },
-                { "Pain", new Dictionary<int, int> { { Cardiology, 4 }, { Orthopedics, 4 }, { Neurology, 0 } } },
-                { "Numbness", new Dictionary<int, int> { { Neurology, 5 }, { Orthopedics, 3 }, { Cardiology, 2 } } },
-                { "Inflammation", new Dictionary<int, int> { { Dermatology, 4 }, { Gastroenterology, 4 }, { Ophthalmology, 2 } } },
-                { "Tenderness", new Dictionary<int, int> { { Orthopedics, 4 }, { Gastroenterology, 3 }, { Neurology, 2 } } },
-                { "Coloration", new Dictionary<int, int> { { Dermatology, 5 }, { Ophthalmology, 4 }, { Neurology, 1 } } },
+                { "Suddenly", new Dictionary<int, int> { { (int)Department.Cardiology, 3 }, { (int)Department.Neurology, 3 }, { (int)Department.Pediatrics, 2 } } },
+                { "After Waking Up", new Dictionary<int, int> { { (int)Department.Neurology, 0 }, { (int)Department.Gastroenterology, 3 } } },
+                { "After Incident", new Dictionary<int, int> { { (int)Department.Orthopedics, 4 }, { (int)Department.Neurology, 3 } } },
+                { "After Meeting Someone", new Dictionary<int, int> { { (int)Department.Dermatology, 5 }, { (int)Department.Ophthalmology, 2 } } },
+                { "After Ingestion", new Dictionary<int, int> { { (int)Department.Gastroenterology, 4 }, { (int)Department.Pediatrics, 4 }, { (int)Department.Cardiology, 2 } } },
+                { "Eyes", new Dictionary<int, int> { { (int)Department.Ophthalmology, 5 }, { (int)Department.Neurology, 3 }, { (int)Department.Dermatology, 2 } } },
+                { "Head", new Dictionary<int, int> { { (int)Department.Neurology, 5 }, { (int)Department.Cardiology, 4 }, { (int)Department.Pediatrics, 3 } } },
+                { "Chest", new Dictionary<int, int> { { (int)Department.Cardiology, 6 }, { (int)Department.Neurology, 0 }, { (int)Department.Gastroenterology, 2 } } },
+                { "Stomach", new Dictionary<int, int> { { (int)Department.Gastroenterology, 5 }, { (int)Department.Pediatrics, 4 }, { (int)Department.Neurology, 2 } } },
+                { "Arm", new Dictionary<int, int> { { (int)Department.Orthopedics, 5 }, { (int)Department.Dermatology, 3 }, { (int)Department.Neurology, 2 } } },
+                { "Leg", new Dictionary<int, int> { { (int)Department.Orthopedics, 5 }, { (int)Department.Dermatology, 3 }, { (int)Department.Cardiology, 2 } } },
+                { "Pain", new Dictionary<int, int> { { (int)Department.Cardiology, 4 }, { (int)Department.Orthopedics, 4 }, { (int)Department.Neurology, 0 } } },
+                { "Numbness", new Dictionary<int, int> { { (int)Department.Neurology, 5 }, { (int)Department.Orthopedics, 3 }, { (int)Department.Cardiology, 2 } } },
+                { "Inflammation", new Dictionary<int, int> { { (int)Department.Dermatology, 4 }, { (int)Department.Gastroenterology, 4 }, { (int)Department.Ophthalmology, 2 } } },
+                { "Tenderness", new Dictionary<int, int> { { (int)Department.Orthopedics, 4 }, { (int)Department.Gastroenterology, 3 }, { (int)Department.Neurology, 2 } } },
+                { "Coloration", new Dictionary<int, int> { { (int)Department.Dermatology, 5 }, { (int)Department.Ophthalmology, 4 }, { (int)Department.Neurology, 1 } } },
             };
         }
     }
