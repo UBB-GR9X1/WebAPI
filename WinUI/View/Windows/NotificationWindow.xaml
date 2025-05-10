@@ -21,7 +21,7 @@
                    Margin="0,0,0,10"/>
 
         <ListView Grid.Row="1" 
-                  ItemsSource="{x:Bind ViewModel.notifications_collection, Mode=OneWay}">
+                  ItemsSource="{x:Bind _notification_view_model.notificationsCollection, Mode=OneWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,5,0,5">
@@ -36,15 +36,15 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="ID: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding NotificationId}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding _notification_id}"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Date: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding DeliveryDateTime}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding _delivery_date_time}"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Message: " Margin="0,0,5,0"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Message}" TextWrapping="Wrap"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding _message}" TextWrapping="Wrap"/>
 
-                        <Button Content="Delete" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Margin="250,0,0,0" Click="DeleteButton_Click" Tag="{Binding}" />      
+                        <Button Content="Delete" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Margin="250,0,0,0" Click="deleteButtonClick" Tag="{Binding}" />      
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

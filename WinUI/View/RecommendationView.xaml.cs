@@ -29,12 +29,12 @@ namespace WinUI.View
     {
         public RecommendationView()
         {
-            var doctorDbService = new RecommendationSystemProxy(new HttpClient());
-            RecommendationSystemService doctorManager = new RecommendationSystemService(doctorDbService);
-            RecommendationSystemModel recommendationSystem = new RecommendationSystemModel(doctorManager);
+            var doctor_service = new RecommendationSystemProxy(new HttpClient());
+            RecommendationSystemService doctor_manager = new RecommendationSystemService(doctor_service);
+            RecommendationSystemModel recommendation_system = new RecommendationSystemModel(doctor_manager);
 
 
-            this.DataContext = new RecommendationSystemViewModel(recommendationSystem);
+            this.DataContext = new RecommendationSystemViewModel(recommendation_system);
             this.InitializeComponent();
         }
     }

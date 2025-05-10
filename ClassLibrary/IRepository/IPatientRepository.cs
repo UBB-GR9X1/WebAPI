@@ -35,5 +35,9 @@ namespace ClassLibrary.IRepository
         /// <param name="patient"> The patient to delete.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
         Task deletePatientAsync(int id);
+
+        Task updatePatientAsync(Patient patient, User user);
+
+        Task<List<User>> getAllUserAsync();
     }
 }
