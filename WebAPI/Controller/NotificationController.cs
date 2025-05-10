@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ClassLibrary.IRepository;
 using ClassLibrary.Domain;
+using System;
 
 namespace Controllers
 {
@@ -29,9 +30,9 @@ namespace Controllers
                 List<Notification> notifications = await this._notification_repository.getAllNotificationsAsync();
                 return this.Ok(notifications);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving notifications: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving notifications: {exception.Message}");
             }
         }
 
@@ -40,19 +41,19 @@ namespace Controllers
         /// </summary>
         /// <param name="user_id">The user's ID.</param>
         /// <returns>List of notifications for the user.</returns>
-        [HttpGet("user/{userId}")]
+        [HttpGet("user/{user_id}")]
         [ProducesResponseType(typeof(List<Notification>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<List<Notification>>> getNotificationsByUserId(int user_id)
         {
             try
             {
-                var notifications = await this._notification_repository.getNotificationsByUserIdAsync(user_id);
+                List<Notification> notifications = await this._notification_repository.getNotificationsByUserIdAsync(user_id);
                 return this.Ok(notifications);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving user notifications: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving user notifications: {exception.Message}");
             }
         }
 
@@ -75,11 +76,11 @@ namespace Controllers
             try
             {
                 await this._notification_repository.addNotificationAsync(notification);
-                return this.CreatedAtAction(nameof(getAllNotifications), new { id = notification.notificationId }, notification);
+                return this.CreatedAtAction(nameof(getAllNotifications), new { id = notification._notification_id }, notification);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error creating notification: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error creating notification: {exception.Message}");
             }
         }
 
@@ -103,9 +104,9 @@ namespace Controllers
             {
                 return this.NotFound($"Notification with ID {id} was not found.");
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting notification: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting notification: {exception.Message}");
             }
         }
 
@@ -122,16 +123,16 @@ namespace Controllers
         {
             try
             {
-                var notification = await this._notification_repository.getNotificationByIdAsync(id);
+                Notification notification = await this._notification_repository.getNotificationByIdAsync(id);
                 return this.Ok(notification);
             }
             catch (KeyNotFoundException)
             {
                 return this.NotFound($"Notification with ID {id} not found.");
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving notification: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving notification: {exception.Message}");
             }
         }
 
