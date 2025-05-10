@@ -12,13 +12,13 @@ namespace WinUI.ViewModel
         public event PropertyChangedEventHandler? PropertyChanged;
         public string password { get; set; } = string.Empty;
 
-        public PatientJointModel originalPatient { get; private set; }
+        public PatientJointModel original_patient { get; private set; }
 
         public PatientViewModel(IPatientService patient_service, int user_id)
         {
             _patient_service = patient_service;
             _user_id = user_id;
-            originalPatient = PatientJointModel.Default;
+            original_patient = PatientJointModel.Default;
             _ = loadPatientInfoByUserIdAsync(_user_id);
         }
 
@@ -29,7 +29,6 @@ namespace WinUI.ViewModel
             set { if (this._user_id != value) { this._user_id = value; OnPropertyChanged(); } }
         }
 
-        // These properties stay for binding/display
         private string _name = string.Empty;
         public string name
         {
@@ -57,13 +56,13 @@ namespace WinUI.ViewModel
             set { if (this._address != value) { this._address = value; OnPropertyChanged(); } }
         }
         private string _phone_number = string.Empty;
-        public string phoneNumber
+        public string phone_number
         {
             get => this._phone_number;
             set { if (this._phone_number != value) { this._phone_number = value; OnPropertyChanged(); } }
         }
         private string _blood_type = string.Empty;
-        public string bloodType
+        public string blood_type
         {
             get => this._blood_type;
             set { if (this._blood_type != value) { this._blood_type = value; OnPropertyChanged(); } }
@@ -75,7 +74,7 @@ namespace WinUI.ViewModel
             set { if (this._allergies != value) { this._allergies = value; OnPropertyChanged(); } }
         }
         private DateOnly _birth_date;
-        public DateOnly birthDate
+        public DateOnly birth_date
         {
             get => this._birth_date;
             set { if (this._birth_date != value) { this._birth_date = value; OnPropertyChanged(); } }
@@ -87,14 +86,14 @@ namespace WinUI.ViewModel
             set { if (this._cnp != value) { this._cnp = value; OnPropertyChanged(); } }
         }
         private DateTime _registration_date;
-        public DateTime registrationDate
+        public DateTime registration_date
         {
             get => this._registration_date;
             set { if (this._registration_date != value) { this._registration_date = value; OnPropertyChanged(); } }
         }
 
         private string _emergencyContact = string.Empty;
-        public string emergencyContact
+        public string emergency_contact
         {
             get => this._emergencyContact;
             set { if (this._emergencyContact != value) { this._emergencyContact = value; OnPropertyChanged(); } }
@@ -141,22 +140,22 @@ namespace WinUI.ViewModel
                     this.email = patient.email;
                     this.username = patient.username;
                     this.address = patient.address;
-                    this.phoneNumber = patient.phoneNumber;
-                    this.emergencyContact = patient.emergencyContact;
-                    this.bloodType = patient.bloodType;
+                    this.phone_number = patient.phoneNumber;
+                    this.emergency_contact = patient.emergencyContact;
+                    this.blood_type = patient.bloodType;
                     this.allergies = patient.allergies;
-                    this.birthDate = patient.birthDate;
+                    this.birth_date = patient.birthDate;
                     this.cnp = patient.cnp;
-                    this.registrationDate = patient.registrationDate;
+                    this.registration_date = patient.registrationDate;
                     this.weight = patient.weight;
                     this.height = patient.height;
 
-                    this.originalPatient = new PatientJointModel(
+                    this.original_patient = new PatientJointModel(
                         this._user_id,
                         patient.patientId,
                         this.name,
-                        this.bloodType,
-                        this.emergencyContact,
+                        this.blood_type,
+                        this.emergency_contact,
                         this.allergies,
                         this.weight,
                         this.height,
@@ -166,8 +165,8 @@ namespace WinUI.ViewModel
                         patient.birthDate,
                         this.cnp,
                         this.address,
-                        this.phoneNumber,
-                        this.registrationDate
+                        this.phone_number,
+                        this.registration_date
                     );
                 }
 
@@ -190,8 +189,8 @@ namespace WinUI.ViewModel
                 bool updated = await this._patient_service.updateEmergencyContact(userId, emergencyContact);
                 if (updated)
                 {
-                    this.emergencyContact = emergencyContact;
-                    this.originalPatient.emergencyContact = emergencyContact;
+                    this.emergency_contact = emergencyContact;
+                    this.original_patient.emergencyContact = emergencyContact;
                 }
                 return updated;
             }
@@ -206,8 +205,8 @@ namespace WinUI.ViewModel
                 bool updated = await this._patient_service.updateWeight(userId, weight);
                 if (updated)
                 {
-                    this.weight = this.weight;
-                    this.originalPatient.weight = this.weight;
+                    this.weight = weight;
+                    this.original_patient.weight = this.weight;
                 }
                 return updated;
             }
@@ -223,7 +222,7 @@ namespace WinUI.ViewModel
                 if (updated)
                 {
                     this.height = height;
-                    this.originalPatient.height = height;
+                    this.original_patient.height = height;
                 }
                 return updated;
             }
@@ -239,7 +238,7 @@ namespace WinUI.ViewModel
                 if (updated)
                 {
                     this.password = password;
-                    this.originalPatient.password = password;
+                    this.original_patient.password = password;
                 }
                 return updated;
             }
@@ -255,7 +254,7 @@ namespace WinUI.ViewModel
                 if (updated)
                 {
                     this.name = name;
-                    this.originalPatient.patientName = name;
+                    this.original_patient.patientName = name;
                 }
                 return updated;
             }
@@ -271,7 +270,7 @@ namespace WinUI.ViewModel
                 if (updated)
                 {
                     this.address = address;
-                    this.originalPatient.address = address;
+                    this.original_patient.address = address;
                 }
                 return updated;
             }
@@ -286,8 +285,40 @@ namespace WinUI.ViewModel
                 bool updated = await this._patient_service.updatePhoneNumber(userId, phone_number);
                 if (updated)
                 {
-                    this.phoneNumber = phone_number;
-                    this.originalPatient.phoneNumber = phone_number;
+                    this.phone_number = phone_number;
+                    this.original_patient.phoneNumber = phone_number;
+                }
+                return updated;
+            }
+            finally { this.isLoading = false; }
+        }
+
+        public async Task<bool> updateBloodType(string blood_type)
+        {
+            try
+            {
+                this.isLoading = true;
+                bool updated = await this._patient_service.updateBloodType(userId, blood_type);
+                if (updated)
+                {
+                    this.blood_type = blood_type;
+                    this.original_patient.bloodType = blood_type;
+                }
+                return updated;
+            }
+            finally { this.isLoading = false; }
+        }
+
+        public async Task<bool> updateAllergies(string allergies)
+        {
+            try
+            {
+                this.isLoading = true;
+                bool updated = await this._patient_service.updateAllergies(userId, allergies);
+                if (updated)
+                {
+                    this.allergies = allergies;
+                    this.original_patient.allergies = allergies;
                 }
                 return updated;
             }

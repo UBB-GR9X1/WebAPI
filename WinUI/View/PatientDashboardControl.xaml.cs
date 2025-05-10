@@ -46,53 +46,68 @@ namespace WinUI.View
                     throw new Exception("Patient is not initialized");
 
                 bool has_changes = false;
+                bool password_changed = false;
 
                 // Check if data is different before updating
-                if (this._patient_view_model.emergencyContact != this._patient_view_model.originalPatient.emergencyContact)
+                if (this._patient_view_model.emergency_contact != this._patient_view_model.original_patient.emergencyContact)
                 {
-                    bool emergencyUpdated = await this._patient_view_model.updateEmergencyContact(this._patient_view_model.emergencyContact);
+                    bool emergencyUpdated = await this._patient_view_model.updateEmergencyContact(this._patient_view_model.emergency_contact);
                     has_changes |= emergencyUpdated;
                 }
 
-                if (this._patient_view_model.weight != this._patient_view_model.originalPatient.weight)
+                if (this._patient_view_model.weight != this._patient_view_model.original_patient.weight)
                 {
                     bool weight_updated = await this._patient_view_model.updateWeight(this._patient_view_model.weight);
                     has_changes |= weight_updated;
                 }
 
-                if (this._patient_view_model.height != this._patient_view_model.originalPatient.height)
+                if (this._patient_view_model.height != this._patient_view_model.original_patient.height)
                 {
                     bool height_updated = await this._patient_view_model.updateHeight(this._patient_view_model.height);
                     has_changes |= height_updated;
                 }
 
-                if (this._patient_view_model.password != this._patient_view_model.originalPatient.password)
+                if (this._patient_view_model.password != this._patient_view_model.original_patient.password)
                 {
                     bool password_updated = await this._patient_view_model.updatePassword(this._patient_view_model.password);
                     has_changes |= password_updated;
+                    password_changed = password_updated;
                 }
 
-                if (this._patient_view_model.name != this._patient_view_model.originalPatient.patientName)
+                if (this._patient_view_model.name != this._patient_view_model.original_patient.patientName)
                 {
                     bool name_updated = await this._patient_view_model.updateName(this._patient_view_model.name);
                     has_changes |= name_updated;
                 }
 
-                if (this._patient_view_model.address != this._patient_view_model.originalPatient.address)
+                if (this._patient_view_model.address != this._patient_view_model.original_patient.address)
                 {
                     bool address_updated = await this._patient_view_model.updateAddress(this._patient_view_model.address);
                     has_changes |= address_updated;
                 }
 
-                if (this._patient_view_model.phoneNumber != this._patient_view_model.originalPatient.phoneNumber)
+                if (this._patient_view_model.phone_number != this._patient_view_model.original_patient.phoneNumber)
                 {
-                    bool phone_number_updated = await this._patient_view_model.updatePhoneNumber(this._patient_view_model.phoneNumber);
+                    bool phone_number_updated = await this._patient_view_model.updatePhoneNumber(this._patient_view_model.phone_number);
                     has_changes |= phone_number_updated;
+                }
+
+                if (this._patient_view_model.allergies != this._patient_view_model.original_patient.allergies)
+                {
+                    bool allergies_updated = await this._patient_view_model.updateAllergies(this._patient_view_model.allergies);
+                    has_changes |= allergies_updated;
+                }
+
+                if (this._patient_view_model.blood_type != this._patient_view_model.original_patient.bloodType)
+                {
+                    bool blood_type_updated = await this._patient_view_model.updateBloodType(this._patient_view_model.blood_type);
+                    has_changes |= blood_type_updated;
                 }
 
                 if (has_changes)
                 {
                     await this._patient_view_model.logUpdate(this._patient_view_model.userId, ActionType.UPDATE_PROFILE);
+                    if (password_changed) await this._patient_view_model.logUpdate(this._patient_view_model.userId, ActionType.CHANGE_PASSWORD);
                     await ShowDialogAsync("Success", "Changes applied successfully.");
                 }
                 else
@@ -119,10 +134,15 @@ namespace WinUI.View
         private void restoreOriginalPatientData()
         {
             // Ensure the restored data comes from the original patient data
-            PatientJointModel? original = this._patient_view_model!.originalPatient;
-            this._patient_view_model!.emergencyContact = original.emergencyContact;
+            PatientJointModel? original = this._patient_view_model!.original_patient;
+            this._patient_view_model!.emergency_contact = original.emergencyContact;
             this._patient_view_model.weight = original.weight;
             this._patient_view_model.height = original.height;
+            this._patient_view_model.blood_type = original.bloodType;
+            this._patient_view_model.allergies = original.allergies;
+            this._patient_view_model.name = original.patientName;
+            this._patient_view_model.address = original.address;
+            this._patient_view_model.phone_number = original.phoneNumber;
 
             // Log restoration to verify
             Debug.WriteLine("Restored original patient data.");

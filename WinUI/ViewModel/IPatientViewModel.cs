@@ -13,18 +13,18 @@ namespace WinUI.ViewModel
         string username { get; set; }
         string password { get; set; }
         string address { get; set; }
-        string phoneNumber { get; set; }
-        string emergencyContact { get; set; }
-        string bloodType { get; set; }
+        string phone_number { get; set; }
+        string emergency_contact { get; set; }
+        string blood_type { get; set; }
         string allergies { get; set; }
-        DateOnly birthDate { get; set; }
+        DateOnly birth_date { get; set; }
         string cnp { get; set; }
-        DateTime registrationDate { get; set; }
+        DateTime registration_date { get; set; }
         double weight { get; set; }
         int height { get; set; }
         bool isLoading { get; set; }
 
-        PatientJointModel originalPatient { get; }
+        PatientJointModel original_patient { get; }
 
         Task<bool> loadPatientInfoByUserIdAsync(int user_id);
         Task<bool> updateEmergencyContact(string emergency_contact);
@@ -34,6 +34,8 @@ namespace WinUI.ViewModel
         Task<bool> updateName(string name);
         Task<bool> updateAddress(string address);
         Task<bool> updatePhoneNumber(string phoneNumber);
+        Task<bool> updateAllergies(string allergies);
+        Task<bool> updateBloodType(string bloodType);
         Task<bool> logUpdate(int userId, ActionType action);
     }
 }

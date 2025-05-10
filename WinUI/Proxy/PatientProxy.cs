@@ -119,7 +119,6 @@ namespace WinUI.Proxy
                 HttpResponseMessage patient_response = await this._http_client.PostAsync($"{this._base_api_url}api/patient", patient_content);
                 patient_response.EnsureSuccessStatusCode();
 
-                // skip user updates entirely for now
                 UserHttpModel user_http = mapUserToHttpModel(user);
                 string user_json = JsonSerializer.Serialize(user_http);
                 StringContent user_content = new StringContent(user_json, Encoding.UTF8, "application/json");

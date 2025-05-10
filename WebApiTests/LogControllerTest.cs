@@ -16,8 +16,8 @@ public class LogControllerTest
         var _mock_repo = new Mock<ILogRepository>();
         var _fake_logs = new List<Log>
         {
-            new Log { logId = 1, userId = 1, actionType = "Action 1", timestamp = new DateTime(2025, 3, 2, 12, 32, 0) },
-            new Log { logId = 2, userId = 1, actionType = "Action 2", timestamp = new DateTime(2025, 5, 1, 23, 59, 30) },
+            new Log { log_id = 1, user_id = 1, action_type = "Action 1", timestamp = new DateTime(2025, 3, 2, 12, 32, 0) },
+            new Log { log_id = 2, user_id = 1, action_type = "Action 2", timestamp = new DateTime(2025, 5, 1, 23, 59, 30) },
         };
         _mock_repo.Setup(_repo => _repo.getAllLogsAsync()).ReturnsAsync(_fake_logs);
 
@@ -38,7 +38,7 @@ public class LogControllerTest
     {
         // Arrange
         var _mock_repo = new Mock<ILogRepository>();
-        var _fake_log = new Log { logId = 2, userId = 1, actionType = "Action 2", timestamp = new DateTime(2025, 5, 1, 23, 59, 30) };
+        var _fake_log = new Log { log_id = 2, user_id = 1, action_type = "Action 2", timestamp = new DateTime(2025, 5, 1, 23, 59, 30) };
 
         _mock_repo.Setup(_repo => _repo.getLogByIdAsync(1)).ReturnsAsync(_fake_log);
 
@@ -51,7 +51,7 @@ public class LogControllerTest
         // Assert
         Assert.IsNotNull(_ok_result);
         var _returned_log = _ok_result.Value as Log;
-        Assert.AreEqual(2, _returned_log.logId);
+        Assert.AreEqual(2, _returned_log.log_id);
     }
 
     [TestMethod]
@@ -59,7 +59,7 @@ public class LogControllerTest
     {
         // Arrange
         var _mock_repo = new Mock<ILogRepository>();
-        var _fake_log = new Log { logId = 2, userId = 1, actionType = "Action 2", timestamp = new DateTime(2025, 5, 1, 23, 59, 30) };
+        var _fake_log = new Log { log_id = 2, user_id = 1, action_type = "Action 2", timestamp = new DateTime(2025, 5, 1, 23, 59, 30) };
         _mock_repo.Setup(_repo => _repo.addLogAsync(_fake_log)).Returns(Task.CompletedTask);
 
         var _controller = new LogController(_mock_repo.Object);
@@ -70,7 +70,7 @@ public class LogControllerTest
 
         // Assert
         Assert.IsNotNull(_created_at);
-        Assert.AreEqual(_fake_log.logId, ((Log)_created_at.Value).logId);
+        Assert.AreEqual(_fake_log.log_id, ((Log)_created_at.Value).log_id);
     }
 
     [TestMethod]

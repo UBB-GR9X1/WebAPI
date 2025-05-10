@@ -104,7 +104,8 @@ namespace WinUI.View
                 if (this._login_page_view_model.getUserRole() == "Patient")
                 {
                     WinUI.Repository.IPatientRepository patientRepository = new WinUI.Proxy.PatientProxy(new HttpClient());
-                    IPatientService patientService = new PatientService(patientRepository);
+                    ILoggerService loggerService = new LoggerService(new LoggerProxy());
+                    IPatientService patientService = new PatientService(patientRepository, loggerService);
                     PatientViewModel patientViewModel = new PatientViewModel(patientService, this._login_page_view_model.authService.allUserInformation.userId);
 
                     var parameters = new Tuple<IPatientViewModel, IAuthViewModel>(patientViewModel, this._login_page_view_model);
@@ -125,8 +126,8 @@ namespace WinUI.View
                 //  Admin Dashboard is done
                 else if (this._login_page_view_model.getUserRole() == "Admin")
                 {
-                       ILoggerRepository _logger_repository = new LoggerProxy();
-                       Tuple<IAuthViewModel, ILoggerRepository> _parameters = new Tuple<IAuthViewModel, ILoggerRepository>(this._login_page_view_model, _logger_repository);
+                       ILogRepository _logger_repository = new LoggerProxy();
+                       Tuple<IAuthViewModel, ILogRepository> _parameters = new Tuple<IAuthViewModel, ILogRepository>(this._login_page_view_model, _logger_repository);
                        NavigationService.navigate(typeof(AdminDashboardPage), _parameters);
                        return;
                 }

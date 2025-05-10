@@ -2,14 +2,13 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-
 namespace WinUI.View
 {
     using System;
     using System.Threading.Tasks;
-    using WinUI.Repository;
     using WinUI.Service;
     using WinUI.ViewModel;
+    using ClassLibrary.IRepository;
     using Microsoft.UI.Xaml;
     using Microsoft.UI.Xaml.Controls;
     using Microsoft.UI.Xaml.Data;
@@ -21,7 +20,7 @@ namespace WinUI.View
     public sealed partial class AdminDashboardPage : Page
     {
         private IAuthViewModel _auth_view_model;
-        private ILoggerViewModel _logger_view_model;
+        private LoggerViewModel _logger_view_model;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminDashboardPage"/> class.
@@ -38,7 +37,7 @@ namespace WinUI.View
         /// <param name="_auth_view_model">Authentication service for user operations.</param>
         /// <param name="_logger_repository">Logger service for auditing.</param>
         /// <exception cref="ArgumentNullException">Thrown if auth service is null.</exception>
-        public AdminDashboardPage(IAuthViewModel _auth_view_model, ILoggerRepository _logger_repository)
+        public AdminDashboardPage(IAuthViewModel _auth_view_model, ILogRepository _logger_repository)
         {
             this.InitializeComponent();
             this._auth_view_model = _auth_view_model ?? throw new ArgumentNullException(nameof(_auth_view_model));
@@ -52,28 +51,25 @@ namespace WinUI.View
         {
             base.OnNavigatedTo(e);
 
-            if (e.Parameter is Tuple<IAuthViewModel, ILoggerRepository> parameters)
+            if (e.Parameter is Tuple<IAuthViewModel, ILogRepository> parameters)
             {
                 this._auth_view_model = parameters.Item1;
                 initializeLogger(parameters.Item2);
             }
-            else if (e.Parameter is ValueTuple<IAuthViewModel, ILoggerRepository> value_tuple)
+            else if (e.Parameter is ValueTuple<IAuthViewModel, ILogRepository> value_tuple)
             {
                 this._auth_view_model = value_tuple.Item1;
                 initializeLogger(value_tuple.Item2);
             }
         }
 
-        private void initializeLogger(ILoggerRepository _logger_repository)
+        private void initializeLogger(ILogRepository _logger_repository)
         {
-            // Initialize LoggerViewModel with LoggerService
             LoggerService logger_manager_model = new LoggerService(_logger_repository);
             this._logger_view_model = new LoggerViewModel(logger_manager_model);
 
-            // Load all logs initially
             this.loadInitialLogData();
 
-            // Set up UI bindings
             this.configureUserInterface();
         }
 

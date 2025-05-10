@@ -20,10 +20,10 @@ namespace WebApi.Repository
         /// <summary>
         /// Initializes a new instance of the <see cref="LogRepository"/> class.
         /// </summary>
-        /// <param name="db_context">The database context.</param>
-        public LogRepository(ApplicationDbContext db_context)
+        /// <param name="_db_context">The database context.</param>
+        public LogRepository(ApplicationDbContext _db_context)
         {
-            this._db_context = db_context;
+            this._db_context = _db_context;
         }
 
         /// <inheritdoc/>
@@ -33,9 +33,9 @@ namespace WebApi.Repository
 
             return log_entities.Select(log => new Log
             {
-                logId = log.logId,
-                userId = (int)log.userId,
-                actionType = log.actionType,
+                log_id = log.logId,
+                user_id = (int)log.userId,
+                action_type = log.actionType,
                 timestamp = log.timestamp
             }).ToList();
         }
@@ -51,9 +51,9 @@ namespace WebApi.Repository
 
             return new Log
             {
-                logId = log_entity.logId,
-                userId = (int)log_entity.userId,
-                actionType = log_entity.actionType,
+                log_id = log_entity.logId,
+                user_id = (int)log_entity.userId,
+                action_type = log_entity.actionType,
                 timestamp = log_entity.timestamp
             };
         }
@@ -71,9 +71,9 @@ namespace WebApi.Repository
 
             return new Log
             {
-                logId = log_entity.logId,
-                userId = (int)log_entity.userId,
-                actionType = log_entity.actionType,
+                log_id = log_entity.logId,
+                user_id = (int)log_entity.userId,
+                action_type = log_entity.actionType,
                 timestamp = log_entity.timestamp
             };
         }
@@ -83,15 +83,15 @@ namespace WebApi.Repository
         {
             var log_entity = new LogEntity
             {
-                userId = log.userId,
-                actionType = log.actionType,
+                userId = log.user_id,
+                actionType = log.action_type,
                 timestamp = log.timestamp
             };
 
             _db_context.Logs.Add(log_entity);
             await _db_context.SaveChangesAsync();
 
-            log.logId = log_entity.logId;
+            log.log_id = log_entity.logId;
         }
 
         /// <inheritdoc/>

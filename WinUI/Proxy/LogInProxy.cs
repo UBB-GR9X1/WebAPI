@@ -30,7 +30,7 @@ namespace WinUI.Proxy
                 log_id = 0, // Assuming the server auto-generates this
                 user_id = user_id,
                 action_type = action_type_login_or_logout.convertToString(),
-                timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")
+                timestamp = DateTime.UtcNow
             };
 
             string log_json = JsonSerializer.Serialize(log);
@@ -145,17 +145,17 @@ namespace WinUI.Proxy
 
         private class UserLogHttpModel
         {
-            [JsonPropertyName("logId")]
+            [JsonPropertyName("log_id")]
             public int log_id { get; set; }
 
-            [JsonPropertyName("userId")]
+            [JsonPropertyName("user_id")]
             public int user_id { get; set; }
 
-            [JsonPropertyName("actionType")]
+            [JsonPropertyName("action_type")]
             public string action_type { get; set; }
 
             [JsonPropertyName("timestamp")]
-            public string timestamp { get; set; } // ISO 8601 string format
+            public DateTime timestamp { get; set; } // ISO 8601 string format
         }
     }
 }

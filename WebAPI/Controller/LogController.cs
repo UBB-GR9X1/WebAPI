@@ -12,9 +12,9 @@ namespace Controllers
     {
         private readonly ILogRepository _log_repository;
 
-        public LogController(ILogRepository _logRepository)
+        public LogController(ILogRepository _log_repository)
         {
-            this._log_repository = _logRepository;
+            this._log_repository = _log_repository;
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Controllers
             try
             {
                 await this._log_repository.addLogAsync(log);
-                return this.CreatedAtAction(nameof(getLogById), new { id = log.logId }, log);
+                return this.CreatedAtAction(nameof(getLogById), new { id = log.log_id }, log);
             }
             catch (Exception ex)
             {

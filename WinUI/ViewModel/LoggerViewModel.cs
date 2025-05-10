@@ -18,8 +18,9 @@ namespace WinUI.ViewModel
     /// <summary>
     /// View model for managing and displaying system logs.
     /// </summary>
-    public class LoggerViewModel : BaseViewModel, ILoggerViewModel
+    public class LoggerViewModel : BaseViewModel
     {
+
         private readonly ILoggerService _logger_service;
         private string _user_id_input = string.Empty;
         private ActionType _selected_action_type;
@@ -81,7 +82,7 @@ namespace WinUI.ViewModel
         /// <summary>
         /// Gets or sets the user ID input for filtering.
         /// </summary>
-        public string userIdInput
+        public string user_id_input
         {
             get => this._user_id_input;
             set
@@ -94,7 +95,7 @@ namespace WinUI.ViewModel
         /// <summary>
         /// Gets or sets the selected action type for filtering.
         /// </summary>
-        public ActionType selectedActionType
+        public ActionType selected_action_type
         {
             get => this._selected_action_type;
             set
@@ -110,7 +111,7 @@ namespace WinUI.ViewModel
         /// <summary>
         /// Gets or sets the selected timestamp for filtering.
         /// </summary>
-        public DateTime selectedTimestamp
+        public DateTime selected_timestamp
         {
             get => this._selected_timestamp;
             set
@@ -139,14 +140,14 @@ namespace WinUI.ViewModel
         /// <returns>A task representing the asynchronous operation.</returns>
         private async Task executeFilterLogsByUserIdAsync()
         {
-            if (string.IsNullOrWhiteSpace(this.userIdInput))
+            if (string.IsNullOrWhiteSpace(this.user_id_input))
             {
                 IEnumerable<LogEntryModel> all_logs = await this._logger_service.getAllLogs();
                 this.updateLogsCollection(all_logs);
                 return;
             }
 
-            if (int.TryParse(this.userIdInput, out int userId))
+            if (int.TryParse(this.user_id_input, out int userId))
             {
                 try
                 {
@@ -170,7 +171,7 @@ namespace WinUI.ViewModel
         {
             try
             {
-                IEnumerable<LogEntryModel> filtered_logs = await this._logger_service.getLogsBeforeTimestamp(this.selectedTimestamp);
+                IEnumerable<LogEntryModel> filtered_logs = await this._logger_service.getLogsBeforeTimestamp(this.selected_timestamp);
                 this.updateLogsCollection(filtered_logs);
             }
             catch (ArgumentException)
@@ -189,7 +190,7 @@ namespace WinUI.ViewModel
         {
             try
             {
-                IEnumerable<LogEntryModel> filtered_logs = await this._logger_service.getLogsByActionType(this.selectedActionType);
+                IEnumerable<LogEntryModel> filtered_logs = await this._logger_service.getLogsByActionType(this.selected_action_type);
                 this.updateLogsCollection(filtered_logs);
             }
             catch (ArgumentNullException)
@@ -208,14 +209,14 @@ namespace WinUI.ViewModel
         {
             int? user_id = null;
 
-            if (int.TryParse(this.userIdInput, out int parsed_user_id))
+            if (int.TryParse(this.user_id_input, out int parsed_user_id))
             {
                 user_id = parsed_user_id;
             }
 
             try
             {
-                IEnumerable<LogEntryModel> filtered_logs = await this._logger_service.getLogsWithParameters(user_id, this.selectedActionType, this.selectedTimestamp);
+                IEnumerable<LogEntryModel> filtered_logs = await this._logger_service.getLogsWithParameters(user_id, this.selected_action_type, this.selected_timestamp);
                 this.updateLogsCollection(filtered_logs);
             }
             catch (Exception)
