@@ -1,65 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.UI.Xaml.Controls;
+using System;
+using WinUI.Service;
+using WinUI.View;
 
-namespace WinUI.Model
+namespace WinUi_Test.Tests
 {
-    internal class Notification
+    public class FakeFrame : Frame
     {
-        private int _id;
-        private int _userId;
-        private int _doctorId;
-        private string _notificationMessage;
-        private DateTime _notificationDate;
+        public Type NavigatedToType { get; private set; }
+        public object PassedParameter { get; private set; }
 
-        Notification(int id, int userId, int doctorId, string notificationMessage, DateTime notificationDate)
+        public new bool Navigate(Type sourcePageType, object parameter)
         {
-            this._id = id;
-            this._userId = userId;
-            this._doctorId = doctorId;
-            this._notificationMessage = notificationMessage;
-            this._notificationDate = notificationDate;
+            NavigatedToType = sourcePageType;
+            PassedParameter = parameter;
+            return true;
         }
+    }
 
-        Notification()
+    [TestClass]
+    public class NavigationServiceTests
+    {
+        [TestMethod]
+        public void navigateToLogin_shouldNavigateToLogInView()
         {
-            this._id = 0;
-            this._userId = 0;
-            this._doctorId = 0;
-            this._notificationMessage = string.Empty;
-            this._notificationDate = DateTime.Now;
-        }
+            // Arrange
+            var fakeFrame = new FakeFrame();
+            NavigationService.sMainFrame = fakeFrame;
 
-        public int id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
+            // Act
+            NavigationService.navigateToLogin();
 
-        public int userId
-        {
-            get { return _userId; }
-            set { _userId = value; }
-        }
-
-        public int doctorId
-        {
-            get { return _doctorId; }
-            set { _doctorId = value; }
-        }
-
-        public string notificationMessage
-        {
-            get { return _notificationMessage; }
-            set { _notificationMessage = value; }
-        }
-
-        public DateTime notificationDate
-        {
-            get { return _notificationDate; }
-            set { _notificationDate = value; }
+            // Assert
+            Assert.AreEqual(typeof(LogInView), fakeFrame.NavigatedToType);
+            Assert.IsNull(fakeFrame.PassedParameter);
         }
     }
 }
