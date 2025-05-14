@@ -23,11 +23,11 @@
         /// <summary>
         /// Gets or sets the License number for the doctor.
         /// </summary>
-        public string LicenseNumber { get; set; }
+        public string licenseNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the doctor.
         /// </summary>
-        public string Name { get; set; }
+        public string doctorName { get; set; }
     }
 }

@@ -16,7 +16,7 @@
             <TextBox x:Name="email_text_box" Header="Mail" PlaceholderText="Enter your email" InputScope="EmailSmtpAddress" />
             <TextBox x:Name="name_text_box" Header="Full Name" PlaceholderText="Enter your full name" />
             <CalendarDatePicker x:Name="birth_date_calendar_picker" />
-            <TextBox x:Name="_cnp_textbox" Header="CNP" PlaceholderText="Enter your CNP" MaxLength="13" InputScope="Number" />
+            <TextBox x:Name="cnp_textbox" Header="CNP" PlaceholderText="Enter your CNP" MaxLength="13" InputScope="Number" />
             <ComboBox x:Name="blood_type_combo_box" Width="200" PlaceholderText="Select Blood Type">
                 <ComboBoxItem Content="A+" Tag="A_POSITIVE"/>
                 <ComboBoxItem Content="A-" Tag="A_NEGATIVE"/>

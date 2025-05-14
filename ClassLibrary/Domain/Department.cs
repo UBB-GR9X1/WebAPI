@@ -8,11 +8,11 @@
         /// <summary>
         /// Gets or sets the unique identifier for the department.
         /// </summary>
-        public int id { get; set; }
+        public int departmentId { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the department.
         /// </summary>
-        public string name { get; set; }
+        public string departmentName { get; set; }
     }
 }

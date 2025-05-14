@@ -3,6 +3,7 @@ using Data;
 using Entity;
 using ClassLibrary.IRepository;
 using ClassLibrary.Domain;
+using System;
 
 namespace Controllers
 {
@@ -31,9 +32,9 @@ namespace Controllers
                 List<User> users = await this._user_repository.getAllUsersAsync();
                 return this.Ok(users);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving users. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving users. Error: {exception.Message}");
             }
         }
 
@@ -57,9 +58,9 @@ namespace Controllers
                 }
                 return this.Ok(user);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving the user. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving the user. Error: {exception.Message}");
             }
         }
 
@@ -84,9 +85,9 @@ namespace Controllers
                 await this._user_repository.addUserAsync(user);
                 return this.CreatedAtAction(nameof(getUserById), new { id = user.userId }, user);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating user. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating user. Error: {exception.Message}");
             }
         }
 
@@ -122,9 +123,9 @@ namespace Controllers
             {
                 return this.NotFound($"User with ID {id} was not found.");
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while updating user. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while updating user. Error: {exception.Message}");
             }
         }
 
@@ -148,9 +149,9 @@ namespace Controllers
             {
                 return this.NotFound($"User with ID {id} was not found.");
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while deleting user. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while deleting user. Error: {exception.Message}");
             }
         }
 
@@ -177,9 +178,9 @@ namespace Controllers
 
                 return this.Ok(users);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving users by role. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving users by role. Error: {exception.Message}");
             }
         }
         /// <summary>
@@ -194,12 +195,12 @@ namespace Controllers
         {
             try
             {
-                var users = await this._user_repository.getUsersByNameAsync(name);
+                List<User> users = await this._user_repository.getUsersByNameAsync(name);
                 return this.Ok(users);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving users by name. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving users by name. Error: {exception.Message}");
             }
         }
 
@@ -216,16 +217,16 @@ namespace Controllers
         {
             try
             {
-                var user = await this._user_repository.getUserByCNPAsync(cnp);
+                User user = await this._user_repository.getUserByCNPAsync(cnp);
                 if (user == null)
                 {
                     return this.NotFound($"User with CNP {cnp} not found.");
                 }
                 return this.Ok(user);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving user by CNP. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving user by CNP. Error: {exception.Message}");
             }
         }
     }

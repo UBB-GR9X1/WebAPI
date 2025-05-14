@@ -12,9 +12,9 @@ namespace Controllers
     {
         private readonly ILogRepository _log_repository;
 
-        public LogController(ILogRepository _logRepository)
+        public LogController(ILogRepository _log_repository)
         {
-            this._log_repository = _logRepository;
+            this._log_repository = _log_repository;
         }
 
         /// <summary>
@@ -31,9 +31,9 @@ namespace Controllers
                 List<Log> logs = await this._log_repository.getAllLogsAsync();
                 return this.Ok(logs);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving logs. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving logs. Error: {exception.Message}");
             }
         }
 
@@ -57,9 +57,9 @@ namespace Controllers
                 }
                 return this.Ok(log);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving the log. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving the log. Error: {exception.Message}");
             }
         }
 
@@ -84,9 +84,9 @@ namespace Controllers
                 await this._log_repository.addLogAsync(log);
                 return this.CreatedAtAction(nameof(getLogById), new { id = log.logId }, log);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating log. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating log. Error: {exception.Message}");
             }
         }
 
@@ -110,9 +110,9 @@ namespace Controllers
             {
                 return this.NotFound($"Log with ID {id} was not found.");
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while deleting log. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while deleting log. Error: {exception.Message}");
             }
         }
     }

@@ -68,17 +68,17 @@ namespace WinUI.Model
         /// <summary>
         /// Gets or sets the unique identifier for the log entry.
         /// </summary>
-        public int logId { get; set; } = log_id;
+        public int log_id { get; set; } = log_id;
 
         /// <summary>
         /// Gets or sets the ID of the user who performed the action.
         /// </summary>
-        public int userId { get; set; } = user_id;
+        public int user_id { get; set; } = user_id;
       
         /// <summary>
         /// Gets or sets the type of action performed.
         /// </summary>
-        public ActionType actionType { get; set; } = action;
+        public ActionType action_type { get; set; } = action;
 
         /// <summary>
         /// Gets or sets the date and time when the action was performed.
@@ -91,7 +91,7 @@ namespace WinUI.Model
         /// <returns>A string containing the log entry details.</returns>
         public override string ToString()
         {
-            return $"log_id: {this.logId}, user_id: {this.userId}, Action: {this.actionType}, timestamp: {this.timestamp}";
+            return $"log_id: {this.log_id}, user_id: {this.user_id}, Action: {this.action_type}, timestamp: {this.timestamp}";
         }
     }
 }

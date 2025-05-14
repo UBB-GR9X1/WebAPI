@@ -27,7 +27,7 @@ namespace WinUI.View
     /// </summary>
     public sealed partial class CreateAccountView : Page
     {
-        private IAuthViewModel _view_model_create_account;
+        private AuthViewModel _view_model_create_account;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateAccountView"/> class.
@@ -40,111 +40,111 @@ namespace WinUI.View
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateAccountView"/> class.
         /// </summary>
-        /// <param name="_auth_view_model">View Model for Creating an account.</param>
-        public CreateAccountView(AuthViewModel _auth_view_model)
+        /// <param name="auth_view_model">View Model for Creating an account.</param>
+        public CreateAccountView(AuthViewModel auth_view_model)
         {
             this.InitializeComponent();
-            this._view_model_create_account = _auth_view_model;
+            this._view_model_create_account = auth_view_model;
         }
 
         /// <summary>
         /// Handle navigation parameters
         /// </summary>
-        protected override void OnNavigatedTo(NavigationEventArgs _navigate_event_args)
+        protected override void OnNavigatedTo(NavigationEventArgs navigate_event_args)
         {
-            base.OnNavigatedTo(_navigate_event_args);
+            base.OnNavigatedTo(navigate_event_args);
 
-            if (_navigate_event_args.Parameter is AuthViewModel _auth_view_model)
+            if (navigate_event_args.Parameter is AuthViewModel auth_view_model)
             {
-                this._view_model_create_account = _auth_view_model;
+                this._view_model_create_account = auth_view_model;
             }
         }
 
-        private async void createAccountButtonClick(object _sender, RoutedEventArgs _routed_event_args)
+        private async void createAccountButtonClick(object sender, RoutedEventArgs routed_event_args)
         {
-            string _username = this.username_field.Text;
-            string _password = this.password_field.Password;
-            string _mail = this.email_text_box.Text;
-            string _name = this.name_text_box.Text;
-            string _emergencyContact = this.emergency_contact_text_box.Text;
+            string username = this.username_field.Text;
+            string password = this.password_field.Password;
+            string mail = this.email_text_box.Text;
+            string name = this.name_text_box.Text;
+            string emergency_contact = this.emergency_contact_text_box.Text;
 
             if (this.birth_date_calendar_picker.Date.HasValue)
             {
-                DateOnly _birth_date = DateOnly.FromDateTime(this.birth_date_calendar_picker.Date.Value.DateTime);
-                this.birth_date_calendar_picker.Date = new DateTimeOffset(_birth_date.ToDateTime(TimeOnly.MinValue));
+                DateOnly birth_date = DateOnly.FromDateTime(this.birth_date_calendar_picker.Date.Value.DateTime);
+                this.birth_date_calendar_picker.Date = new DateTimeOffset(birth_date.ToDateTime(TimeOnly.MinValue));
 
-                string _cnp = this._cnp_textbox.Text;
+                string cnp = this.cnp_textbox.Text;
 
-                BloodType? _selected_blood_type = null;
-                if (this.blood_type_combo_box.SelectedItem is ComboBoxItem _selected_item)
+                BloodType? selected_blood_type = null;
+                if (this.blood_type_combo_box.SelectedItem is ComboBoxItem selected_item)
                 {
-                    string? _selectedTag = _selected_item.Tag.ToString();
-                    if (_selectedTag != null)
+                    string? selected_tag = selected_item.Tag.ToString();
+                    if (selected_tag != null)
                     {
-                        switch (_selectedTag.Trim())
+                        switch (selected_tag.Trim())
                         {
                             case "A_POSITIVE":
-                                _selected_blood_type = BloodType.A_POSITIVE;
+                                selected_blood_type = BloodType.A_POSITIVE;
                                 break;
                             case "A_NEGATIVE":
-                                _selected_blood_type = BloodType.A_NEGATIVE;
+                                selected_blood_type = BloodType.A_NEGATIVE;
                                 break;
                             case "B_POSITIVE":
-                                _selected_blood_type = BloodType.B_POSITIVE;
+                                selected_blood_type = BloodType.B_POSITIVE;
                                 break;
                             case "B_NEGATIVE":
-                                _selected_blood_type = BloodType.B_NEGATIVE;
+                                selected_blood_type = BloodType.B_NEGATIVE;
                                 break;
                             case "AB_POSITIVE":
-                                _selected_blood_type = BloodType.AB_POSITIVE;
+                                selected_blood_type = BloodType.AB_POSITIVE;
                                 break;
                             case "AB_NEGATIVE":
-                                _selected_blood_type = BloodType.AB_NEGATIVE;
+                                selected_blood_type = BloodType.AB_NEGATIVE;
                                 break;
                             case "O_POSITIVE":
-                                _selected_blood_type = BloodType.O_POSITIVE;
+                                selected_blood_type = BloodType.O_POSITIVE;
                                 break;
                             case "O_NEGATIVE":
-                                _selected_blood_type = BloodType.O_NEGATIVE;
+                                selected_blood_type = BloodType.O_NEGATIVE;
                                 break;
                         }
                     }
                 }
 
-                if (_selected_blood_type == null)
+                if (selected_blood_type == null)
                 {
-                    var _validation_dialog = new ContentDialog
+                    var validation_dialog = new ContentDialog
                     {
                         Title = "Error",
                         Content = "Please select a blood type.",
                         CloseButtonText = "OK",
                     };
 
-                    _validation_dialog.XamlRoot = this.Content.XamlRoot;
-                    await _validation_dialog.ShowAsync();
+                    validation_dialog.XamlRoot = this.Content.XamlRoot;
+                    await validation_dialog.ShowAsync();
                     return;
                 }
 
-                bool _weight_valid = double.TryParse(this.weight_text_box.Text, out double _weight);
-                bool _height_valid = int.TryParse(this.height_text_box.Text, out int _height);
+                bool weight_valid = double.TryParse(this.weight_text_box.Text, out double weight);
+                bool height_valid = int.TryParse(this.height_text_box.Text, out int height);
 
-                if (!_weight_valid || !_height_valid || _weight <= 0 || _height <= 0)
+                if (!weight_valid || !height_valid || weight <= 0 || height <= 0)
                 {
-                    var _validation_dialog = new ContentDialog
+                    var validation_dialog = new ContentDialog
                     {
                         Title = "Error",
                         Content = "Please enter valid Weight (kg) and Height (cm).",
                         CloseButtonText = "OK",
                     };
 
-                    _validation_dialog.XamlRoot = this.Content.XamlRoot;
-                    await _validation_dialog.ShowAsync();
+                    validation_dialog.XamlRoot = this.Content.XamlRoot;
+                    await validation_dialog.ShowAsync();
                     return;
                 }
 
                 try
                 {
-                    await this._view_model_create_account.createAccount(new UserCreateAccountModel(_username, _password, _mail, _name, _birth_date, _cnp, (BloodType)_selected_blood_type, _emergencyContact, _weight, _height));
+                    await this._view_model_create_account.createAccount(new UserCreateAccountModel(username, password, mail, name, birth_date, cnp, (BloodType)selected_blood_type, emergency_contact, weight, height));
 
                     //PatientService patientService = new PatientService();
                     //PatientViewModel patientViewModel = new PatientViewModel(patientService, this._view_model_create_account.AuthService.allUserInformation.UserId);
@@ -157,45 +157,45 @@ namespace WinUI.View
                     //    // loginWindow.mainFrame.Navigate(typeof(PatientDashboardPage), parameters);
                     //}
 
-                    var _validation_dialog = new ContentDialog
+                    var validation_dialog = new ContentDialog
                     {
                         Title = "Success!",
                         Content = "Successfully Registered",
                         CloseButtonText = "OK",
                     };
 
-                    _validation_dialog.XamlRoot = this.Content.XamlRoot;
-                    await _validation_dialog.ShowAsync();
+                    validation_dialog.XamlRoot = this.Content.XamlRoot;
+                    await validation_dialog.ShowAsync();
                     return;
 
                 }
-                catch (AuthenticationException err)
+                catch (AuthenticationException error)
                 {
-                    var _validation_dialog = new ContentDialog
+                    var validation_dialog = new ContentDialog
                     {
                         Title = "Error",
-                        Content = $"{err.Message}",
+                        Content = $"{error.Message}",
                         CloseButtonText = "OK",
                         XamlRoot = this.Content.XamlRoot,
                     };
-                    await _validation_dialog.ShowAsync();
+                    await validation_dialog.ShowAsync();
                 }
             }
             else
             {
-                var _validation_dialog = new ContentDialog
+                var validation_dialog = new ContentDialog
                 {
                     Title = "Error",
                     Content = "Birth date is required.",
                     CloseButtonText = "OK",
                 };
 
-                _validation_dialog.XamlRoot = this.Content.XamlRoot;
-                await _validation_dialog.ShowAsync();
+                validation_dialog.XamlRoot = this.Content.XamlRoot;
+                await validation_dialog.ShowAsync();
             }
         }
 
-        private void goBackButtonClick(object _sender, RoutedEventArgs _routed_event_args)
+        private void goBackButtonClick(object sender, RoutedEventArgs routed_event_args)
         {
             NavigationService.navigateToLogin();
         }

@@ -10,7 +10,7 @@ namespace WinUI.View
     using Microsoft.UI.Xaml.Data;
     using Microsoft.UI.Xaml.Navigation;
     using WinUI.Helpers;
-    using WinUI.Repository;
+    using ClassLibrary.IRepository;
     using WinUI.Service;
     using WinUI.ViewModel;
 
@@ -34,13 +34,13 @@ namespace WinUI.View
         /// <summary>
         /// Overrides the OnNavigatedTo method to initialize with parameters.
         /// </summary>
-        /// <param name="e">Navigation event arguments</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        /// <param name="navigation_event">Navigation event arguments</param>
+        protected override void OnNavigatedTo(NavigationEventArgs navigation_event)
         {
-            base.OnNavigatedTo(e);
+            base.OnNavigatedTo(navigation_event);
 
             // Check if we received a repository in navigation
-            if (e.Parameter is ILoggerRepository logger_repository)
+            if (navigation_event.Parameter is ILogRepository logger_repository)
             {
                 initializeWithRepository(logger_repository);
             }
@@ -49,16 +49,16 @@ namespace WinUI.View
         /// <summary>
         /// Secondary constructor for direct initialization with repository
         /// </summary>
-        /// <param name="_logger_repository">The logger repository to use</param>
-        public LoggerView(ILoggerRepository _logger_repository)
+        /// <param name="logger_repository">The logger repository to use</param>
+        public LoggerView(ILogRepository logger_repository)
         {
             this.InitializeComponent();
-            initializeWithRepository(_logger_repository);
+            initializeWithRepository(logger_repository);
         }
 
-        private void initializeWithRepository(ILoggerRepository _logger_repository)
+        private void initializeWithRepository(ILogRepository logger_repository)
         {
-            LoggerService logger_service = new LoggerService(_logger_repository);
+            LoggerService logger_service = new LoggerService(logger_repository);
             this._logger_view_model = new LoggerViewModel(logger_service);
 
             this.bindUserInterface();

@@ -11,131 +11,131 @@ namespace WinUI.Service
 {
     internal class RecommendationSystemService : IRecommendationSystemService
     {
-        private const int MaxNameLength = 100;
-        private const int MaxEmailLength = 100;
-        private const int MaxAvatarUrlLength = 255;
-        private const int PhoneNumberLength = 10;
+        private const int _max_name_length = 100;
+        private const int _max_email_length = 100;
+        private const int _max_avatar_url_length = 255;
+        private const int _phone_number_length = 10;
 
-        private readonly IRecommendationSystemDoctorRepository _doctorDatabaseHelper;
+        private readonly IRecommendationSystemDoctorRepository _doctor_database_helper;
 
-        public RecommendationSystemDoctorModel DoctorInformation { get; private set; } = RecommendationSystemDoctorModel.Default;
+        public RecommendationSystemDoctorModel doctor_information { get; private set; } = RecommendationSystemDoctorModel.Default;
 
-        public List<RecommendationSystemDoctorModel> DoctorList { get; private set; }
+        public List<RecommendationSystemDoctorModel> doctor_list { get; private set; }
 
-        public RecommendationSystemService(IRecommendationSystemDoctorRepository doctorDbHelper)
+        public RecommendationSystemService(IRecommendationSystemDoctorRepository doctor_helper)
         {
-            _doctorDatabaseHelper = doctorDbHelper ?? throw new ArgumentNullException(nameof(doctorDbHelper));
-            DoctorList = new List<RecommendationSystemDoctorModel>();
+            _doctor_database_helper = doctor_helper ?? throw new ArgumentNullException(nameof(doctor_helper));
+            doctor_list = new List<RecommendationSystemDoctorModel>();
         }
 
-        public async Task<List<RecommendationSystemDoctorJointModel>> GetDoctorsByDepartment(int departmentId) => 
-            await _doctorDatabaseHelper.GetDoctorsByDepartment(departmentId);
+        public async Task<List<RecommendationSystemDoctorJointModel>> getDoctorsByDepartment(int department_id) => 
+            await _doctor_database_helper.getDoctorsByDepartment(department_id);
 
         public async Task<List<RecommendationSystemDoctorJointModel>> GetAllDoctorsAsync() =>
-            await _doctorDatabaseHelper.GetAllDoctors();
+            await _doctor_database_helper.getAllDoctors();
 
-        public async Task<bool> LoadDoctorInformationByUserId(int doctorId)
+        public async Task<bool> loadDoctorInformationByUserId(int doctor_id)
         {
             try
             {
-                DoctorInformation = await _doctorDatabaseHelper.GetDoctorById(doctorId);
-                return DoctorInformation != RecommendationSystemDoctorModel.Default;
+                doctor_information = await _doctor_database_helper.getDoctorById(doctor_id);
+                return doctor_information != RecommendationSystemDoctorModel.Default;
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                throw new Exception($"Error loading doctor info: {ex.Message}", ex);
+                throw new Exception($"Error loading doctor info: {exception.Message}", exception);
             }
         }
 
-        public async Task<bool> SearchDoctorsByDepartmentAsync(string departmentPartialName)
+        public async Task<bool> searchDoctorsByDepartmentAsync(string department_partial_name)
         {
-            DoctorList = await _doctorDatabaseHelper.GetDoctorsByDepartmentPartialName(departmentPartialName);
-            return DoctorList != null;
+            doctor_list = await _doctor_database_helper.getDoctorsByDepartmentPartialName(department_partial_name);
+            return doctor_list != null;
         }
 
-        public async Task<bool> SearchDoctorsByNameAsync(string namePartial)
+        public async Task<bool> searchDoctorsByNameAsync(string name_partial)
         {
-            DoctorList = await _doctorDatabaseHelper.GetDoctorsByPartialDoctorName(namePartial);
-            return DoctorList != null;
+            doctor_list = await _doctor_database_helper.getDoctorsByPartialDoctorName(name_partial);
+            return doctor_list != null;
         }
 
-        public async Task<bool> UpdateDoctorName(int userId, string name)
+        public async Task<bool> updateDoctorName(int user_id, string name)
         {
-            ValidateDoctorName(name);
-            return await _doctorDatabaseHelper.UpdateDoctorName(userId, name);
+            validateDoctorName(name);
+            return await _doctor_database_helper.updateDoctorName(user_id, name);
         }
 
-        public async Task<bool> UpdateDepartment(int userId, int departmentId) =>
-            await _doctorDatabaseHelper.UpdateDoctorDepartment(userId, departmentId);
+        public async Task<bool> updateDepartment(int user_id, int department_id) =>
+            await _doctor_database_helper.updateDoctorDepartment(user_id, department_id);
 
-        public async Task<bool> UpdateRatingAsync(int userId, double rating)
+        public async Task<bool> updateRatingAsync(int user_id, double rating)
         {
             if (rating < 0.0 || rating > 5.0)
                 throw new ArgumentOutOfRangeException(nameof(rating), "Rating must be between 0 and 5.");
 
-            return await _doctorDatabaseHelper.UpdateDoctorRating(userId, rating);
+            return await _doctor_database_helper.updateDoctorRating(user_id, rating);
         }
 
-        public async Task<bool> UpdateCareerInfo(int userId, string careerInfo)
+        public async Task<bool> updateCareerInfo(int user_id, string career_info)
         {
-            careerInfo ??= string.Empty;
-            return await _doctorDatabaseHelper.UpdateDoctorCareerInfo(userId, careerInfo);
+            career_info ??= string.Empty;
+            return await _doctor_database_helper.updateDoctorCareerInfo(user_id, career_info);
         }
 
-        public async Task<bool> UpdateAvatarUrl(int userId, string avatarUrl)
+        public async Task<bool> updateAvatarUrl(int user_id, string avatar_url)
         {
-            if (!string.IsNullOrEmpty(avatarUrl) && avatarUrl.Length > MaxAvatarUrlLength)
-                throw new ArgumentException("Avatar URL is too long.", nameof(avatarUrl));
+            if (!string.IsNullOrEmpty(avatar_url) && avatar_url.Length > _max_avatar_url_length)
+                throw new ArgumentException("Avatar URL is too long.", nameof(avatar_url));
 
-            return await _doctorDatabaseHelper.UpdateDoctorAvatarUrl(userId, avatarUrl ?? string.Empty);
+            return await _doctor_database_helper.updateDoctorAvatarUrl(user_id, avatar_url ?? string.Empty);
         }
 
-        public async Task<bool> UpdatePhoneNumber(int userId, string phoneNumber)
+        public async Task<bool> updatePhoneNumber(int user_id, string phone_number)
         {
-            ValidatePhoneNumber(phoneNumber);
-            return await _doctorDatabaseHelper.UpdateDoctorPhoneNumber(userId, phoneNumber ?? string.Empty);
+            validatePhoneNumber(phone_number);
+            return await _doctor_database_helper.updateDoctorPhoneNumber(user_id, phone_number ?? string.Empty);
         }
 
-        public async Task<bool> UpdateEmail(int userId, string email)
+        public async Task<bool> updateEmail(int user_id, string email)
         {
-            ValidateEmail(email);
-            return await _doctorDatabaseHelper.UpdateDoctorEmail(userId, email);
+            validateEmail(email);
+            return await _doctor_database_helper.updateDoctorEmail(user_id, email);
         }
 
-        public async Task<bool> LogUpdate(int userId, ActionType action) =>
-            await _doctorDatabaseHelper.UpdateLogService(userId, action);
+        public async Task<bool> logUpdate(int user_id, ActionType action) =>
+            await _doctor_database_helper.updateLogService(user_id, action);
 
 
 
         #region Validation Helpers
 
-        private void ValidateDoctorName(string name)
+        private void validateDoctorName(string name)
         {
             if (string.IsNullOrWhiteSpace(name) || !name.Contains(' '))
                 throw new ArgumentException("Doctor name must include at least a first and last name.", nameof(name));
 
-            if (name.Length > MaxNameLength)
+            if (name.Length > _max_name_length)
                 throw new ArgumentException("Doctor name is too long.", nameof(name));
         }
 
-        private void ValidatePhoneNumber(string phoneNumber)
+        private void validatePhoneNumber(string phone_number)
         {
-            if (string.IsNullOrWhiteSpace(phoneNumber) || phoneNumber.Length != PhoneNumberLength)
-                throw new ArgumentException($"Phone number must be exactly {PhoneNumberLength} digits.", nameof(phoneNumber));
+            if (string.IsNullOrWhiteSpace(phone_number) || phone_number.Length != _phone_number_length)
+                throw new ArgumentException($"Phone number must be exactly {_phone_number_length} digits.", nameof(phone_number));
 
-            foreach (char c in phoneNumber)
+            foreach (char digit in phone_number)
             {
-                if (!char.IsDigit(c))
-                    throw new ArgumentException("Phone number must contain only digits.", nameof(phoneNumber));
+                if (!char.IsDigit(digit))
+                    throw new ArgumentException("Phone number must contain only digits.", nameof(phone_number));
             }
         }
 
-        private void ValidateEmail(string email)
+        private void validateEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
                 throw new ArgumentException("Mail cannot be empty.", nameof(email));
 
-            if (email.Length > MaxEmailLength)
+            if (email.Length > _max_email_length)
                 throw new ArgumentException("Mail is too long.", nameof(email));
 
             if (!email.Contains('@') || !email.Contains('.'))

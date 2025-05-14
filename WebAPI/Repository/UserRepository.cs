@@ -25,28 +25,28 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task<List<User>> getAllUsersAsync()
         {
-            var user_entities = await _db_context.Users.ToListAsync();
+            List<UserEntity> user_entities = await _db_context.Users.ToListAsync();
 
-            return user_entities.Select(u => new User
+            return user_entities.Select(user => new User
             {
-                userId = u.userId,
-                username = u.username,
-                password = u.password,
-                mail = u.mail,
-                role = u.role,
-                name = u.name,
-                birthDate = u.birthDate,
-                cnp = u.cnp,
-                address = u.address,
-                phoneNumber = u.phoneNumber,
-                registrationDate = u.registrationDate
+                userId = user.userId,
+                username = user.username,
+                password = user.password,
+                mail = user.mail,
+                role = user.role,
+                name = user.name,
+                birthDate = user.birthDate,
+                cnp = user.cnp,
+                address = user.address,
+                phoneNumber = user.phoneNumber,
+                registrationDate = user.registrationDate
             }).ToList();
         }
 
         /// <inheritdoc/>
         public async Task<User> getUserByIdAsync(int id)
         {
-            var user_entity = await _db_context.Users.FindAsync(id);
+            UserEntity user_entity = await _db_context.Users.FindAsync(id);
 
             if (user_entity == null)
             {
@@ -72,7 +72,7 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task addUserAsync(User user)
         {
-            var user_entity = new UserEntity
+            UserEntity user_entity = new UserEntity
             {
                 username = user.username,
                 password = user.password,
@@ -95,7 +95,7 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task updateUserAsync(User user)
         {
-            var user_entity = await _db_context.Users.FindAsync(user.userId);
+            UserEntity user_entity = await _db_context.Users.FindAsync(user.userId);
 
             if (user_entity == null)
             {
@@ -114,7 +114,7 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task deleteUserAsync(int id)
         {
-            var user_entity = await _db_context.Users.FindAsync(id);
+            UserEntity user_entity = await _db_context.Users.FindAsync(id);
 
             if (user_entity == null)
             {
@@ -128,53 +128,53 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task<List<User>> getUsersByRoleAsync(string role)
         {
-            var userEntities = await _db_context.Users
-                .Where(u => u.role.ToLower() == role.ToLower())
+            List<UserEntity> userEntities = await _db_context.Users
+                .Where(user => user.role.ToLower() == role.ToLower())
                 .ToListAsync();
 
-            return userEntities.Select(u => new User
+            return userEntities.Select(user => new User
             {
-                userId = u.userId,
-                username = u.username,
-                password = u.password,
-                mail = u.mail,
-                role = u.role,
-                name = u.name,
-                birthDate = u.birthDate,
-                cnp = u.cnp,
-                address = u.address,
-                phoneNumber = u.phoneNumber,
-                registrationDate = u.registrationDate
+                userId = user.userId,
+                username = user.username,
+                password = user.password,
+                mail = user.mail,
+                role = user.role,
+                name = user.name,
+                birthDate = user.birthDate,
+                cnp = user.cnp,
+                address = user.address,
+                phoneNumber = user.phoneNumber,
+                registrationDate = user.registrationDate
             }).ToList();
         }
 
         /// <inheritdoc/>
         public async Task<List<User>> getUsersByNameAsync(string name)
         {
-            var userEntities = await _db_context.Users
+            List<UserEntity> userEntities = await _db_context.Users
                 .Where(u => u.name.ToLower().Contains(name.ToLower()))
                 .ToListAsync();
-            return userEntities.Select(u => new User
+            return userEntities.Select(user => new User
             {
-                userId = u.userId,
-                username = u.username,
-                password = u.password,
-                mail = u.mail,
-                role = u.role,
-                name = u.name,
-                birthDate = u.birthDate,
-                cnp = u.cnp,
-                address = u.address,
-                phoneNumber = u.phoneNumber,
-                registrationDate = u.registrationDate
+                userId = user.userId,
+                username = user.username,
+                password = user.password,
+                mail = user.mail,
+                role = user.role,
+                name = user.name,
+                birthDate = user.birthDate,
+                cnp = user.cnp,
+                address = user.address,
+                phoneNumber = user.phoneNumber,
+                registrationDate = user.registrationDate
             }).ToList();
         }
 
         /// <inheritdoc/>
         public async Task<User> getUserByCNPAsync(string cnp)
         {
-            var userEntity = await _db_context.Users
-                .FirstOrDefaultAsync(u => u.cnp == cnp);
+            UserEntity userEntity = await _db_context.Users
+                .FirstOrDefaultAsync(user => user.cnp == cnp);
             if (userEntity == null)
             {
                 return null;

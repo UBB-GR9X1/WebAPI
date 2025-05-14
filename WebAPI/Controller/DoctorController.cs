@@ -31,9 +31,9 @@ namespace Controllers
                 List<Doctor> doctors = await this._doctor_repository.getAllDoctorsAsync();
                 return this.Ok(doctors);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving doctors. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving doctors. Error: {exception.Message}");
             }
         }
 
@@ -57,9 +57,9 @@ namespace Controllers
                 }
                 return this.Ok(doctor);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving the doctor. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving the doctor. Error: {exception.Message}");
             }
         }
 
@@ -78,9 +78,9 @@ namespace Controllers
                 List<Doctor> doctors = await this._doctor_repository.getDoctorsByDepartmentIdAsync(department_id);
                 return this.Ok(doctors);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving doctors. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving doctors. Error: {exception.Message}");
             }
         }
 
@@ -105,9 +105,9 @@ namespace Controllers
                 await this._doctor_repository.addDoctorAsync(doctor);
                 return this.CreatedAtAction(nameof(getDoctorByUserId), new { id = doctor.userId }, doctor);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating doctor. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating doctor. Error: {exception.Message}");
             }
         }
 
@@ -131,9 +131,9 @@ namespace Controllers
             {
                 return this.NotFound($"Doctor with user ID {id} was not found.");
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while deleting doctor. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while deleting doctor. Error: {exception.Message}");
             }
         }
     }

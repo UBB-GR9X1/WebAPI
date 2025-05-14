@@ -16,7 +16,7 @@ namespace WinUI.ViewModel
     /// Initializes a new instance of the <see cref="AuthViewModel"/> class.
     /// </remarks>
     /// <param name="user_service_model">Servuce for Login or Create Account.</param>
-    public class AuthViewModel(IAuthService user_service_model) : IAuthViewModel
+    public class AuthViewModel(IAuthService user_service_model)
     {
         /// <summary>
         /// Gets the Service (Model) for the user.
