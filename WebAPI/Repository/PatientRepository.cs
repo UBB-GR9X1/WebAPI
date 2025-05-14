@@ -25,23 +25,23 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task<List<Patient>> getAllPatientsAsync()
         {
-            var patient_entities = await _db_context.Patients.ToListAsync();
+            List<PatientEntity> patient_entities = await _db_context.Patients.ToListAsync();
 
-            return patient_entities.Select(p => new Patient
+            return patient_entities.Select(patient => new Patient
             {
-                userId = p.userId,
-                bloodType = p.bloodType,
-                EmergencyContact = p.emergencyContact,
-                allergies = p.allergies,
-                weight = p.weight,
-                height = p.height
+                userId = patient.userId,
+                bloodType = patient.bloodType,
+                EmergencyContact = patient.emergencyContact,
+                allergies = patient.allergies,
+                weight = patient.weight,
+                height = patient.height
             }).ToList();
         }
 
         /// <inheritdoc/>
         public async Task<Patient> getPatientByUserIdAsync(int id)
         {
-            var patient_entity = await _db_context.Patients.FindAsync(id);
+            PatientEntity patient_entity = await _db_context.Patients.FindAsync(id);
 
             if (patient_entity == null)
             {
@@ -62,7 +62,7 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task addPatientAsync(Patient patient)
         {
-            var existing_doctor = await _db_context.Doctors.FindAsync(patient.userId);
+            DoctorEntity existing_doctor = await _db_context.Doctors.FindAsync(patient.userId);
             if (existing_doctor != null)
             {
                 throw new InvalidOperationException("User is already registered as a doctor and cannot be a patient.");
@@ -85,7 +85,7 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task deletePatientAsync(int id)
         {
-            var patient_entity = await _db_context.Patients.FindAsync(id);
+            PatientEntity patient_entity = await _db_context.Patients.FindAsync(id);
             if (patient_entity == null)
             {
                 throw new Exception($"Patient with User ID {id} not found.");
@@ -93,6 +93,16 @@ namespace WebApi.Repository
 
             _db_context.Patients.Remove(patient_entity);
             await _db_context.SaveChangesAsync();
+        }
+
+        public Task updatePatientAsync(Patient patient, User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<User>> getAllUserAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

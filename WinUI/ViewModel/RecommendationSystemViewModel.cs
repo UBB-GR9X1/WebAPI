@@ -39,11 +39,11 @@ namespace WinUI.ViewModel
             this._doctor_department = string.Empty;
             this._doctor_rating = string.Empty;
 
-            this.SymptomStartOptions = new ObservableCollection<string> { "Suddenly", "After Waking Up", "After Incident", "After Meeting Someone", "After Ingestion" };
-            this.DiscomfortAreaOptions = new ObservableCollection<string> { "Head", "Eyes", "Neck", "Stomach", "Chest", "Arm", "Leg", "Back", "Shoulder", "Foot" };
-            this.SymptomTypeOptions = new ObservableCollection<string> { "Pain", "Numbness", "Inflammation", "Tenderness", "Coloration", "Itching", "Burning", NO_SYMPTOM_SELECTED };
+            this.symptomStartOptions = new ObservableCollection<string> { "Suddenly", "After Waking Up", "After Incident", "After Meeting Someone", "After Ingestion" };
+            this.discomfortAreaOptions = new ObservableCollection<string> { "Head", "Eyes", "Neck", "Stomach", "Chest", "Arm", "Leg", "Back", "Shoulder", "Foot" };
+            this.symptomTypeOptions = new ObservableCollection<string> { "Pain", "Numbness", "Inflammation", "Tenderness", "Coloration", "Itching", "Burning", NO_SYMPTOM_SELECTED };
 
-            this.RecommendCommand = new RelayCommand(async () => await this.RecommendDoctorAsync());
+            this.recommendCommand = new RelayCommand(async () => await this.recommendDoctorAsync());
         }
 
         /// <summary>
@@ -54,22 +54,22 @@ namespace WinUI.ViewModel
         /// <summary>
         /// Gets a collection of when did the symptoms start options.
         /// </summary>
-        public ObservableCollection<string> SymptomStartOptions { get; }
+        public ObservableCollection<string> symptomStartOptions { get; }
 
         /// <summary>
         /// Gets a collection of discomfort areas options.
         /// </summary>
-        public ObservableCollection<string> DiscomfortAreaOptions { get; }
+        public ObservableCollection<string> discomfortAreaOptions { get; }
 
         /// <summary>
         /// Gets a collection of symptoms type options.
         /// </summary>
-        public ObservableCollection<string> SymptomTypeOptions { get; }
+        public ObservableCollection<string> symptomTypeOptions { get; }
 
         /// <summary>
         /// Gets or sets a string of when did the symptoms start options.
         /// </summary>
-        public string SelectedSymptomStart
+        public string selectedSymptomStart
         {
             get => this._selected_symptom_start;
             set
@@ -82,7 +82,7 @@ namespace WinUI.ViewModel
         /// <summary>
         /// Gets or sets a string of discomfort areas options.
         /// </summary>
-        public string SelectedDiscomfortArea
+        public string selectedDiscomfortArea
         {
             get => this._selected_discomfort_area;
             set
@@ -95,49 +95,49 @@ namespace WinUI.ViewModel
         /// <summary>
         /// Gets or sets a string of primary symptoms type options.
         /// </summary>
-        public string SelectedSymptomPrimary
+        public string selectedSymptomPrimary
         {
             get => this._selected_symptom_primary;
             set
             {
                 this._selected_symptom_primary = value;
                 this.OnPropertyChanged();
-                this.ValidateSymptomSelection();
+                this.validateSymptomSelection();
             }
         }
 
         /// <summary>
         /// Gets or sets a string of secondary symptoms type options.
         /// </summary>
-        public string SelectedSymptomSecondary
+        public string selectedSymptomSecondary
         {
             get => this._selected_symptom_secondary;
             set
             {
                 this._selected_symptom_secondary = value;
                 this.OnPropertyChanged();
-                this.ValidateSymptomSelection();
+                this.validateSymptomSelection();
             }
         }
 
         /// <summary>
         /// Gets or sets a string of tertiary symptoms type options.
         /// </summary>
-        public string SelectedSymptomTertiary
+        public string selectedSymptomTertiary
         {
             get => this._selected_symptom_tertiary;
             set
             {
                 this._selected_symptom_tertiary = value;
                 this.OnPropertyChanged();
-                this.ValidateSymptomSelection();
+                this.validateSymptomSelection();
             }
         }
 
         /// <summary>
         /// Gets or sets the doctor's name.
         /// </summary>
-        public string DoctorName
+        public string doctorName
         {
             get => this._doctor_name;
             set
@@ -150,7 +150,7 @@ namespace WinUI.ViewModel
         /// <summary>
         /// Gets or sets the doctor's department.
         /// </summary>
-        public string DoctorDepartment
+        public string doctorDepartment
         {
             get => this._doctor_department;
             set
@@ -163,7 +163,7 @@ namespace WinUI.ViewModel
         /// <summary>
         /// Gets or sets the doctor's rating.
         /// </summary>
-        public string DoctorRating
+        public string doctorRating
         {
             get => this._doctor_rating;
             set
@@ -176,67 +176,67 @@ namespace WinUI.ViewModel
         /// <summary>
         /// Gets the command when the recommend doctor button is clicked.
         /// </summary>
-        public ICommand RecommendCommand { get; }
+        public ICommand recommendCommand { get; }
 
         /// <summary>
         /// Calls the same method from the model.
         /// </summary>
         /// <returns>A task.</returns>
-        public async Task<RecommendationSystemDoctorJointModel?> RecommendDoctorBasedOnSymptomsAsync()
+        public async Task<RecommendationSystemDoctorJointModel?> recommendDoctorBasedOnSymptomsAsync()
         {
-            if (!this.ValidateSymptomSelection())
+            if (!this.validateSymptomSelection())
             {
                 return null;
             }
 
-            return await this._recommendation_system.RecommendDoctorAsynchronous(this);
+            return await this._recommendation_system.recommendDoctorAsynchronous(this);
         }
 
         /// <summary>
         /// Validator for symptoms.
         /// </summary>
         /// <returns>True if symptoms are valid False otherwise.</returns>
-        public bool ValidateSymptomSelection()
+        public bool validateSymptomSelection()
         {
             var symptoms = new List<string?>
             {
-                this.SelectedSymptomStart,
-                this.SelectedDiscomfortArea,
-                this.SelectedSymptomPrimary,
-                this.SelectedSymptomSecondary,
-                this.SelectedSymptomTertiary,
+                this.selectedSymptomStart,
+                this.selectedDiscomfortArea,
+                this.selectedSymptomPrimary,
+                this.selectedSymptomSecondary,
+                this.selectedSymptomTertiary,
             };
 
-            var non_empty_symptoms = symptoms.Where(s => !string.IsNullOrEmpty(s)).ToList();
+            List<string?> non_empty_symptoms = symptoms.Where(s => !string.IsNullOrEmpty(s)).ToList();
             return non_empty_symptoms.Distinct().Count() == non_empty_symptoms.Count;
         }
 
-        private async Task RecommendDoctorAsync()
+        private async Task recommendDoctorAsync()
         {
             Debug.WriteLine("Starting doctor recommendation...");
-            var doctor = await this._recommendation_system.RecommendDoctorAsynchronous(this);
+            var doctor = await this._recommendation_system.recommendDoctorAsynchronous(this);
             Debug.WriteLine($"Received doctor: {doctor?.ToString() ?? "null"}");
 
             if (doctor != null)
             {
-                var doctor_name = doctor.GetDoctorName();
-                var department = doctor.GetDoctorDepartment();
-                var rating = doctor.GetDoctorRating();
+                string doctor_name = doctor.getDoctorName();
+                string department = doctor.getDoctorDepartment();
+                double rating = doctor.getDoctorRating();
                 
                 Debug.WriteLine($"Doctor details - Name: {doctor_name}, Department: {department}, Rating: {rating}");
                 
-                this.DoctorName = $"Doctor: {doctor_name}";
-                this.DoctorDepartment = $"Department: {department}";
-                this.DoctorRating = $"Rating: {rating:0.0}";
+                this.doctorName = $"Doctor: {doctor_name}";
+                this.doctorDepartment = $"Department: {department}";
+                this.doctorRating = $"Rating: {rating:0.0}";
                 
-                Debug.WriteLine($"Updated UI - Name: {this.DoctorName}, Department: {this.DoctorDepartment}, Rating: {this.DoctorRating}");
+                Debug.WriteLine($"Updated UI - Name: {this.doctorName}, Department: {this.doctorDepartment}, Rating: {this.doctorRating}");
             }
             else
             {
                 Debug.WriteLine("No doctor found");
-                this.DoctorName = "No suitable doctor found";
-                this.DoctorDepartment = string.Empty;
-                this.DoctorRating = string.Empty;
+                this.doctorName = "No suitable doctor found";
+                this.doctorDepartment = string.Empty;
+                this.doctorRating = string.Empty;
             }
         }
 

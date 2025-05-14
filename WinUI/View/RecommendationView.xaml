@@ -7,18 +7,18 @@
         <StackPanel Spacing="10" HorizontalAlignment="Center">
             <TextBlock Text="Select Symptoms" FontSize="20" FontWeight="Bold" />
 
-            <ComboBox ItemsSource="{Binding SymptomStartOptions}" SelectedItem="{Binding SelectedSymptomStart, Mode=TwoWay}" PlaceholderText="When did the symptoms start?" />
-            <ComboBox ItemsSource="{Binding DiscomfortAreaOptions}" SelectedItem="{Binding SelectedDiscomfortArea, Mode=TwoWay}" PlaceholderText="Affected body area" />
-            <ComboBox ItemsSource="{Binding SymptomTypeOptions}" SelectedItem="{Binding SelectedSymptomPrimary, Mode=TwoWay}" PlaceholderText="Primary symptom" />
-            <ComboBox ItemsSource="{Binding SymptomTypeOptions}" SelectedItem="{Binding SelectedSymptomSecondary, Mode=TwoWay}" PlaceholderText="Secondary symptom" />
-            <ComboBox ItemsSource="{Binding SymptomTypeOptions}" SelectedItem="{Binding SelectedSymptomTertiary, Mode=TwoWay}" PlaceholderText="Tertiary symptom" />
+            <ComboBox ItemsSource="{Binding symptomStartOptions}" SelectedItem="{Binding selectedSymptomStart, Mode=TwoWay}" PlaceholderText="When did the symptoms start?" />
+            <ComboBox ItemsSource="{Binding discomfortAreaOptions}" SelectedItem="{Binding selectedDiscomfortArea, Mode=TwoWay}" PlaceholderText="Affected body area" />
+            <ComboBox ItemsSource="{Binding symptomTypeOptions}" SelectedItem="{Binding selectedSymptomPrimary, Mode=TwoWay}" PlaceholderText="Primary symptom" />
+            <ComboBox ItemsSource="{Binding symptomTypeOptions}" SelectedItem="{Binding selectedSymptomSecondary, Mode=TwoWay}" PlaceholderText="Secondary symptom" />
+            <ComboBox ItemsSource="{Binding symptomTypeOptions}" SelectedItem="{Binding selectedSymptomTertiary, Mode=TwoWay}" PlaceholderText="Tertiary symptom" />
 
-            <Button Content="Find Matching Doctor" Command="{Binding RecommendCommand}" />
+            <Button Content="Find Matching Doctor" Command="{Binding recommendCommand}" />
 
             <StackPanel Visibility="Visible" Spacing="5">
-                <TextBlock Text="{Binding DoctorName}" FontSize="16" FontWeight="SemiBold"/>
-                <TextBlock Text="{Binding DoctorDepartment}" FontSize="14"/>
-                <TextBlock Text="{Binding DoctorRating}" FontSize="14" Foreground="Green"/>
+                <TextBlock Text="{Binding doctorName}" FontSize="16" FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding doctorDepartment}" FontSize="14"/>
+                <TextBlock Text="{Binding doctorRating}" FontSize="14" Foreground="Green"/>
             </StackPanel>
         </StackPanel>
     </Grid>

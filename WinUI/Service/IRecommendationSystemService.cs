@@ -9,22 +9,22 @@ namespace WinUI.Service
 {
     internal interface IRecommendationSystemService
     {
-        Task<bool> LoadDoctorInformationByUserId(int userId);
+        Task<bool> loadDoctorInformationByUserId(int user_id);
 
-        Task<bool> UpdateDoctorName(int userId, string newName);
+        Task<bool> updateDoctorName(int user_id, string new_name);
 
-        Task<bool> UpdateDepartment(int userId, int departmentId);
+        Task<bool> updateDepartment(int user_id, int department_id);
 
-        Task<bool> UpdateCareerInfo(int userId, string careerInfo);
+        Task<bool> updateCareerInfo(int user_id, string career_info);
 
-        Task<bool> UpdateAvatarUrl(int userId, string avatarUrl);
+        Task<bool> updateAvatarUrl(int user_id, string avatar_url);
 
-        Task<bool> UpdatePhoneNumber(int userId, string phoneNumber);
+        Task<bool> updatePhoneNumber(int user_id, string phone_number);
 
-        Task<bool> UpdateEmail(int userId, string email);
+        Task<bool> updateEmail(int user_id, string email);
 
-        Task<bool> LogUpdate(int userId, ActionType action);
+        Task<bool> logUpdate(int user_id, ActionType action);
 
-        RecommendationSystemDoctorModel DoctorInformation { get; }
+        RecommendationSystemDoctorModel doctor_information { get; }
     }
 }

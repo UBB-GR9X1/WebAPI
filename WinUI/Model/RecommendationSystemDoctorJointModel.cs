@@ -9,61 +9,61 @@ namespace WinUI.Model
 {
     internal class RecommendationSystemDoctorJointModel
     {
-        public int DoctorId { get; set; }
-        public int UserId { get; set; }
-        public int DepartmentId { get; set; }
-        public double Rating { get; set; }
-        public string LicenseNumber { get; set; }
-        public string DoctorName { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string Mail { get; set; }
-        public DateOnly BirthDate { get; set; }
-        public string Cnp { get; set; }
-        public string Address { get; set; }
-        public string PhoneNumber { get; set; }
+        public int doctorId { get; set; }
+        public int userId { get; set; }
+        public int departmentId { get; set; }
+        public double rating { get; set; }
+        public string licenseNumber { get; set; }
+        public string doctorName { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+        public string mail { get; set; }
+        public DateOnly birthDate { get; set; }
+        public string cnp { get; set; }
+        public string address { get; set; }
+        public string phoneNumber { get; set; }
         public DateTime RegistrationDate { get; set; }
-        public string DepartmentName { get; set; }
+        public string departmentName { get; set; }
 
         public RecommendationSystemDoctorJointModel(int doctorId, int userId, string doctorName, int departmentId, double rating, string licenseNumber, string username, string password, string mail, DateOnly birthDate, string cnp, string address, string phoneNumber, DateTime registrationDate)
         {
-            DoctorId = doctorId;
-            UserId = userId;
-            DepartmentId = departmentId;
-            Rating = rating;
-            LicenseNumber = licenseNumber;
-            DoctorName = doctorName;
-            Username = username;
-            Password = password;
-            Mail = mail;
-            BirthDate = birthDate;
-            Cnp = cnp;
-            Address = address;
-            PhoneNumber = phoneNumber;
+            this.doctorId = doctorId;
+            this.userId = userId;
+            this.departmentId = departmentId;
+            this.rating = rating;
+            this.licenseNumber = licenseNumber;
+            this.doctorName = doctorName;
+            this.username = username;
+            this.password = password;
+            this.mail = mail;
+            this.birthDate = birthDate;
+            this.cnp = cnp;
+            this.address = address;
+            this.phoneNumber = phoneNumber;
             RegistrationDate = registrationDate;
         }
 
-        public string GetDoctorName()
+        public string getDoctorName()
         {
-            Debug.WriteLine($"GetDoctorName called - DoctorName: {DoctorName}");
-            return DoctorName;
+            Debug.WriteLine($"GetDoctorName called - DoctorName: {doctorName}");
+            return doctorName;
         }
-        public double GetDoctorRating()
+        public double getDoctorRating()
         {
-            Debug.WriteLine($"GetDoctorRating called - Rating: {Rating}");
-            return Rating;
+            Debug.WriteLine($"GetDoctorRating called - Rating: {rating}");
+            return rating;
         }
-        public DateOnly GetBirthDate()
+        public DateOnly getBirthDate()
         {
-            return BirthDate;
+            return birthDate;
         }
-        public DateTime GetRegistrationDate()
+        public DateTime getRegistrationDate()
         {
             return RegistrationDate;
         }
-        public string GetDoctorDepartment()
+        public string getDoctorDepartment()
         {
-            var department = DepartmentId switch
+            var department = departmentId switch
             {
                 1 => "Cardiology",
                 2 => "Neurology",
@@ -74,21 +74,21 @@ namespace WinUI.Model
                 7 => "Dermatology",
                 _ => "Unknown"
             };
-            Debug.WriteLine($"GetDoctorDepartment called - DepartmentId: {DepartmentId}, Department: {department}");
+            Debug.WriteLine($"GetDoctorDepartment called - DepartmentId: {departmentId}, Department: {department}");
             return department;
         }
         public string GetDepartmentName()
         {
-            return DepartmentName;
+            return departmentName;
         }
         public override string ToString()
         {
-            return $"{DoctorName} (Department ID: {DepartmentId}, Rating: {Rating})";
+            return $"{doctorName} (Department ID: {departmentId}, Rating: {rating})";
         }
 
         public double GetRating()
         {
-            return Rating;
+            return rating;
         }
     }
 }

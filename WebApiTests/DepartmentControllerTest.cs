@@ -19,8 +19,8 @@ namespace WebApiTests
             var _mock_repo = new Mock<IDepartmentRepository>();
             var _fake_departments = new List<Department>
             {
-                new Department { id = 1, name = "John" },
-                new Department { id = 2, name = "Johnny" },
+                new Department { departmentId = 1, departmentName = "John" },
+                new Department { departmentId = 2, departmentName = "Johnny" },
             };
             _mock_repo.Setup(_repo => _repo.getAllDepartmentsAsync()).ReturnsAsync(_fake_departments);
 
@@ -41,7 +41,7 @@ namespace WebApiTests
         {
             // Arrange
             var _mock_repo = new Mock<IDepartmentRepository>();
-            var _fake_department = new Department { id = 1, name = "John" };
+            var _fake_department = new Department { departmentId = 1, departmentName = "John" };
             _mock_repo.Setup(_repo => _repo.addDepartmentAsync(_fake_department)).Returns(Task.CompletedTask);
 
             var _controller = new DepartmentController(_mock_repo.Object);
@@ -52,7 +52,7 @@ namespace WebApiTests
 
             // Assert
             Assert.IsNotNull(_created_at);
-            Assert.AreEqual(_fake_department.id, ((Department)_created_at.Value).id);
+            Assert.AreEqual(_fake_department.departmentId, ((Department)_created_at.Value).departmentId);
         }
 
         [TestMethod]

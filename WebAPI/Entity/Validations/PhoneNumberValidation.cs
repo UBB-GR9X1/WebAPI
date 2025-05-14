@@ -4,7 +4,7 @@ public class PhoneNumberValidationAttribute : ValidationAttribute
 {
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
-        var phone = value as string;
+        string phone = value as string;
         if (string.IsNullOrEmpty(phone) || phone.Length == 10)
             return ValidationResult.Success;
 

@@ -4,6 +4,7 @@ using Data;
 using Entity;
 using ClassLibrary.IRepository;
 using ClassLibrary.Domain;
+using System;
 
 namespace Controllers
 {
@@ -32,9 +33,9 @@ namespace Controllers
                 List<Patient> patients = await this._patient_repository.getAllPatientsAsync();
                 return this.Ok(patients);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving patients. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving patients. Error: {exception.Message}");
             }
         }
 
@@ -58,9 +59,9 @@ namespace Controllers
                 }
                 return this.Ok(patient);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving the patient. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving the patient. Error: {exception.Message}");
             }
         }
 
@@ -85,9 +86,9 @@ namespace Controllers
                 await this._patient_repository.addPatientAsync(patient);
                 return this.CreatedAtAction(nameof(getPatientById), new { id = patient.userId }, patient);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating patient. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating patient. Error: {exception.Message}");
             }
         }
 
@@ -111,9 +112,9 @@ namespace Controllers
             {
                 return this.NotFound($"Patient with ID {id} was not found.");
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while deleting patient. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while deleting patient. Error: {exception.Message}");
             }
         }
     }

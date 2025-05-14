@@ -4,6 +4,7 @@ using Data;
 using Entity;
 using ClassLibrary.IRepository;
 using ClassLibrary.Domain;
+using System;
 
 namespace Controllers
 {
@@ -32,9 +33,9 @@ namespace Controllers
                 List<Department> departments = await this._department_repository.getAllDepartmentsAsync();
                 return this.Ok(departments);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving departments. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving departments. Error: {exception.Message}");
             }
         }
 
@@ -57,11 +58,11 @@ namespace Controllers
             try
             {
                 await this._department_repository.addDepartmentAsync(department);
-                return this.CreatedAtAction(nameof(getAllDepartments), new { id = department.id }, department);
+                return this.CreatedAtAction(nameof(getAllDepartments), new { id = department.departmentId }, department);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating department. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while creating department. Error: {exception.Message}");
             }
         }
 
@@ -85,9 +86,9 @@ namespace Controllers
             {
                 return this.NotFound($"Department with ID {id} was not found.");
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while deleting department. Error: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while deleting department. Error: {exception.Message}");
             }
         }
 

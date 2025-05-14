@@ -33,7 +33,7 @@ namespace WinUI.View
     /// </summary>
     public sealed partial class LogInView : Page
     {
-        private readonly IAuthViewModel _login_page_view_model;
+        private readonly AuthViewModel _login_page_view_model;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginWindow"/> class.
@@ -48,7 +48,7 @@ namespace WinUI.View
             IAuthService _service = new AuthService(_log_in_service);
             this._login_page_view_model = new AuthViewModel(_service);
 
-            NavigationService.sMainFrame = this.LoginFrame;
+            NavigationService.s_main_frame = this.LoginFrame;
 
             this.LoginPanel.Visibility = Visibility.Visible;
             // Create login form page and navigate to it
@@ -78,36 +78,37 @@ namespace WinUI.View
         /// or to the Doctor Window.
         /// </summary>
         /// <param name="sender">.</param>
-        /// <param name="e">..</param>
-        private async void loginButtonClick(object sender, RoutedEventArgs e)
+        /// <param name="routed_event">..</param>
+        private async void loginButtonClick(object sender, RoutedEventArgs routed_event)
         {
-            string _username = this.UsernameTextField.Text;
-            string _password = this.PasswordTextField.Password;
+            string username = this.UsernameTextField.Text;
+            string password = this.PasswordTextField.Password;
 
             try
             {
-                await this._login_page_view_model.login(_username, _password);
+                await this._login_page_view_model.login(username, password);
 
                 this.LoginPanel.Visibility = Visibility.Collapsed;
 
-                var _debug_dialog = new ContentDialog
+                var debug_dialog = new ContentDialog
                 {
                     Title = "GOOD",
                     Content = $"LOGGED IN!",
                     CloseButtonText = "OK",
                 };
 
-                _debug_dialog.XamlRoot = this.Content.XamlRoot;
-                await _debug_dialog.ShowAsync();
+                debug_dialog.XamlRoot = this.Content.XamlRoot;
+                await debug_dialog.ShowAsync();
 
                 // TODO: UPDATE
                 if (this._login_page_view_model.getUserRole() == "Patient")
                 {
-                    WinUI.Repository.IPatientRepository patientRepository = new WinUI.Proxy.PatientProxy(new HttpClient());
-                    IPatientService patientService = new PatientService(patientRepository);
-                    PatientViewModel patientViewModel = new PatientViewModel(patientService, this._login_page_view_model.authService.allUserInformation.userId);
+                    ClassLibrary.IRepository.IPatientRepository patientRepository = new WinUI.Proxy.PatientProxy(new HttpClient());
+                    ILoggerService logger_service = new LoggerService(new LoggerProxy());
+                    IPatientService patient_service = new PatientService(patientRepository, logger_service);
+                    PatientViewModel patient_view_model = new PatientViewModel(patient_service, this._login_page_view_model.authService.allUserInformation.userId);
 
-                    var parameters = new Tuple<IPatientViewModel, IAuthViewModel>(patientViewModel, this._login_page_view_model);
+                    var parameters = new Tuple<PatientViewModel, AuthViewModel>(patient_view_model, this._login_page_view_model);
                     NavigationService.navigate(typeof(PatientDashboardView), parameters);
                     return;
                 }
@@ -125,27 +126,27 @@ namespace WinUI.View
                 //  Admin Dashboard is done
                 else if (this._login_page_view_model.getUserRole() == "Admin")
                 {
-                       ILoggerRepository _logger_repository = new LoggerProxy();
-                       Tuple<IAuthViewModel, ILoggerRepository> _parameters = new Tuple<IAuthViewModel, ILoggerRepository>(this._login_page_view_model, _logger_repository);
-                       NavigationService.navigate(typeof(AdminDashboardPage), _parameters);
+                       ILogRepository logger_repository = new LoggerProxy();
+                       Tuple<AuthViewModel, ILogRepository> parameters = new Tuple<AuthViewModel, ILogRepository>(this._login_page_view_model, logger_repository);
+                       NavigationService.navigate(typeof(AdminDashboardPage), parameters);
                        return;
                 }
             }
-            catch (AuthenticationException _new_authentication_exception)
+            catch (AuthenticationException new_authentication_exception)
             {
-                var _validation_dialog = new ContentDialog
+                var validation_dialog = new ContentDialog
                 {
                     Title = "Error",
-                    Content = $"{_new_authentication_exception.Message}",
+                    Content = $"{new_authentication_exception.Message}",
                     CloseButtonText = "OK",
                 };
 
-                _validation_dialog.XamlRoot = this.Content.XamlRoot;
-                await _validation_dialog.ShowAsync();
+                validation_dialog.XamlRoot = this.Content.XamlRoot;
+                await validation_dialog.ShowAsync();
             }
         }
 
-        private void createAccountButtonClick(object _sender, RoutedEventArgs _route_event_args)
+        private void createAccountButtonClick(object sender, RoutedEventArgs route_event_args)
         {
             this.LoginPanel.Visibility = Visibility.Collapsed;
             NavigationService.navigate(typeof(CreateAccountView), this._login_page_view_model);

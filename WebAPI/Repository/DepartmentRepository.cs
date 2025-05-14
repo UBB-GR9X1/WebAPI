@@ -37,8 +37,8 @@
             List<Department> departments = department_entities
                 .Select(departmentEntity => new Department
                 {
-                    id = departmentEntity.id,
-                    name = departmentEntity.name
+                    departmentId = departmentEntity.id,
+                    departmentName = departmentEntity.name
                 })
                 .ToList();
 
@@ -49,7 +49,7 @@
         public async Task<Department> getDepartmentByIdAsync(int id)
         {
             // Retrieve a department by its ID from the database.
-            var department_entity = await this._db_context.Departments.FindAsync(id);
+            DepartmentEntity department_entity = await this._db_context.Departments.FindAsync(id);
 
             if (department_entity == null)
             {
@@ -59,8 +59,8 @@
             // Return a new Department object (mapping from Entity to Domain model).
             return new Department
             {
-                id = department_entity.id,
-                name = department_entity.name
+                departmentId = department_entity.id,
+                departmentName = department_entity.name
             };
         }
 
@@ -70,7 +70,7 @@
             // Map the Department model to the DepartmentEntity.
             var department_entity = new DepartmentEntity
             {
-                name = department.name
+                name = department.departmentName
             };
 
             // Add the department to the database.
@@ -78,14 +78,14 @@
             await this._db_context.SaveChangesAsync();
 
             // Set the department's Id after it's saved.
-            department.id = department_entity.id;
+            department.departmentId = department_entity.id;
         }
 
         /// <inheritdoc/>
         public async Task deleteDepartmentAsync(int id)
         {
             // Find the department by its ID.
-            var department_entity = await this._db_context.Departments.FindAsync(id);
+            DepartmentEntity department_entity = await this._db_context.Departments.FindAsync(id);
 
             if (department_entity == null)
             {

@@ -21,7 +21,7 @@
         public string actionType{ get; set; }
 
         /// <summary>
-        /// Gets or sets the timestemp of the log entry.
+        /// Gets or sets the timestamp of the log entry.
         /// </summary>
         public DateTime timestamp { get; set; }
     }

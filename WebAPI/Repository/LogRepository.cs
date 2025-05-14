@@ -20,10 +20,10 @@ namespace WebApi.Repository
         /// <summary>
         /// Initializes a new instance of the <see cref="LogRepository"/> class.
         /// </summary>
-        /// <param name="db_context">The database context.</param>
-        public LogRepository(ApplicationDbContext db_context)
+        /// <param name="_db_context">The database context.</param>
+        public LogRepository(ApplicationDbContext _db_context)
         {
-            this._db_context = db_context;
+            this._db_context = _db_context;
         }
 
         /// <inheritdoc/>

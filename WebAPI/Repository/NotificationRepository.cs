@@ -26,7 +26,7 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task<List<Notification>> getAllNotificationsAsync()
         {
-            var entities = await this._db_context.Notifications.ToListAsync();
+            List<NotificationEntity> entities = await this._db_context.Notifications.ToListAsync();
 
             return entities.Select(entity => new Notification
             {
@@ -40,8 +40,8 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task<List<Notification>> getNotificationsByUserIdAsync(int user_id)
         {
-            var entities = await this._db_context.Notifications
-                .Where(n => n.userId == user_id)
+            List<NotificationEntity> entities = await this._db_context.Notifications
+                .Where(notification => notification.userId == user_id)
                 .ToListAsync();
 
             return entities.Select(entity => new Notification
@@ -56,7 +56,7 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task<Notification> getNotificationByIdAsync(int id)
         {
-            var entity = await this._db_context.Notifications.FindAsync(id);
+            NotificationEntity entity = await this._db_context.Notifications.FindAsync(id);
 
             if (entity == null)
             {
@@ -75,7 +75,7 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task addNotificationAsync(Notification notification)
         {
-            var entity = new NotificationEntity
+            NotificationEntity entity = new NotificationEntity
             {
                 userId = notification.userId,
                 deliveryDateTime = notification.deliveryDateTime,
@@ -91,7 +91,7 @@ namespace WebApi.Repository
         /// <inheritdoc/>
         public async Task deleteNotificationAsync(int id)
         {
-            var entity = await this._db_context.Notifications.FindAsync(id);
+            NotificationEntity entity = await this._db_context.Notifications.FindAsync(id);
 
             if (entity == null)
             {

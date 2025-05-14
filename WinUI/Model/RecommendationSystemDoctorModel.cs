@@ -8,24 +8,24 @@ namespace WinUI.Model
 {
     internal class RecommendationSystemDoctorModel
     {
-        public int DoctorId { get; set; }
+        public int doctorId { get; set; }
 
-        public string DoctorName { get; set; }
+        public string doctorName { get; set; }
 
-        public int DepartmentId { get; set; }
+        public int departmentId { get; set; }
 
-        public string DepartmentName { get; set; }
+        public string departmentName { get; set; }
 
-        public double Rating { get; set; }
+        public double rating { get; set; }
 
         // Tried to refactor to CareerInfo but database won't match
-        public string CareerInfo { get; set; }
+        public string careerInfo { get; set; }
 
-        public string AvatarUrl { get; set; }
+        public string avatarUrl { get; set; }
 
-        public string PhoneNumber { get; set; }
+        public string phoneNumber { get; set; }
 
-        public string Mail { get; set; }
+        public string mail { get; set; }
 
         public static readonly RecommendationSystemDoctorModel Default;
 
@@ -50,15 +50,15 @@ namespace WinUI.Model
             string email = null)
         {
             return new RecommendationSystemDoctorModel(
-                this.DoctorId,
-                doctor_name ?? this.DoctorName,
-                department_id ?? this.DepartmentId,
-                department_name ?? this.DepartmentName,
-                rating ?? this.Rating,
-                career_information ?? this.CareerInfo,
-                avatar_url ?? this.AvatarUrl,
-                phone_number ?? this.PhoneNumber,
-                email ?? this.Mail
+                this.doctorId,
+                doctor_name ?? this.doctorName,
+                department_id ?? this.departmentId,
+                department_name ?? this.departmentName,
+                rating ?? this.rating,
+                career_information ?? this.careerInfo,
+                avatar_url ?? this.avatarUrl,
+                phone_number ?? this.phoneNumber,
+                email ?? this.mail
             );
         }
 
@@ -66,15 +66,15 @@ namespace WinUI.Model
         {
             Default = new RecommendationSystemDoctorModel
             {
-                DoctorId = DEFAULT_DOCTOR_ID,
-                DoctorName = DEFAULT_NAME,
-                DepartmentId = DEFAULT_DEPARTMENT_ID,
-                DepartmentName = DEFAULT_DEPARTMENT_NAME,
-                Rating = DEFAULT_RATING,
-                CareerInfo = DEFAULT_CAREER_INFO,
-                AvatarUrl = DEFAULT_AVATAR_URL,
-                PhoneNumber = DEFAULT_PHONE,
-                Mail = DEFAULT_EMAIL,
+                doctorId = DEFAULT_DOCTOR_ID,
+                doctorName = DEFAULT_NAME,
+                departmentId = DEFAULT_DEPARTMENT_ID,
+                departmentName = DEFAULT_DEPARTMENT_NAME,
+                rating = DEFAULT_RATING,
+                careerInfo = DEFAULT_CAREER_INFO,
+                avatarUrl = DEFAULT_AVATAR_URL,
+                phoneNumber = DEFAULT_PHONE,
+                mail = DEFAULT_EMAIL,
             };
         }
 
@@ -91,15 +91,15 @@ namespace WinUI.Model
             string phone_number,
             string mail)
         {
-            this.DoctorId = doctor_id;
-            this.DoctorName = doctor_name;
-            this.DepartmentId = department_id;
-            this.DepartmentName = department_name;
-            this.Rating = rating;
-            this.CareerInfo = career_info;
-            this.AvatarUrl = string.IsNullOrWhiteSpace(avatar_url) ? DEFAULT_AVATAR_URL : avatar_url;
-            this.PhoneNumber = phone_number;
-            this.Mail = mail;
+            this.doctorId = doctor_id;
+            this.doctorName = doctor_name;
+            this.departmentId = department_id;
+            this.departmentName = department_name;
+            this.rating = rating;
+            this.careerInfo = career_info;
+            this.avatarUrl = string.IsNullOrWhiteSpace(avatar_url) ? DEFAULT_AVATAR_URL : avatar_url;
+            this.phoneNumber = phone_number;
+            this.mail = mail;
         }
     }
 }

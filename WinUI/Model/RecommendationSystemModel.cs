@@ -31,7 +31,7 @@ namespace WinUI.Model
         {
             this._doctor_service = doctor_service;
             this._symptom_to_department_score_mapping = new Dictionary<string, Dictionary<int, int>>();
-            this.InitializeSymptomToDepartmentScores();
+            this.initializeSymptomToDepartmentScores();
         }
 
         /// <summary>
@@ -39,11 +39,11 @@ namespace WinUI.Model
         /// </summary>
         /// <param name="view_model">The view model for the model.</param>
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
-        public async Task<RecommendationSystemDoctorJointModel?> RecommendDoctorAsynchronous(ViewModel.RecommendationSystemViewModel view_model)
+        public async Task<RecommendationSystemDoctorJointModel?> recommendDoctorAsynchronous(ViewModel.RecommendationSystemViewModel view_model)
         {
             Dictionary<int, int> department_scores = new Dictionary<int, int>();
 
-            void AddSymptomScore(string symptom)
+            void addSymptomScore(string symptom)
             {
                 if (string.IsNullOrWhiteSpace(symptom))
                 {
@@ -64,11 +64,11 @@ namespace WinUI.Model
                 }
             }
 
-            AddSymptomScore(view_model.SelectedSymptomStart);
-            AddSymptomScore(view_model.SelectedDiscomfortArea);
-            AddSymptomScore(view_model.SelectedSymptomPrimary);
-            AddSymptomScore(view_model.SelectedSymptomSecondary);
-            AddSymptomScore(view_model.SelectedSymptomTertiary);
+            addSymptomScore(view_model.selectedSymptomStart);
+            addSymptomScore(view_model.selectedDiscomfortArea);
+            addSymptomScore(view_model.selectedSymptomPrimary);
+            addSymptomScore(view_model.selectedSymptomSecondary);
+            addSymptomScore(view_model.selectedSymptomTertiary);
 
             if (department_scores.Count == 0)
             {
@@ -76,16 +76,16 @@ namespace WinUI.Model
             }
 
             int best_department_id = department_scores.OrderByDescending(department => department.Value).First().Key;
-            var doctors = await this._doctor_service.GetDoctorsByDepartment(best_department_id);
+            var doctors = await this._doctor_service.getDoctorsByDepartment(best_department_id);
 
             return doctors
-                .OrderByDescending(doctor => doctor.GetRegistrationDate())
-                .ThenBy(doctor => doctor.GetBirthDate())
-                .ThenBy(doctor => doctor.GetDoctorRating())
+                .OrderByDescending(doctor => doctor.getRegistrationDate())
+                .ThenBy(doctor => doctor.getBirthDate())
+                .ThenBy(doctor => doctor.getDoctorRating())
                 .FirstOrDefault();
         }
 
-        private void InitializeSymptomToDepartmentScores()
+        private void initializeSymptomToDepartmentScores()
         {
             this._symptom_to_department_score_mapping = new Dictionary<string, Dictionary<int, int>>
             {

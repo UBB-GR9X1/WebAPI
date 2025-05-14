@@ -9,42 +9,42 @@ namespace WinUI.ViewModel
 {
     public class NotificationViewModel
     {
-        private readonly NotificationService _notification_service;
+        private readonly INotificationService _notification_service;
+        public int userId { get; set; }
+        public ObservableCollection<Notification> notificationsCollection { get; } = new();
 
-        public ObservableCollection<Notification> notifications_collection { get; } = new();
-
-        public NotificationViewModel(NotificationService notification_service, int _user_id)
+        public NotificationViewModel(NotificationService notification_service, int user_id)
         {
             this._notification_service = notification_service;
-            this.userId = _user_id;
+            this.userId = user_id;
         }
 
-        public int userId { get; set; }
-
-        public async Task loadNotificationsAsync(int userid)
+        public async Task loadNotificationsAsync(int user_id)
         {
-            List<Notification> notifications = await this._notification_service.getNotificationsByUserIdAsync(userid);
-            notifications_collection.Clear();
-            foreach (var n in notifications)
-                notifications_collection.Add(n);
+            List<Notification> notifications = await this._notification_service.getNotificationsByUserIdAsync(user_id);
+
+            this.notificationsCollection.Clear();
+
+            foreach (Notification notification in notifications)
+                this.notificationsCollection.Add(notification);
         }
 
         public async Task deleteNotificationAsync(int notification_id, int user_id)
         {
-                await _notification_service.deleteNotificationAsync(notification_id, user_id);
-                var item = findNotificationById(notification_id);
-                if (item != null)
-                    notifications_collection.Remove(item);
+                await this._notification_service.deleteNotificationAsync(notification_id, user_id);
+                Notification notification = this.findNotificationById(notification_id);
+                if (notification != null)
+                    this.notificationsCollection.Remove(notification);
         }
 
-        private Notification findNotificationById(int id)
+        public Notification findNotificationById(int id)
         {
-            foreach (var notification in notifications_collection)
+            foreach (Notification notification in this.notificationsCollection)
             {
                 if (notification.notificationId == id)
                     return notification;
             }
-            return null;
+            return null; 
         }
     }
 }

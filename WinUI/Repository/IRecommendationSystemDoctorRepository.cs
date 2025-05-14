@@ -9,30 +9,30 @@ namespace WinUI.Repository
 {
     internal interface IRecommendationSystemDoctorRepository
     {
-        Task<List<RecommendationSystemDoctorModel>> GetDoctorsByDepartmentPartialName(string departmentPartialName);
+        Task<List<RecommendationSystemDoctorModel>> getDoctorsByDepartmentPartialName(string department_partial_name);
 
-        Task<List<RecommendationSystemDoctorModel>> GetDoctorsByPartialDoctorName(string doctorPartialName);
+        Task<List<RecommendationSystemDoctorModel>> getDoctorsByPartialDoctorName(string doctor_partial_name);
 
-        Task<List<RecommendationSystemDoctorJointModel>> GetDoctorsByDepartment(int departmentId);
+        Task<List<RecommendationSystemDoctorJointModel>> getDoctorsByDepartment(int department_id);
 
-        Task<List<RecommendationSystemDoctorJointModel>> GetAllDoctors();
+        Task<List<RecommendationSystemDoctorJointModel>> getAllDoctors();
 
-        Task<RecommendationSystemDoctorModel> GetDoctorById(int doctorId);
+        Task<RecommendationSystemDoctorModel> getDoctorById(int doctor_id);
 
-        Task<bool> UpdateDoctorName(int userId, string name);
+        Task<bool> updateDoctorName(int user_id, string name);
 
-        Task<bool> UpdateDoctorEmail(int userId, string email);
+        Task<bool> updateDoctorEmail(int user_id, string email);
 
-        Task<bool> UpdateDoctorCareerInfo(int userId, string careerInfo);
+        Task<bool> updateDoctorCareerInfo(int user_id, string career_info);
 
-        Task<bool> UpdateDoctorDepartment(int userId, int departmentId);
+        Task<bool> updateDoctorDepartment(int user_id, int department_id);
 
-        Task<bool> UpdateDoctorRating(int userId, double rating);
+        Task<bool> updateDoctorRating(int user_id, double rating);
 
-        Task<bool> UpdateDoctorAvatarUrl(int userId, string newAvatarUrl);
+        Task<bool> updateDoctorAvatarUrl(int user_id, string new_avatar_url);
 
-        Task<bool> UpdateDoctorPhoneNumber(int userId, string newPhoneNumber);
+        Task<bool> updateDoctorPhoneNumber(int user_id, string new_phone_number);
 
-        Task<bool> UpdateLogService(int userId, ActionType type);
+        Task<bool> updateLogService(int user_id, ActionType type);
     }
 }
