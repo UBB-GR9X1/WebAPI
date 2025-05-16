@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace WinUI.Model
 {
-    internal class RecommendationSystemDoctorJointModel
+    public class RecommendationSystemDoctorJointModel
     {
         public int doctorId { get; set; }
         public int userId { get; set; }

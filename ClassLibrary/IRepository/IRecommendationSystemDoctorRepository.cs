@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClassLibrary.Enum;
 using WinUI.Model;
 
-namespace WinUI.Repository
+namespace ClassLibrary.IRepository
 {
-    internal interface IRecommendationSystemDoctorRepository
+    public interface IRecommendationSystemDoctorRepository
     {
         Task<List<RecommendationSystemDoctorModel>> getDoctorsByDepartmentPartialName(string department_partial_name);
 

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using WinUI.Exceptions;
 using WinUI.Model;
 using WinUI.Repository;
+using ClassLibrary.Enum;
 
 namespace WinUI.Proxy
 {

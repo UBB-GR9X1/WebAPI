@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WinUI.Model
 {
-    internal class RecommendationSystemDoctorModel
+    public class RecommendationSystemDoctorModel
     {
         public int doctorId { get; set; }
 
