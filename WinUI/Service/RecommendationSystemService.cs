@@ -1,4 +1,5 @@
-﻿using ClassLibrary.IRepository;
+﻿using ClassLibrary.Enum;
+using ClassLibrary.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

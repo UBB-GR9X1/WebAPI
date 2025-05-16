@@ -7,6 +7,7 @@ namespace WinUI.Service
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using ClassLibrary.Enum;
     using WinUI.Model;
 
     /// <summary>
