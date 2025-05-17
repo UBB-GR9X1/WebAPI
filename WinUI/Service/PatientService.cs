@@ -15,7 +15,7 @@ using System.Net;
 
 namespace WinUI.Service
 {
-    class PatientService : IPatientService
+    public class PatientService : IPatientService
     {
         private readonly IPatientRepository _patient_repository; // ← From ClassLibrary.IRepository
         private readonly ILoggerService _logger_service;

@@ -2,6 +2,7 @@ using System;
 using Microsoft.UI.Xaml.Controls;
 using WinUI.View;
 
+
 namespace WinUI.Service
 {
     public static class NavigationService
