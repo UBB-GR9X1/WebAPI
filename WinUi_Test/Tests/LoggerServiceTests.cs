@@ -3,120 +3,165 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ClassLibrary.Domain;
+using ClassLibrary.IRepository;
 using WinUI.Model;
-using WinUI.Repository;
 using WinUI.Service;
 
-namespace WinUi_Test.Tests
+namespace WinUi_Test
 {
     [TestClass]
     public class LoggerServiceTests
     {
-        private Mock<ILoggerRepository> _mockRepo;
-        private LoggerService _service;
+        private Mock<ILogRepository> mockRepo;
+        private LoggerService loggerService;
 
         [TestInitialize]
         public void Setup()
         {
-            _mockRepo = new Mock<ILoggerRepository>();
-            _service = new LoggerService(_mockRepo.Object);
+            mockRepo = new Mock<ILogRepository>();
+            loggerService = new LoggerService(mockRepo.Object);
         }
 
         [TestMethod]
-        public async Task getAllLogs_returnsExpectedList()
+        [TestCategory("LoggerService")]
+        [Description("Should return all logs converted to LogEntryModels")]
+        public async Task GetAllLogs_ReturnsAllLogs()
         {
-            var expected = new List<LogEntryModel>
-            {
-                new LogEntryModel(1, 1, ActionType.LOGIN, DateTime.UtcNow)
-            };
-            _mockRepo.Setup(r => r.getAllLogs()).ReturnsAsync(expected);
+            // Arrange
+            var logs = new List<Log> { new Log { logId = 1, userId = 10, actionType = "LOGIN", timestamp = DateTime.UtcNow } };
+            mockRepo.Setup(r => r.getAllLogsAsync()).ReturnsAsync(logs);
 
-            var result = await _service.getAllLogs();
+            // Act
+            var result = await loggerService.getAllLogs();
 
-            Assert.AreEqual(expected.Count, result.Count);
+            // Assert
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(10, result[0].user_id);
         }
 
         [TestMethod]
-        public async Task getLogsByUserId_validUserId_returnsLogs()
+        [TestCategory("LoggerService")]
+        [Description("Should filter logs by valid user ID")]
+        public async Task GetLogsByUserId_ValidId_ReturnsFilteredLogs()
         {
-            var expected = new List<LogEntryModel>
+            var logs = new List<Log>
             {
-                new LogEntryModel(2, 5, ActionType.CREATE_ACCOUNT, DateTime.UtcNow)
+                new Log { logId = 1, userId = 1, actionType = "LOGIN", timestamp = DateTime.UtcNow },
+                new Log { logId = 2, userId = 2, actionType = "LOGOUT", timestamp = DateTime.UtcNow }
             };
-            _mockRepo.Setup(r => r.getLogsByUserId(5)).ReturnsAsync(expected);
+            mockRepo.Setup(r => r.getAllLogsAsync()).ReturnsAsync(logs);
 
-            var result = await _service.getLogsByUserId(5);
+            var result = await loggerService.getLogsByUserId(1);
 
-            Assert.AreEqual(expected.Count, result.Count);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(1, result[0].user_id);
         }
 
         [TestMethod]
+        [TestCategory("LoggerService")]
+        [Description("Should throw exception for invalid user ID")]
         [ExpectedException(typeof(ArgumentException))]
-        public async Task getLogsByUserId_invalidUserId_throws()
+        public async Task GetLogsByUserId_InvalidId_ThrowsException()
         {
-            await _service.getLogsByUserId(0);
+            await loggerService.getLogsByUserId(0);
         }
 
         [TestMethod]
-        public async Task getLogsByActionType_returnsLogs()
+        [TestCategory("LoggerService")]
+        [Description("Should filter logs by action type")]
+        public async Task GetLogsByActionType_ReturnsFilteredLogs()
         {
-            var expected = new List<LogEntryModel>
+            var logs = new List<Log>
             {
-                new LogEntryModel(3, 7, ActionType.UPDATE_PROFILE, DateTime.UtcNow)
+                new Log { logId = 1, userId = 1, actionType = "LOGIN", timestamp = DateTime.UtcNow },
+                new Log { logId = 2, userId = 2, actionType = "LOGOUT", timestamp = DateTime.UtcNow }
             };
-            _mockRepo.Setup(r => r.getLogsByActionType(ActionType.UPDATE_PROFILE)).ReturnsAsync(expected);
+            mockRepo.Setup(r => r.getAllLogsAsync()).ReturnsAsync(logs);
 
-            var result = await _service.getLogsByActionType(ActionType.UPDATE_PROFILE);
+            var result = await loggerService.getLogsByActionType(ActionType.LOGIN);
 
-            Assert.AreEqual(expected.Count, result.Count);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(ActionType.LOGIN, result[0].action_type);
         }
 
         [TestMethod]
+        [TestCategory("LoggerService")]
+        [Description("Should filter logs before given timestamp")]
+        public async Task GetLogsBeforeTimestamp_ReturnsFilteredLogs()
+        {
+            var timestamp = DateTime.UtcNow;
+            var logs = new List<Log>
+            {
+                new Log { logId = 1, userId = 1, actionType = "LOGIN", timestamp = timestamp.AddMinutes(-10) },
+                new Log { logId = 2, userId = 1, actionType = "LOGIN", timestamp = timestamp.AddMinutes(10) }
+            };
+            mockRepo.Setup(r => r.getAllLogsAsync()).ReturnsAsync(logs);
+
+            var result = await loggerService.getLogsBeforeTimestamp(timestamp);
+
+            Assert.AreEqual(1, result.Count);
+        }
+
+        [TestMethod]
+        [TestCategory("LoggerService")]
+        [Description("Should throw exception for default timestamp")]
         [ExpectedException(typeof(ArgumentException))]
-        public async Task getLogsBeforeTimestamp_defaultDate_throws()
+        public async Task GetLogsBeforeTimestamp_Default_ThrowsException()
         {
-            await _service.getLogsBeforeTimestamp(default);
+            await loggerService.getLogsBeforeTimestamp(default);
         }
 
         [TestMethod]
-        public async Task getLogsWithParameters_withUserId_callsCorrectMethod()
+        [TestCategory("LoggerService")]
+        [Description("Should filter logs by user, action type and timestamp")]
+        public async Task GetLogsWithParameters_ReturnsFilteredLogs()
         {
-            var now = DateTime.UtcNow;
-            var expected = new List<LogEntryModel>();
-            _mockRepo.Setup(r => r.getLogsWithParameters(2, ActionType.DELETE_ACCOUNT, now)).ReturnsAsync(expected);
+            var timestamp = DateTime.UtcNow;
+            var logs = new List<Log>
+            {
+                new Log { logId = 1, userId = 5, actionType = "LOGIN", timestamp = timestamp.AddMinutes(-5) },
+                new Log { logId = 2, userId = 6, actionType = "LOGIN", timestamp = timestamp.AddMinutes(-10) }
+            };
+            mockRepo.Setup(r => r.getAllLogsAsync()).ReturnsAsync(logs);
 
-            var result = await _service.getLogsWithParameters(2, ActionType.DELETE_ACCOUNT, now);
+            var result = await loggerService.getLogsWithParameters(5, ActionType.LOGIN, timestamp);
 
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(5, result[0].user_id);
         }
 
         [TestMethod]
-        public async Task getLogsWithParameters_withoutUserId_callsAlternateMethod()
+        [TestCategory("LoggerService")]
+        [Description("Should log action and return true on success")]
+        public async Task LogAction_ValidInput_ReturnsTrue()
         {
-            var now = DateTime.UtcNow;
-            var expected = new List<LogEntryModel>();
-            _mockRepo.Setup(r => r.getLogsWithParametersWithoutUserId(ActionType.DELETE_ACCOUNT, now)).ReturnsAsync(expected);
+            mockRepo.Setup(r => r.addLogAsync(It.IsAny<Log>())).Returns(Task.CompletedTask);
 
-            var result = await _service.getLogsWithParameters(null, ActionType.DELETE_ACCOUNT, now);
-
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public async Task logAction_validInput_callsRepository()
-        {
-            _mockRepo.Setup(r => r.logAction(1, ActionType.LOGIN)).ReturnsAsync(true);
-
-            var result = await _service.logAction(1, ActionType.LOGIN);
+            var result = await loggerService.logAction(1, ActionType.LOGIN);
 
             Assert.IsTrue(result);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public async Task logAction_invalidUserId_throws()
+        [TestCategory("LoggerService")]
+        [Description("Should return false if exception occurs when logging action")]
+        public async Task LogAction_RepositoryThrowsException_ReturnsFalse()
         {
-            await _service.logAction(0, ActionType.LOGIN);
+            mockRepo.Setup(r => r.addLogAsync(It.IsAny<Log>())).Throws(new Exception());
+
+            var result = await loggerService.logAction(1, ActionType.LOGIN);
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [TestCategory("LoggerService")]
+        [Description("Should throw exception for invalid user ID in logAction")]
+        [ExpectedException(typeof(ArgumentException))]
+        public async Task LogAction_InvalidUserId_ThrowsException()
+        {
+            await loggerService.logAction(0, ActionType.LOGIN);
         }
     }
 }

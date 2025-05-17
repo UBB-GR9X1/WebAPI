@@ -19,8 +19,8 @@ namespace WebApiTests
             var _mock_repo = new Mock<IDoctorRepository>();
             var _fake_doctors = new List<Doctor>
             {
-                new Doctor { userId = 1, departmentId = 1, doctorRating = 5.9, LicenseNumber = "numar" },
-                new Doctor { userId = 2, departmentId = 1, doctorRating = 7.9, LicenseNumber = "alt_numar" },
+                new Doctor { userId = 1, departmentId = 1, doctorRating = 5.9, licenseNumber = "numar" },
+                new Doctor { userId = 2, departmentId = 1, doctorRating = 7.9, licenseNumber = "alt_numar" },
             };
             _mock_repo.Setup(_repo => _repo.getAllDoctorsAsync()).ReturnsAsync(_fake_doctors);
 
@@ -41,7 +41,7 @@ namespace WebApiTests
         {
             // Arrange
             var _mock_repo = new Mock<IDoctorRepository>();
-            var _fake_doctor = new Doctor { userId = 1, departmentId = 1, doctorRating = 5.9, LicenseNumber = "numar" };
+            var _fake_doctor = new Doctor { userId = 1, departmentId = 1, doctorRating = 5.9, licenseNumber = "numar" };
             
             _mock_repo.Setup(_repo => _repo.getDoctorByUserIdAsync(1)).ReturnsAsync(_fake_doctor);
 
@@ -64,9 +64,9 @@ namespace WebApiTests
             var _mock_repo = new Mock<IDoctorRepository>();
             var _fake_doctors = new List<Doctor>
             {
-                new Doctor { userId = 1, departmentId = 1, doctorRating = 5.9, LicenseNumber = "numar" },
-                new Doctor { userId = 2, departmentId = 1, doctorRating = 7.9, LicenseNumber = "alt_numar" },
-                new Doctor { userId = 3, departmentId = 2, doctorRating = 7.9, LicenseNumber = "alt_alt_numar" },
+                new Doctor { userId = 1, departmentId = 1, doctorRating = 5.9, licenseNumber = "numar" },
+                new Doctor { userId = 2, departmentId = 1, doctorRating = 7.9, licenseNumber = "alt_numar" },
+                new Doctor { userId = 3, departmentId = 2, doctorRating = 7.9, licenseNumber = "alt_alt_numar" },
             };
             _mock_repo.Setup(repo => repo.getDoctorsByDepartmentIdAsync(1)).ReturnsAsync(_fake_doctors.Where(d => d.departmentId == 1).ToList());
 
@@ -87,7 +87,7 @@ namespace WebApiTests
         {
             // Arrange
             var _mock_repo = new Mock<IDoctorRepository>();
-            var _new_doctor = new Doctor { userId = 5, departmentId = 2, doctorRating = 9.0, LicenseNumber = "abc123" };
+            var _new_doctor = new Doctor { userId = 5, departmentId = 2, doctorRating = 9.0, licenseNumber = "abc123" };
 
             _mock_repo.Setup(_repo => _repo.addDoctorAsync(_new_doctor)).Returns(Task.CompletedTask);
 
