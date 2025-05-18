@@ -18,7 +18,6 @@ using System.Security.Authentication;
 using System.Threading.Tasks;
 using WinUI.Service;
 using WinUI.Model;
-using WinUI.Repository;
 using WinUI.Proxy;
 using System.Net.Http;
 using System.Net.Http.Json;

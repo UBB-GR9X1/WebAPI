@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ClassLibrary.Enum;
 using WinUI.Model;
 
-namespace WinUI.Repository
+namespace ClassLibrary.Repository
 {
     /// <summary>
     /// Interface for LogInRepository which does the following things:

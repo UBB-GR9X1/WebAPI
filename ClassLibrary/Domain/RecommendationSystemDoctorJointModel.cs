@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace WinUI.Model
+namespace ClassLibrary.Domain
 {
     public class RecommendationSystemDoctorJointModel
     {

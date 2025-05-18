@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinUI.Model
+namespace ClassLibrary.Domain
 {
     public class RecommendationSystemDoctorModel
     {
