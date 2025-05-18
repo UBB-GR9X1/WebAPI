@@ -12,6 +12,7 @@ namespace WinUI.ViewModel
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Input;
+    using ClassLibrary.Enum;
     using WinUI.Model;
     using WinUI.Service;
 

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace WinUI.Model
+namespace ClassLibrary.Domain
 {
-    internal class RecommendationSystemDoctorJointModel
+    public class RecommendationSystemDoctorJointModel
     {
         public int doctorId { get; set; }
         public int userId { get; set; }

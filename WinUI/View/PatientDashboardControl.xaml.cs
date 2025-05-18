@@ -8,6 +8,7 @@ using WinUI.View;
 using WinUI.ViewModel;
 using WinUI.Proxy;
 using WinUI.Service;
+using ClassLibrary.Enum;
 
 namespace WinUI.View
 {

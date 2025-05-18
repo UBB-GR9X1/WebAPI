@@ -8,10 +8,10 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using WinUI.Model;
-using WinUI.Repository;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Diagnostics;
+using ClassLibrary.Enum;
 
 namespace WinUI.Proxy
 {

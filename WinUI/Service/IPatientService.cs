@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ClassLibrary.Enum;
 using WinUI.Model;
 
 namespace WinUI.Service

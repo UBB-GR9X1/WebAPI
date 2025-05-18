@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using WinUI.Model;
 using System.Diagnostics;
+using ClassLibrary.Domain;
 
 namespace WinUI.ViewModel
 {
