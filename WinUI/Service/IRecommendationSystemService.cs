@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClassLibrary.Domain;
+using ClassLibrary.Enum;
 using WinUI.Model;
 
 namespace WinUI.Service

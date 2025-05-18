@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClassLibrary.Enum;
+using ClassLibrary.Repository;
 using WinUI.Exceptions;
 using WinUI.Model;
-using WinUI.Repository;
 
 namespace WinUI.Service
 {

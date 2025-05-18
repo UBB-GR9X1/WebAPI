@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WinUI.Exceptions;
 using WinUI.Model;
-using WinUI.Repository;
+using ClassLibrary.Enum;
+using ClassLibrary.Repository;
 
 namespace WinUI.Proxy
 {

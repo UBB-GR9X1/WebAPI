@@ -1,4 +1,5 @@
 using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -16,7 +17,6 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using WinUI.Exceptions;
 using WinUI.Proxy;
-using WinUI.Repository;
 using WinUI.Service;
 using WinUI.ViewModel;
 using IPatientRepository = ClassLibrary.IRepository.IPatientRepository;

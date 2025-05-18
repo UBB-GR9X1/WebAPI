@@ -12,6 +12,7 @@ using static WinUI.Proxy.LogInProxy;
 using Windows.System;
 using User = ClassLibrary.Domain.User;
 using System.Net;
+using ClassLibrary.Enum;
 
 namespace WinUI.Service
 {

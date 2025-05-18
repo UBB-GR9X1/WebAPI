@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinUI.Model
+namespace ClassLibrary.Domain
 {
-    internal class RecommendationSystemDoctorModel
+    public class RecommendationSystemDoctorModel
     {
         public int doctorId { get; set; }
 

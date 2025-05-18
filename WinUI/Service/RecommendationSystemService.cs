@@ -1,11 +1,12 @@
-﻿using ClassLibrary.IRepository;
+﻿using ClassLibrary.Domain;
+using ClassLibrary.Enum;
+using ClassLibrary.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WinUI.Model;
-using WinUI.Repository;
 
 namespace WinUI.Service
 {
