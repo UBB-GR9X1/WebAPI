@@ -10,24 +10,71 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <!-- Login Panel -->
-        <StackPanel x:Name="LoginPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
-            <TextBlock Text="Login" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+        <!-- Centered Login Card -->
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Grid.Resources>
+                <!-- Optional Styling -->
+                <Style TargetType="TextBox">
+                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="CornerRadius" Value="6"/>
+                    <Setter Property="FontSize" Value="14"/>
+                </Style>
+                <Style TargetType="PasswordBox">
+                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="CornerRadius" Value="6"/>
+                    <Setter Property="FontSize" Value="14"/>
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="Padding" Value="12"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="CornerRadius" Value="6"/>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="13"/>
+                </Style>
+            </Grid.Resources>
 
-            <!-- Username Field -->
-            <TextBlock Text="username:" Margin="0,5,0,5"/>
-            <TextBox x:Name="UsernameTextField" Margin="0,0,0,10"/>
+            <Border Background="{ThemeResource SystemControlAltLowAcrylicWindowBrush}"
+                    Padding="30"
+                    CornerRadius="12"
+                    Width="320">
+                <StackPanel x:Name="LoginPanel" Spacing="12">
 
-            <!-- Password Field -->
-            <TextBlock Text="password:" Margin="0,5,0,5"/>
-            <PasswordBox x:Name="PasswordTextField" Margin="0,0,0,20"/>
+                    <!-- Header -->
+                    <TextBlock Text="Login"
+                               FontSize="28"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,10"/>
 
-            <!-- Buttons -->
-            <Button x:Name="LoginButton" Content="Login" Click="loginButtonClick" 
-            HorizontalAlignment="Stretch" Margin="0,0,0,10"/>
-            <Button x:Name="CreateAccountButton" Content="Create Account" Click="createAccountButtonClick" 
-            HorizontalAlignment="Stretch"/>
-        </StackPanel>
+                    <!-- Username Field -->
+                    <TextBlock Text="Username:" Margin="0,5,0,2"/>
+                    <TextBox x:Name="UsernameTextField" Margin="0,0,0,6"/>
+
+                    <!-- Password Field -->
+                    <TextBlock Text="Password:" Margin="0,5,0,5"/>
+                    <PasswordBox x:Name="PasswordTextField" Margin="0,0,0,20"/>
+
+                    <!-- Buttons -->
+                    <Button x:Name="LoginButton"
+                            Content="Login"
+                            Click="loginButtonClick"
+                            Background="{ThemeResource SystemControlHighlightAccentBrush}"
+                            Foreground="White"
+                            Margin="0,0,0,8"
+                            HorizontalAlignment="Stretch"/>
+
+                    <Button x:Name="CreateAccountButton"
+                            Content="Create Account"
+                            Click="createAccountButtonClick"
+                            Background="Transparent"
+                            BorderBrush="{ThemeResource SystemControlHighlightAccentBrush}"
+                            Foreground="{ThemeResource SystemControlHighlightAccentBrush}"
+                            BorderThickness="1"
+                            HorizontalAlignment="Stretch"/>
+                </StackPanel>
+            </Border>
+        </Grid>
 
         <!-- Frame for Page Navigation -->
         <Frame x:Name="LoginFrame"/>
