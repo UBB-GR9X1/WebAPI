@@ -8,6 +8,7 @@ using WinUI.View;
 using WinUI.ViewModel;
 using WinUI.Proxy;
 using WinUI.Service;
+using Windows.Networking.NetworkOperators;
 
 namespace WinUI.View
 {
@@ -29,7 +30,13 @@ namespace WinUI.View
 
             // Add logging to confirm if the DataContext is set correctly
             Debug.WriteLine($"DataContext set to: {patient_view_model?.GetType().Name}");
+
         }
+
+        public void ProfileButton_Click(object sender, RoutedEventArgs routed_event)
+        {
+        }
+
         public void NotificationsButton_Click(object sender, RoutedEventArgs routed_event)
         {
             var notification_window = new NotificationWindow(new NotificationViewModel(new NotificationService(new NotificationProxy(new System.Net.Http.HttpClient())), this._patient_view_model.user_id));
