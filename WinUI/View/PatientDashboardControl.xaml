@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <UserControl
     x:Class="WinUI.View.PatientDashboardControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -9,108 +8,79 @@
     xmlns:views="using:WinUI.View"
     mc:Ignorable="d">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Padding="20" Background="Black">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  Width="1100">
 
-            <!-- Define Grid Rows -->
+        <Grid Padding="20"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch">
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-
+1
             <!-- Nav Buttons -->
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,10,0,0">
                 <Button Content="Home" Width="80" Margin="5" VerticalAlignment="Top"/>
                 <Button x:Name="NotificationsButton" Click="NotificationsButton_Click" Content="Notifications" Width="150" Margin="5" VerticalAlignment="Top"/>
-                <Button Content="Profile" Width="80" Margin="5" VerticalAlignment="Top"/>
+                <Button Content="Profile" Click="ProfileButton_Click" Width="80" Margin="5" VerticalAlignment="Top"/>
                 <Button Content="Appointments" Width="120" Margin="5" VerticalAlignment="Top"/>
                 <Button Content="Medical History" Width="120" Margin="5" VerticalAlignment="Top"/>
                 <Button Content="Billing" Width="80" Margin="5" VerticalAlignment="Top"/>
                 <Button Content="Logout" Width="80" Margin="5" VerticalAlignment="Top" Click="OnLogoutButtonClick"/>
             </StackPanel>
 
-            <!-- Recommendation View -->
-            <views:RecommendationView x:Name="recommendationView" 
-                                     Grid.Row="0"
-                                     Width="500" 
-                                     Height="350" 
-                                     HorizontalAlignment="Right" 
-                                     VerticalAlignment="Top" 
-                                     Margin="0,50,20,0"
-                                     Visibility="Visible"/>
-
             <!-- Profile Image -->
-            <Grid Grid.Row="1" Margin="0,20">
+            <Grid Grid.Row="1" Margin="0,10" HorizontalAlignment="Center">
                 <Image Source="/Assets/default-profile.png"
                        Width="100" Height="100" 
                        HorizontalAlignment="Center" 
                        VerticalAlignment="Center" />
             </Grid>
+            
+            <!-- Recommendation View -->
+            <views:RecommendationView x:Name="recommendationView" 
+                                      Grid.Row="1"
+                                      Width="500" 
+                                      Height="350" 
+                                      HorizontalAlignment="Right" 
+                                      VerticalAlignment="Center" 
+                                      Margin="0,20,20,0"
+                                      Visibility="Visible"/>
 
-            <!-- Patient Info -->
-            <Grid Grid.Row="2" Margin="0,20" HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="300"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="300"/>
-                </Grid.ColumnDefinitions>
+            <!-- Editable Patient Info in One Column -->
+            <StackPanel Grid.Row="2" Margin="20,10,20,20" HorizontalAlignment="Center" Width="500" Orientation="Vertical" Spacing="10">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Emergency Contact" Foreground="Black" Margin="0,5"/>
+                    <TextBox Text="{Binding emergency_contact, Mode=TwoWay}" MaxLength="10"/>
+                </StackPanel>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Weight" Foreground="Black" Margin="0,5"/>
+                    <TextBox Text="{Binding weight, Mode=TwoWay}"/>
+                </StackPanel>
 
-                <!-- Row 1 -->
-                <TextBlock Text="Name" Foreground="White" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Margin="10"/>
-                <TextBlock Text="Mail" Foreground="White" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding email}" IsReadOnly="True" Grid.Row="0" Grid.Column="3" Margin="10"/>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Height" Foreground="Black" Margin="0,5"/>
+                    <TextBox Text="{Binding height, Mode=TwoWay}"/>
+                </StackPanel>
 
-                <!-- Row 2 -->
-                <TextBlock Text="Password" Foreground="White" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding password, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Margin="10"/>
-                <TextBlock Text="Username" Foreground="White" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding username}" IsReadOnly="True" Grid.Row="1" Grid.Column="3" Margin="10"/>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Blood Type" Foreground="Black" Margin="0,5"/>
+                    <TextBox Text="{Binding blood_type, Mode=TwoWay}"/>
+                </StackPanel>
 
-                <!-- Row 3 -->
-                <TextBlock Text="Address" Foreground="White" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding address, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Margin="10"/>
-                <TextBlock Text="Phone Number" Foreground="White" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding phone_number, Mode=TwoWay}" Grid.Row="2" Grid.Column="3" Margin="10"/>
-
-                <!-- Row 4 -->
-                <TextBlock Text="Emergency Contact" Foreground="White" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding emergency_contact, Mode=TwoWay}" Grid.Row="3" Grid.Column="1" Margin="10" MaxLength="10"/>
-                <TextBlock Text="Weight" Foreground="White" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding weight, Mode=TwoWay}" Grid.Row="3" Grid.Column="3" Margin="10"/>
-
-                <!-- Row 5 -->
-                <TextBlock Text="Height" Foreground="White" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding height, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" Margin="10"/>
-                <TextBlock Text="Blood Type" Foreground="White" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding blood_type, Mode=TwoWay}" Grid.Row="4" Grid.Column="3" Margin="10"/>
-
-                <!-- Row 6 -->
-                <TextBlock Text="Allergies" Foreground="White" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding allergies, Mode=TwoWay}" Grid.Row="5" Grid.Column="1" Margin="10"/>
-                <TextBlock Text="Birth Date" Foreground="White" Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding birth_date}" IsReadOnly="True" Grid.Row="5" Grid.Column="3" Margin="10"/>
-
-                <!-- Row 7 -->
-                <TextBlock Text="CNP" Foreground="White" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding cnp}" IsReadOnly="True" Grid.Row="6" Grid.Column="1" Margin="10"/>
-                <TextBlock Text="Registration Date" Foreground="White" Grid.Row="6" Grid.Column="2" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding registration_date}" IsReadOnly="True" Grid.Row="6" Grid.Column="3" Margin="10"/>
-            </Grid>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Allergies" Foreground="Black" Margin="0,5"/>
+                    <TextBox Text="{Binding allergies, Mode=TwoWay}"/>
+                </StackPanel>
+            </StackPanel>
 
             <!-- Update Button -->
             <Button Content="Update Patient Info"
@@ -118,7 +88,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Click="OnUpdateButtonClick"
-                    Margin="0,20"/>
+                    Margin="0,10"/>
         </Grid>
     </ScrollViewer>
 </UserControl>
