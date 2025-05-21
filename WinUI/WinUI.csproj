@@ -70,6 +70,12 @@
 	</ItemGroup>
 	   
 	<ItemGroup>
+	  <Page Update="View\ProfileView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	   
+	<ItemGroup>
 	  <Page Update="View\CreateAccountView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
