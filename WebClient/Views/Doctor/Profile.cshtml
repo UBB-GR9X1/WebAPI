@@ -106,31 +106,19 @@
             background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
             border: none;
             color: white;
-            padding: 0.75rem 2.5rem;
+            padding: 0.85rem 3rem;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             transition: all 0.3s ease;
             box-shadow: 0 4px 10px rgba(71, 35, 217, 0.3);
+            letter-spacing: 0.5px;
         }
 
         .btn-custom:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 15px rgba(71, 35, 217, 0.4);
             color: white;
-        }
-
-        .btn-dashboard {
-            background-color: white;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-            margin-right: 1rem;
-        }
-
-        .btn-dashboard:hover {
-            background-color: var(--primary-color);
-            color: white;
-            box-shadow: 0 6px 15px rgba(71, 35, 217, 0.4);
         }
 
         .department-badge {
@@ -154,12 +142,38 @@
             background-color: #f5f7fb;
             font-family: 'Roboto', sans-serif;
         }
+
+        .edit-profile-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255,255,255,0.3);
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            padding: 0.5rem 1.25rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .edit-profile-btn:hover {
+            background-color: white;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .edit-profile-btn i {
+            margin-right: 0.5rem;
+        }
     </style>
 </head>
 <body>
     <div class="container-fluid px-0">
         <!-- Profile Header -->
-        <div class="profile-header text-center">
+        <div class="profile-header text-center position-relative">
+            <a href="@Url.Action("Edit", "Doctor", new { userId = Model.DoctorId })" class="btn edit-profile-btn">
+                <i class="fas fa-edit"></i> Edit Profile
+            </a>
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
@@ -293,11 +307,8 @@
             <!-- Action Buttons -->
             <div class="row mt-4 mb-5">
                 <div class="col-12 text-center">
-                    <a href="@Url.Action("Dashboard", "Doctor")" class="btn btn-custom btn-dashboard">
-                        <i class="fas fa-th-large me-2"></i>Dashboard
-                    </a>
                     <a href="@Url.Action("Edit", "Doctor", new { userId = Model.DoctorId })" class="btn btn-custom">
-                        <i class="fas fa-edit me-2"></i>Edit Profile
+                        <i class="fas fa-edit me-2"></i>Update My Profile
                     </a>
                 </div>
             </div>
