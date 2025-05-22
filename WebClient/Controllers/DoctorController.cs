@@ -22,58 +22,8 @@ namespace WebClient.Controllers
             _authService = authService;
         }
 
-        // GET: Doctor
-        // Default action that displays the doctor's profile
-        public IActionResult Index()
-        {
-            return RedirectToAction("Profile");
-        }
-
-        // GET: Doctor/Dashboard
-        public async Task<IActionResult> Dashboard()
-        {
-            // Get current user ID from claims
-            int? userId = null;
-            if (User.Identity.IsAuthenticated)
-            {
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int currentUserId))
-                {
-                    userId = currentUserId;
-                }
-            }
-
-            // If we don't have a userId, redirect to home
-            if (!userId.HasValue)
-            {
-                TempData["Error"] = "Unable to determine the doctor identity.";
-                return RedirectToAction("Index", "Home");
-            }
-
-            // Load doctor information
-            var success = await _doctorService.LoadDoctorInformationByUserId(userId.Value);
-            if (!success)
-            {
-                TempData["Error"] = "Doctor not found or error loading information.";
-                return RedirectToAction("Index", "Home");
-            }
-
-            // Create dashboard view model with doctor information
-            var model = new DoctorDashboardViewModel
-            {
-                Doctor = _doctorService.DoctorInformation,
-                RecentLogs = new List<LogEntryModel>(), // These would typically be fetched from a service
-                CurrentDate = DateTime.Now
-            };
-
-            return View(model);
-        }
-
-        // GET: Doctor/Profile
-        // GET: Doctor/Profile/{userId}
         public async Task<IActionResult> Profile(int? userId = null)
         {
-            // If no userId is provided, try to get the current user's ID from claims
             if (!userId.HasValue && User.Identity.IsAuthenticated)
             {
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -83,7 +33,6 @@ namespace WebClient.Controllers
                 }
             }
 
-            // If we still don't have a userId, redirect to home
             if (!userId.HasValue)
             {
                 TempData["Error"] = "Unable to determine the doctor profile to display.";
@@ -100,11 +49,8 @@ namespace WebClient.Controllers
             return View(_doctorService.DoctorInformation);
         }
 
-        // GET: Doctor/Edit
-        // GET: Doctor/Edit/{userId}
         public async Task<IActionResult> Edit(int? userId = null)
         {
-            // If no userId is provided, try to get the current user's ID from claims
             if (!userId.HasValue && User.Identity.IsAuthenticated)
             {
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -114,7 +60,6 @@ namespace WebClient.Controllers
                 }
             }
 
-            // If we still don't have a userId, redirect to home
             if (!userId.HasValue)
             {
                 TempData["Error"] = "Unable to determine which doctor profile to edit.";
@@ -128,7 +73,6 @@ namespace WebClient.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            // Load departments for dropdown
             var departments = await _doctorService.GetAllDepartments();
             ViewBag.Departments = new SelectList(departments, "departmentId", "departmentName",
                 _doctorService.DoctorInformation.DepartmentId);
@@ -136,7 +80,6 @@ namespace WebClient.Controllers
             return View(_doctorService.DoctorInformation);
         }
 
-        // POST: Doctor/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(DoctorModel model)
@@ -150,13 +93,11 @@ namespace WebClient.Controllers
 
             try
             {
-                // Load current doctor info to compare changes
                 await _doctorService.LoadDoctorInformationByUserId(model.DoctorId);
                 var currentDoctor = _doctorService.DoctorInformation;
 
                 bool updateSuccess = true;
 
-                // Check and update each field if changed
                 if (currentDoctor.DoctorName != model.DoctorName)
                 {
                     updateSuccess &= await _doctorService.UpdateDoctorProfile(model.DoctorId,
@@ -208,7 +149,6 @@ namespace WebClient.Controllers
                 TempData["Error"] = $"Error updating profile: {ex.Message}";
             }
 
-            // Reload departments for dropdown in case of error
             var departmentList = await _doctorService.GetAllDepartments();
             ViewBag.Departments = new SelectList(departmentList, "departmentId", "departmentName", model.DepartmentId);
             return View(model);

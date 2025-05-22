@@ -54,8 +54,7 @@ app.UseAuthorization();
 // Route for doctor pages
 app.MapControllerRoute(
     name: "doctor",
-    pattern: "doctor",
-    defaults: new { controller = "Doctor", action = "Profile" });
+    pattern: "{controller=Doctor}/{action=Profile}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
