@@ -4,6 +4,7 @@ using ClassLibrary.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using WebClient.Models;
 
 namespace WebClient.Controllers
@@ -31,10 +32,28 @@ namespace WebClient.Controllers
             _authService = authService;
         }
 
+        // GET: Doctor/Profile
         // GET: Doctor/Profile/{userId}
-        public async Task<IActionResult> Profile(int userId)
+        public async Task<IActionResult> Profile(int? userId = null)
         {
-            var success = await _doctorService.LoadDoctorInformationByUserId(userId);
+            // If no userId is provided, try to get the current user's ID from claims
+            if (!userId.HasValue && User.Identity.IsAuthenticated)
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int currentUserId))
+                {
+                    userId = currentUserId;
+                }
+            }
+
+            // If we still don't have a userId, redirect to home
+            if (!userId.HasValue)
+            {
+                TempData["Error"] = "Unable to determine the doctor profile to display.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var success = await _doctorService.LoadDoctorInformationByUserId(userId.Value);
             if (!success)
             {
                 TempData["Error"] = "Doctor not found or error loading information.";
