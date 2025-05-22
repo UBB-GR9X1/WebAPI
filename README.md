@@ -44,7 +44,7 @@
 
 # ⚙️ In order to update your database, run the following:
 
-* ***This assumes that you dropped your local database first!*** *
+> ❗️ This assumes that you dropped your local database first!
 
 1. Go into the WebAPI folder:
 ```bash
