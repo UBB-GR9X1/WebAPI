@@ -1,4 +1,4 @@
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -19,7 +19,7 @@ using WinUI.Proxy;
 using WinUI.Repository;
 using WinUI.Service;
 using WinUI.ViewModel;
-using IPatientRepository = ClassLibrary.IRepository.IPatientRepository;
+using IPatientRepository = ClassLibrary.Repository.IPatientRepository;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -44,7 +44,7 @@ namespace WinUI.View
         {
             this.InitializeComponent();
 
-            ILogInRepository _log_in_service = new LogInProxy(new System.Net.Http.HttpClient());
+            Repository.ILogInRepository _log_in_service = new LogInProxy(new System.Net.Http.HttpClient());
             IAuthService _service = new AuthService(_log_in_service);
             this._login_page_view_model = new AuthViewModel(_service);
 
@@ -103,7 +103,7 @@ namespace WinUI.View
                 // TODO: UPDATE
                 if (this._login_page_view_model.getUserRole() == "Patient")
                 {
-                    ClassLibrary.IRepository.IPatientRepository patientRepository = new WinUI.Proxy.PatientProxy(new HttpClient());
+                    ClassLibrary.Repository.IPatientRepository patientRepository = new WinUI.Proxy.PatientProxy(new HttpClient());
                     ILoggerService logger_service = new LoggerService(new LoggerProxy());
                     IPatientService patient_service = new PatientService(patientRepository, logger_service);
                     PatientViewModel patient_view_model = new PatientViewModel(patient_service, this._login_page_view_model.authService.allUserInformation.userId);

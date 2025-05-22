@@ -6,7 +6,7 @@ using Data;
 using ClassLibrary.Domain;
 using Entity;
 using Microsoft.EntityFrameworkCore;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 
 namespace WebApi.Repository
 {

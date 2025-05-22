@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ClassLibrary.Domain;
 
-namespace ClassLibrary.IRepository
+namespace ClassLibrary.Repository
 {
     public interface IDepartmentRepository
     {

@@ -10,7 +10,7 @@ namespace WinUI.View
     using Microsoft.UI.Xaml.Data;
     using Microsoft.UI.Xaml.Navigation;
     using WinUI.Helpers;
-    using ClassLibrary.IRepository;
+    using ClassLibrary.Repository;
     using WinUI.Service;
     using WinUI.ViewModel;
 

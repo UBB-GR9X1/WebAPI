@@ -10,7 +10,7 @@ using WinUI.Repository;
 using ClassLibrary.Domain;
 using WinUI.Model;
 using static WinUI.Proxy.LogInProxy;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 
 namespace WinUI.Proxy
 {
