@@ -30,6 +30,12 @@
                                     <a class="nav-link text-dark" asp-controller="Admin" asp-action="Dashboard">Admin Dashboard</a>
                                 </li>
                             }
+                            @if (User.IsInRole("Doctor"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Doctor" asp-action="Profile">My Profile</a>
+                                </li>
+                            }
                         }
                     </ul>
                     <ul class="navbar-nav">
@@ -40,6 +46,10 @@
                                     Hello, @User.Identity.Name!
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    @if (User.IsInRole("Doctor"))
+                                    {
+                                        <li><a class="dropdown-item" asp-controller="Doctor" asp-action="Profile">My Profile</a></li>
+                                    }
                                     <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a></li>
                                 </ul>
                             </li>

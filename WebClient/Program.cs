@@ -52,6 +52,16 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "doctor_profile",
+    pattern: "doctor/profile",
+    defaults: new { controller = "Doctor", action = "Profile" });
+
+app.MapControllerRoute(
+    name: "doctor_edit",
+    pattern: "doctor/edit",
+    defaults: new { controller = "Doctor", action = "Edit" });
+
+app.MapControllerRoute(
     name: "doctor",
     pattern: "doctor",
     defaults: new { controller = "Doctor", action = "Profile" });
