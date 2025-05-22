@@ -117,5 +117,57 @@ namespace WebApi.Repository
             _db_context.Doctors.Remove(doctor_entity);
             await _db_context.SaveChangesAsync();
         }
+        /// <inheritdoc/>
+        public async Task updateDoctorByIdAsync(int id, Doctor doctor)
+        {
+            var doctorEntity = await _db_context.Doctors
+                .Include(d => d.user)
+                .FirstOrDefaultAsync(d => d.userId == id);
+
+            if (doctorEntity == null)
+            {
+                throw new Exception($"Doctor with user ID {id} not found.");
+            }
+
+            // Update fields - you can update more as needed
+            doctorEntity.departmentId = doctor.departmentId;
+            doctorEntity.doctorRating = doctor.doctorRating;
+            doctorEntity.licenseNumber = doctor.licenseNumber;
+
+            if (doctorEntity.user != null)
+            {
+                doctorEntity.user.name = doctor.doctorName;
+                // Update other user fields if you want, e.g. email, phone, etc.
+            }
+
+            await _db_context.SaveChangesAsync();
+        }
+
+        /// <inheritdoc/>
+        public async Task updateDoctorByNameAsync(string name, Doctor doctor)
+        {
+            var doctorEntity = await _db_context.Doctors
+                .Include(d => d.user)
+                .FirstOrDefaultAsync(d => d.user.name == name);
+
+            if (doctorEntity == null)
+            {
+                throw new Exception($"Doctor with name '{name}' not found.");
+            }
+
+            // Update fields - you can update more as needed
+            doctorEntity.departmentId = doctor.departmentId;
+            doctorEntity.doctorRating = doctor.doctorRating;
+            doctorEntity.licenseNumber = doctor.licenseNumber;
+
+            if (doctorEntity.user != null)
+            {
+                doctorEntity.user.name = doctor.doctorName;
+                // Update other user fields if needed
+            }
+
+            await _db_context.SaveChangesAsync();
+        }
+
     }
 }

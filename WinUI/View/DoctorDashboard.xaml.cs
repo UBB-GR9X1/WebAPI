@@ -13,6 +13,8 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using WinUI.ViewModel;
+using WinUI.Exceptions;
+using WinUI.Service;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,6 +28,7 @@ namespace WinUI.View
     public sealed partial class DoctorDashboard : Page
     {
         public IDoctorViewModel ViewModel { get; set; }
+        private AuthViewModel _authViewModel;
 
         public DoctorDashboard()
         {
@@ -33,13 +36,14 @@ namespace WinUI.View
             ViewModel = new DoctorViewModel();
         }
 
-        protected override async void OnNavigatedTo(Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            if (e.Parameter is Tuple<IDoctorViewModel, IAuthViewModel> parameters)
+            if (e.Parameter is Tuple<IDoctorViewModel, AuthViewModel> parameters)
             {
                 ViewModel = parameters.Item1;
+                _authViewModel = parameters.Item2;
                 this.DataContext = this;
                 await ViewModel.LoadDoctorInformationAsync(ViewModel.UserId);
             }
@@ -74,16 +78,14 @@ namespace WinUI.View
             try
             {
                 var (updateSuccessful, errorMessage) = await ViewModel.TryUpdateDoctorProfileAsync();
-
                 if (updateSuccessful)
                 {
-                    dialog.Title = "Success";
-                    dialog.Content = "Your profile has been updated successfully.";
+                    dialog.Content = "Profile updated successfully!";
                 }
                 else
                 {
                     dialog.Title = "Error";
-                    dialog.Content = $"Failed to update profile: {errorMessage ?? "Unknown error"}";
+                    dialog.Content = errorMessage ?? "Failed to update profile.";
                 }
             }
             catch (Exception ex)
@@ -93,6 +95,33 @@ namespace WinUI.View
             }
 
             await dialog.ShowAsync();
+        }
+
+        private async void OnLogout(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (_authViewModel != null)
+                {
+                    await _authViewModel.logout();
+                    NavigationService.navigateToLogin();
+                }
+                else
+                {
+                    throw new AuthenticationException("Not logged in");
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorDialog = new ContentDialog
+                {
+                    Title = "Error",
+                    Content = $"Logout failed: {ex.Message}",
+                    CloseButtonText = "OK",
+                    XamlRoot = this.XamlRoot
+                };
+                await errorDialog.ShowAsync();
+            }
         }
     }
 }

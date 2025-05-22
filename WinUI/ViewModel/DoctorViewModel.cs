@@ -21,6 +21,7 @@ namespace WinUI.ViewModel
         private const string DefaultAvatarUrl = "https://picsum.photos/200";
         private const string DefaultPhoneNumber = "Loading phone...";
         private const string DefaultEmail = "Loading mail...";
+        private const string DefaultDoctorAddress = "Loading address...";
         private const string NotSpecified = "Not specified";
         private const string NotAvailable = "N/A";
         private const string NotProvided = "Not provided";
@@ -42,11 +43,13 @@ namespace WinUI.ViewModel
             Rating = DefaultRating;
             CareerInfo = DefaultCareerInfo;
             AvatarUrl = DefaultAvatarUrl;
+            DoctorAddress = DefaultDoctorAddress;
             PhoneNumber = DefaultPhoneNumber;
             Mail = DefaultEmail;
 
             OriginalDoctor = DoctorModel.Default;
             IsLoading = false;
+            LoadDepartments();
         }
 
         public DoctorViewModel(){}
@@ -85,6 +88,20 @@ namespace WinUI.ViewModel
             }
         }
 
+        private string _doctorAddress = string.Empty;
+        public string DoctorAddress
+        {
+            get => _doctorAddress;
+            set
+            {
+                if (_doctorAddress != value)
+                {
+                    _doctorAddress = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private int _departmentId;
 
         public int DepartmentId
@@ -96,7 +113,7 @@ namespace WinUI.ViewModel
                 {
                     _departmentId = value;
                     OnPropertyChanged();
-                    DepartmentName = Departments.FirstOrDefault(d => d.Id == _departmentId)?.Name ?? DefaultDepartmentName;
+                    DepartmentName = Departments.FirstOrDefault(d => d.departmentId == _departmentId)?.departmentName ?? DefaultDepartmentName;
                 }
             }
         }
@@ -236,12 +253,16 @@ namespace WinUI.ViewModel
                 DepartmentId = info.DepartmentId;
                 DepartmentName = info.DepartmentName;
                 Rating = info.Rating;
-                CareerInfo = info.CareerInfo;
-                AvatarUrl = info.AvatarUrl;
                 PhoneNumber = info.PhoneNumber;
                 Mail = info.Mail;
 
-                System.Diagnostics.Debug.WriteLine("Doctor info loaded from service");
+                OriginalDoctor.DoctorName = DoctorName;
+                OriginalDoctor.DepartmentId = DepartmentId;
+                OriginalDoctor.DepartmentName = DepartmentName;
+                OriginalDoctor.Rating = Rating;
+                OriginalDoctor.PhoneNumber = PhoneNumber;
+                OriginalDoctor.Mail = Mail;
+
                 return true;
             }
             catch (Exception exception)
@@ -268,8 +289,7 @@ namespace WinUI.ViewModel
         {
             DoctorName = OriginalDoctor.DoctorName;
             DepartmentName = OriginalDoctor.DepartmentName;
-            CareerInfo = OriginalDoctor.CareerInfo;
-            AvatarUrl = OriginalDoctor.AvatarUrl;
+            DepartmentId = OriginalDoctor.DepartmentId;
             PhoneNumber = OriginalDoctor.PhoneNumber;
             Mail = OriginalDoctor.Mail;
         }
@@ -324,9 +344,9 @@ namespace WinUI.ViewModel
                             OriginalDoctor = OriginalDoctor.Clone(phoneNumber: newValue);
                             break;
 
-                        case DoctorService.UpdateField.Email:
+                        case DoctorService.UpdateField.Mail:
                             Mail = newValue;
-                            OriginalDoctor = OriginalDoctor.Clone(email: newValue);
+                            OriginalDoctor = OriginalDoctor.Clone(mail: newValue);
                             break;
                     }
                 }
@@ -359,17 +379,11 @@ namespace WinUI.ViewModel
                 if (DepartmentId != OriginalDoctor.DepartmentId)
                     changeMade |= await UpdateDoctorFieldAsync(DoctorService.UpdateField.Department, string.Empty, DepartmentId);
 
-                if (CareerInfo != OriginalDoctor.CareerInfo)
-                    changeMade |= await UpdateDoctorFieldAsync(DoctorService.UpdateField.CareerInfo, CareerInfo);
-
-                if (AvatarUrl != OriginalDoctor.AvatarUrl)
-                    changeMade |= await UpdateDoctorFieldAsync(DoctorService.UpdateField.AvatarUrl, AvatarUrl);
-
                 if (PhoneNumber != OriginalDoctor.PhoneNumber)
                     changeMade |= await UpdateDoctorFieldAsync(DoctorService.UpdateField.PhoneNumber, PhoneNumber);
 
                 if (Mail != OriginalDoctor.Mail)
-                    changeMade |= await UpdateDoctorFieldAsync(DoctorService.UpdateField.Email, Mail);
+                    changeMade |= await UpdateDoctorFieldAsync(DoctorService.UpdateField.Mail, Mail);
 
                 return (changeMade, null);
             }
@@ -377,6 +391,22 @@ namespace WinUI.ViewModel
             {
                 RevertChanges();
                 return (false, ex.Message);
+            }
+        }
+        private async void LoadDepartments()
+        {
+            try
+            {
+                var departments = await _doctorService.GetAllDepartments();
+                Departments.Clear();
+                foreach (var dept in departments)
+                {
+                    Departments.Add(dept);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading departments: {ex.Message}");
             }
         }
     }

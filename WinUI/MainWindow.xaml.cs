@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using ClassLibrary.Domain;
 using WinUI.Repository;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using WinUI.Proxy;
 using Microsoft.UI.Xaml.Navigation;
 using ClassLibrary.Repository;
@@ -35,7 +35,7 @@ namespace WinUI
             {
                 INotificationRepository NotificationProxy = new NotificationProxy(new HttpClient());
                 // Make the GET request to your WebAPI
-                var response = NotificationProxy.GetAllNotificationsAsync();
+                var response = NotificationProxy.getAllNotificationsAsync();
 
 
                 // Update the Button content with the response

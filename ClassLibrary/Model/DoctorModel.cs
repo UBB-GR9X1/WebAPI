@@ -1,4 +1,4 @@
-﻿namespace WinUI.Model
+﻿namespace ClassLibrary.Model
 {
     public class DoctorModel
     {

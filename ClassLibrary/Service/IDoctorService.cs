@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using ClassLibrary;
 using System.Threading.Tasks;
-using WinUI.Model;
 using ClassLibrary.Domain;
+using ClassLibrary.Model;
 
-namespace WinUI.Service
+namespace ClassLibrary.Service
 {
     public interface IDoctorService
     {

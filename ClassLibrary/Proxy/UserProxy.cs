@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using ClassLibrary.Domain;
 using ClassLibrary.Repository;
 
-namespace WinUI.Proxy
+namespace ClassLibrary.Proxy
 {
     public class UserProxy : IUserRepository
     {
@@ -18,7 +18,7 @@ namespace WinUI.Proxy
 
         public UserProxy(HttpClient httpClient)
         {
-            this._httpClient = httpClient;
+            _httpClient = httpClient;
         }
 
         public async Task addUserAsync(User user)

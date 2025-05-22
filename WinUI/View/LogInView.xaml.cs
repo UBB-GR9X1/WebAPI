@@ -124,10 +124,10 @@ namespace WinUI.View
                     DoctorsProxy doctorProxy = new DoctorsProxy(new HttpClient());
                     UserProxy userProxy = new UserProxy(new HttpClient());
                     IDoctorService doctorService = new DoctorService(doctorProxy, userProxy);
-                    IDoctorViewModel doctorViewModel = new DoctorViewModel(doctorService, this._login_page_view_model.auth_service.all_user_information.user_id);
+                    IDoctorViewModel doctorViewModel = new DoctorViewModel(doctorService, this._login_page_view_model.authService.allUserInformation.userId);
 
                     System.Diagnostics.Debug.WriteLine($"Navigating to DoctorDashboard with doctorViewModel null: {doctorViewModel == null}");
-                    var parameters = new Tuple<IDoctorViewModel, IAuthViewModel>(doctorViewModel, this._login_page_view_model);
+                    var parameters = new Tuple<IDoctorViewModel, AuthViewModel>(doctorViewModel, this._login_page_view_model);
                     NavigationService.navigate(typeof(DoctorDashboard), parameters);
                     return;
                 }

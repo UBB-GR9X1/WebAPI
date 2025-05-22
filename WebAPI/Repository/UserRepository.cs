@@ -107,6 +107,7 @@ namespace WebApi.Repository
             user_entity.address = user.address;
             user_entity.phoneNumber = user.phoneNumber;
             user_entity.birthDate = user.birthDate;
+            user_entity.mail = user.mail;
 
             await _db_context.SaveChangesAsync();
         }

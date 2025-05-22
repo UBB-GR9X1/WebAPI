@@ -68,10 +68,11 @@ namespace WebClient.Controllers
                 {
                     return RedirectToAction("Dashboard", "Patient");
                 }
-                else if (user.role == "Doctor")
+                */
+                if (user.role == "Doctor")
                 {
                     return RedirectToAction("Dashboard", "Doctor");
-                }*/
+                }
 
                 return RedirectToAction("Index", "Home");
             }

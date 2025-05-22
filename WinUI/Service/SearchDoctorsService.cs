@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using ClassLibrary.Domain;
 using WinUI.Model;
 using WinUI.Proxy;
@@ -62,7 +62,7 @@ namespace WinUI.Service
                     return new List<DoctorModel>();
                 }
 
-                var allDoctors = _doctorsRepository.GetAllDoctorsAsync().Result;
+                var allDoctors = _doctorsRepository.getAllDoctorsAsync().Result;
                 if (allDoctors == null)
                 {
                     return new List<DoctorModel>();
@@ -71,17 +71,17 @@ namespace WinUI.Service
                 var filteredDoctors = allDoctors
                     .Where(doctor =>
                     {
-                        var department = _doctorsRepository.GetDepartmentByIdAsync(doctor.DepartmentId).Result;
-                        return department?.Name?.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0;
+                        var department = _doctorsRepository.getDepartmentByIdAsync(doctor.departmentId).Result;
+                        return department?.departmentName?.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0;
                     })
                     .Select(doctor => new DoctorModel
                     {
-                        DoctorId = doctor.UserId, 
-                        DoctorName = GetUserName(doctor.UserId), 
-                        DepartmentId = doctor.DepartmentId,
-                        DepartmentName = GetDepartmentName(doctor.DepartmentId), 
-                        Rating = doctor.DoctorRating,
-                        Mail = GetUserEmail(doctor.UserId)
+                        DoctorId = doctor.userId, 
+                        DoctorName = GetUserName(doctor.userId), 
+                        DepartmentId = doctor.departmentId,
+                        DepartmentName = GetDepartmentName(doctor.departmentId), 
+                        Rating = doctor.doctorRating,
+                        Mail = GetUserEmail(doctor.userId)
                     })
                     .ToList();
 
@@ -103,7 +103,7 @@ namespace WinUI.Service
                     return new List<DoctorModel>();
                 }
 
-                var allDoctors = _doctorsRepository.GetAllDoctorsAsync().Result;
+                var allDoctors = _doctorsRepository.getAllDoctorsAsync().Result;
                 if (allDoctors == null)
                 {
                     return new List<DoctorModel>();
@@ -112,17 +112,17 @@ namespace WinUI.Service
                 var filteredDoctors = allDoctors
                     .Where(doctor =>
                     {
-                        var user = _userRepository.getUserById(doctor.UserId).Result;
+                        var user = _userRepository.getUserById(doctor.userId).Result;
                         return user?.username?.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0;
                     })
                     .Select(doctor => new DoctorModel
                     {
-                        DoctorId = doctor.UserId, 
-                        DoctorName = GetUserName(doctor.UserId), 
-                        DepartmentId = doctor.DepartmentId,
-                        DepartmentName = GetDepartmentName(doctor.DepartmentId), 
-                        Rating = doctor.DoctorRating, 
-                        Mail = GetUserEmail(doctor.UserId)
+                        DoctorId = doctor.userId, 
+                        DoctorName = GetUserName(doctor.userId), 
+                        DepartmentId = doctor.departmentId,
+                        DepartmentName = GetDepartmentName(doctor.departmentId), 
+                        Rating = doctor.doctorRating, 
+                        Mail = GetUserEmail(doctor.userId)
                     })
                     .ToList();
 
@@ -143,8 +143,8 @@ namespace WinUI.Service
 
         private string GetDepartmentName(int departmentId)
         {
-            var department = _doctorsRepository.GetDepartmentByIdAsync(departmentId).Result;
-            return department?.Name ?? DoctorModel.DefaultDepartmentName;
+            var department = _doctorsRepository.getDepartmentByIdAsync(departmentId).Result;
+            return department?.departmentName ?? DoctorModel.DefaultDepartmentName;
         }
 
 

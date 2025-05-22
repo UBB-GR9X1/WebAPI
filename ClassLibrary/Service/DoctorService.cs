@@ -3,13 +3,11 @@
     using System.Threading.Tasks;
     using ClassLibrary.Domain;
     using ClassLibrary.Repository;
-    using WinUI.Model;
-    using WinUI.Proxy;
-    using WinUI.Model;
-    using WinUI.Repository;
+    using ClassLibrary.Proxy;
+    using ClassLibrary.Model;
     using System.Linq;
 
-    namespace WinUI.Service
+    namespace ClassLibrary.Service
     {
         public class DoctorService : IDoctorService
         {

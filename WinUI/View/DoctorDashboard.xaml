@@ -19,14 +19,26 @@
 
             <!-- Header -->
             <StackPanel Grid.Row="0" Margin="0,0,0,20">
-                <TextBlock Text="Doctor Profile Dashboard" 
-                       Style="{StaticResource TitleTextBlockStyle}" 
-                       FontWeight="Bold" 
-                       FontSize="28" />
-                <TextBlock Text="Manage your professional information" 
-                       Style="{StaticResource SubtitleTextBlockStyle}" 
-                       Opacity="0.6" 
-                       Margin="0,5,0,0" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Doctor Profile Dashboard" 
+                               Style="{StaticResource TitleTextBlockStyle}" 
+                               FontWeight="Bold" 
+                               FontSize="28" />
+                        <TextBlock Text="Manage your professional information" 
+                               Style="{StaticResource SubtitleTextBlockStyle}" 
+                               Opacity="0.6" 
+                               Margin="0,5,0,0" />
+                    </StackPanel>
+                    <Button Grid.Column="1" 
+                            Content="Logout"
+                            Click="OnLogout"
+                            Style="{StaticResource AccentButtonStyle}"/>
+                </Grid>
             </StackPanel>
 
             <!-- Main Content with Loading Indicator -->
@@ -38,75 +50,36 @@
                           VerticalAlignment="Center" />
 
                 <ScrollViewer Visibility="Visible">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                    <StackPanel Spacing="15" MaxWidth="600" Margin="0,0,0,20">
+                        <!-- Name -->
+                        <TextBox Header="Full Name" 
+                             Text="{Binding ViewModel.DoctorName, Mode=TwoWay}" 
+                             PlaceholderText="Enter your full name" />
 
-                        <!-- Left Column - Profile Image -->
-                        <StackPanel Grid.Column="0" Margin="0,0,40,0" Width="220">
-                            <PersonPicture ProfilePicture="{Binding ViewModel.AvatarUrl, Mode=OneWay}" 
-                                       Width="200" 
-                                       Height="200" />
+                        <!-- Department -->
+                        <ComboBox Header="Department" 
+                              ItemsSource="{Binding ViewModel.Departments}"
+                              SelectedValuePath="departmentId"
+                              DisplayMemberPath="departmentName"
+                              SelectedValue="{Binding ViewModel.DepartmentId, Mode=TwoWay}"
+                              PlaceholderText="Select your department"
+                              HorizontalAlignment="Left" />
 
-                            <TextBox Header="Image URL" 
-                                 Text="{Binding ViewModel.AvatarUrl, Mode=TwoWay}" 
-                                 Margin="0,10,0,0"
-                                 PlaceholderText="Enter image URL" />
-                        </StackPanel>
-
-                        <!-- Right Column - Doctor Information -->
-                        <StackPanel Grid.Column="1" Spacing="15">
-                            <!-- Name -->
-                            <TextBox Header="Full Name" 
-                                 Text="{Binding ViewModel.DoctorName, Mode=TwoWay}" 
-                                 PlaceholderText="Enter your full name" />
-
-                            <!-- Department -->
-                            <ComboBox Header="Department" 
-                                  ItemsSource="{Binding ViewModel.Departments}"
-                                  SelectedValuePath="Id"
-                                  DisplayMemberPath="Name"
-                                  SelectedValue="{Binding ViewModel.DepartmentId, Mode=TwoWay}"
-                                  PlaceholderText="Select your department"
-                                  Width="300"
-                                  HorizontalAlignment="Left" />
-
-                            <!-- Current Department -->
-                            <TextBlock>
+                        <!-- Current Department -->
+                        <TextBlock>
                             <Run Text="Current Department: " />
-                            <Run Text="{Binding ViewModel.DepartmentName, Mode=OneWay}" FontWeight="SemiBold" />
-                            </TextBlock>
+                            <Run Text="{Binding ViewModel.DepartmentName, Mode=TwoWay}" FontWeight="SemiBold" />
+                        </TextBlock>
 
-                            <!-- Rating (Read-only) -->
-                            <StackPanel Orientation="Horizontal" Spacing="5">
-                                <TextBlock Text="Rating:" VerticalAlignment="Center" />
-                                <RatingControl Value="{Binding ViewModel.Rating, Mode=OneWay}" 
-                                          IsReadOnly="True" 
-                                         />
-                                <TextBlock Text="{Binding ViewModel.Rating, Mode=OneWay}" 
-                                       VerticalAlignment="Center" />
-                            </StackPanel>
+                        <!-- Contact Information -->
+                        <TextBox Header="Phone Number" 
+                             Text="{Binding ViewModel.PhoneNumber, Mode=TwoWay}" 
+                             PlaceholderText="Enter your phone number" />
 
-                            <!-- Career Information -->
-                            <TextBox Header="Career Information" 
-                                 Text="{Binding ViewModel.CareerInfo, Mode=TwoWay}" 
-                                 PlaceholderText="Enter your career information and specializations"
-                                 TextWrapping="Wrap"
-                                 AcceptsReturn="True"
-                                 Height="100" />
-
-                            <!-- Contact Information -->
-                            <TextBox Header="Phone Number" 
-                                 Text="{Binding ViewModel.PhoneNumber, Mode=TwoWay}" 
-                                 PlaceholderText="Enter your phone number" />
-
-                            <TextBox Header="Email" 
-                                 Text="{Binding ViewModel.Mail, Mode=TwoWay}" 
-                                 PlaceholderText="Enter your email address" />
-                        </StackPanel>
-                    </Grid>
+                        <TextBox Header="Mail" 
+                             Text="{Binding ViewModel.Mail, Mode=TwoWay}" 
+                             PlaceholderText="Enter your email address" />
+                    </StackPanel>
                 </ScrollViewer>
             </Grid>
 

@@ -31,6 +31,11 @@ namespace ClassLibrary.Repository
 
         Task addDoctorAsync(Doctor doctor);
 
+
+        Task updateDoctorByIdAsync(int id, Doctor doctor);
+
+        Task updateDoctorByNameAsync(string name, Doctor doctor);
+
         Task deleteDoctorAsync(int id);
     }
 }

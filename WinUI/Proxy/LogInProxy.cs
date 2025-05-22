@@ -110,7 +110,7 @@ namespace WinUI.Proxy
 
         public async Task<UserAuthModel> getUserById(int _user_id)
         {
-            HttpResponseMessage _response = await this._httpClient.GetAsync(this._baseUrl + "api/user");
+            HttpResponseMessage _response = await this._http_client.GetAsync(this.s_base_url + "api/user");
             _response.EnsureSuccessStatusCode();
             string _response_body = await _response.Content.ReadAsStringAsync();
             List<UserHttpModel> _users = JsonSerializer.Deserialize<List<UserHttpModel>>(_response_body, new JsonSerializerOptions
@@ -128,7 +128,6 @@ namespace WinUI.Proxy
         }
 
 
-        private class UserHttpModel
         public class UserHttpModel
         {
             [JsonPropertyName("userId")]
