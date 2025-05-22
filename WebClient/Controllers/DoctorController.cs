@@ -22,6 +22,13 @@ namespace WebClient.Controllers
             _authService = authService;
         }
 
+        // GET: Doctor
+        // Default action that displays the doctor's profile
+        public async Task<IActionResult> Index()
+        {
+            return await Profile();
+        }
+
         // GET: Doctor/Dashboard
         public async Task<IActionResult> Dashboard()
         {
@@ -93,10 +100,28 @@ namespace WebClient.Controllers
             return View(_doctorService.DoctorInformation);
         }
 
+        // GET: Doctor/Edit
         // GET: Doctor/Edit/{userId}
-        public async Task<IActionResult> Edit(int userId)
+        public async Task<IActionResult> Edit(int? userId = null)
         {
-            var success = await _doctorService.LoadDoctorInformationByUserId(userId);
+            // If no userId is provided, try to get the current user's ID from claims
+            if (!userId.HasValue && User.Identity.IsAuthenticated)
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int currentUserId))
+                {
+                    userId = currentUserId;
+                }
+            }
+
+            // If we still don't have a userId, redirect to home
+            if (!userId.HasValue)
+            {
+                TempData["Error"] = "Unable to determine which doctor profile to edit.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var success = await _doctorService.LoadDoctorInformationByUserId(userId.Value);
             if (!success)
             {
                 TempData["Error"] = "Doctor not found or error loading information.";

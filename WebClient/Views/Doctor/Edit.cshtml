@@ -31,6 +31,7 @@
             padding: 2rem 0;
             margin-bottom: 2rem;
             border-radius: 0 0 1rem 1rem;
+            position: relative;
         }
 
         .form-card {
@@ -83,10 +84,10 @@
             background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
             border: none;
             color: white;
-            padding: 0.85rem 2.5rem;
+            padding: 0.85rem 3rem;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             transition: all 0.3s ease;
             box-shadow: 0 4px 10px rgba(71, 35, 217, 0.3);
         }
@@ -104,9 +105,9 @@
             padding: 0.85rem 2.5rem;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             transition: all 0.3s ease;
-            margin-right: 1rem;
+            margin-right: 1.5rem;
         }
 
         .btn-cancel:hover {
@@ -176,15 +177,41 @@
         .card-body {
             padding: 2rem;
         }
+
+        .back-to-profile {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255,255,255,0.3);
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            padding: 0.5rem 1.25rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-profile:hover {
+            background-color: white;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .back-to-profile i {
+            margin-right: 0.5rem;
+        }
     </style>
 </head>
 <body>
     <div class="container-fluid px-0">
         <!-- Header -->
         <div class="edit-header text-center">
+            <a href="@Url.Action("Profile", "Doctor")" class="btn back-to-profile">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
             <div class="container">
                 <h1 class="display-5 mb-2">
-                    <i class="fas fa-user-edit me-3"></i>Edit Doctor Profile
+                    <i class="fas fa-user-edit me-3"></i>Edit Your Profile
                 </h1>
                 <p class="lead">Update your professional information</p>
             </div>
@@ -316,7 +343,7 @@
 
                 <div class="row mb-5">
                     <div class="col-12 text-center">
-                        <a href="@Url.Action("Profile", "Doctor", new { userId = Model.DoctorId })" class="btn btn-cancel">
+                        <a href="@Url.Action("Profile", "Doctor")" class="btn btn-cancel">
                             <i class="fas fa-times me-2"></i>Cancel
                         </a>
                         <button type="submit" class="btn btn-save">
