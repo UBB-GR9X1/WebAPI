@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ClassLibrary.Domain;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using WinUI.Service;
 using Moq;
 
