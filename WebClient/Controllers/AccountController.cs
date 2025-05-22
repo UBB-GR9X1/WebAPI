@@ -71,7 +71,7 @@ namespace WebClient.Controllers
                 */
                 if (user.role == "Doctor")
                 {
-                    return RedirectToAction("Dashboard", "Doctor");
+                    return RedirectToAction("Profile", "Doctor");
                 }
 
                 return RedirectToAction("Index", "Home");

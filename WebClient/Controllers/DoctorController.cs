@@ -24,9 +24,9 @@ namespace WebClient.Controllers
 
         // GET: Doctor
         // Default action that displays the doctor's profile
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return await Profile();
+            return RedirectToAction("Profile");
         }
 
         // GET: Doctor/Dashboard
