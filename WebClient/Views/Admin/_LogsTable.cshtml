@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ClassLibrary.Model.LogEntryModel>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Log ID</th>
+            <th>User ID</th>
+            <th>Action</th>
+            <th>Timestamp</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model?.Any() == true)
+        {
+            @foreach (var log in Model)
+            {
+                <tr>
+                    <td>@log.log_id</td>
+                    <td>@log.user_id</td>
+                    <td>@log.action_type</td>
+                    <td>@log.timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a asp-action="LogDetails" asp-route-id="@log.log_id" class="btn btn-info">Details</a>
+                            <form asp-action="DeleteLog" asp-route-id="@log.log_id" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this log?');">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No logs found.</td>
+            </tr>
+        }
+    </tbody>
+</table>

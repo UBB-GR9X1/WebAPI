@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Data;
 using Entity;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using ClassLibrary.Domain;
 
 namespace Controllers

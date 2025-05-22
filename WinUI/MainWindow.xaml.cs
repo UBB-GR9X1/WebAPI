@@ -10,7 +10,7 @@ using WinUI.Repository;
 using ClassLibrary.IRepository;
 using WinUI.Proxy;
 using Microsoft.UI.Xaml.Navigation;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using WinUI.Proxy;
 using WinUI.View;
 

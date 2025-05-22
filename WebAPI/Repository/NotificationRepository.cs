@@ -5,7 +5,7 @@ namespace WebApi.Repository
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
-    using ClassLibrary.IRepository;
+    using ClassLibrary.Repository;
     using Data;
     using ClassLibrary.Domain;
     using Entity;
