@@ -20,6 +20,11 @@ builder.Services.AddScoped<ILogInRepository, LogInProxy>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ILoggerService, LoggerService>();
 
+builder.Services.AddScoped<IUserRepository, UserProxy>();
+
+builder.Services.AddScoped<IDoctorRepository, DoctorsProxy>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
