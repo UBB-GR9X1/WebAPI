@@ -1,5 +1,4 @@
-﻿
-
+﻿@model ClassLibrary.Model.DoctorModel
 @{
 	ViewData["Title"] = "Doctor Profile";
 }
@@ -13,90 +12,162 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
+        :root {
+            --primary-color: #4723D9;
+            --secondary-color: #64C9CF;
+            --accent-color: #FF6B6B;
+            --light-color: #F8F9FA;
+            --dark-color: #343A40;
+        }
+
         .profile-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
             color: white;
-            padding: 2rem 0;
+            padding: 2.5rem 0;
             margin-bottom: 2rem;
+            border-radius: 0 0 1rem 1rem;
         }
 
         .profile-avatar {
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            border: 4px solid white;
+            border: 5px solid white;
             object-fit: cover;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .rating-stars {
-            color: #ffc107;
-            font-size: 1.2rem;
+            color: gold;
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
         }
 
         .info-card {
             border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
             margin-bottom: 1.5rem;
+            overflow: hidden;
         }
 
-            .info-card .card-header {
-                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-                color: white;
-                border-radius: 10px 10px 0 0;
-                font-weight: 600;
-            }
+        .info-card .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+        }
 
         .info-item {
             display: flex;
             align-items: center;
-            padding: 0.75rem 0;
+            padding: 1.25rem 1.5rem;
             border-bottom: 1px solid #eee;
         }
 
-            .info-item:last-child {
-                border-bottom: none;
-            }
+        .info-item:last-child {
+            border-bottom: none;
+        }
 
         .info-icon {
-            width: 30px;
-            text-align: center;
-            margin-right: 1rem;
-            color: #667eea;
+            width: 40px;
+            height: 40px;
+            background-color: #f0f0ff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.25rem;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        .info-content strong {
+            display: block;
+            color: #555;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-content span, .info-content a {
+            color: #333;
+            font-weight: 500;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+
+        .info-content a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
         }
 
         .btn-custom {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
             border: none;
             color: white;
-            padding: 0.75rem 2rem;
-            border-radius: 25px;
+            padding: 0.75rem 2.5rem;
+            border-radius: 50px;
             font-weight: 600;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(71, 35, 217, 0.3);
         }
 
-            .btn-custom:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-                color: white;
-            }
+        .btn-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(71, 35, 217, 0.4);
+            color: white;
+        }
+
+        .btn-dashboard {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            margin-right: 1rem;
+        }
+
+        .btn-dashboard:hover {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 6px 15px rgba(71, 35, 217, 0.4);
+        }
+
+        .department-badge {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
 
         .alert-custom {
             border: none;
-            border-radius: 10px;
-            margin-bottom: 1rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.5rem;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            font-family: 'Roboto', sans-serif;
         }
     </style>
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid px-0">
         <!-- Profile Header -->
         <div class="profile-header text-center">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
+                        @if(!string.IsNullOrEmpty(Model.AvatarUrl)) {
+                            <img src="@Model.AvatarUrl" alt="Dr. @Model.DoctorName" class="profile-avatar">
+                        } else {
+                            <img src="https://via.placeholder.com/150" alt="Dr. @Model.DoctorName" class="profile-avatar">
+                        }
                         <h1 class="display-4 mb-2">Dr. @Model.DoctorName</h1>
                         <div class="rating-stars">
                             @for (int i = 1; i <= 5; i++)
@@ -116,7 +187,9 @@
                             }
                             <span class="ms-2">@Model.Rating.ToString("F1")</span>
                         </div>
-                        <h4 class="mb-0">@Model.DepartmentName</h4>
+                        <div class="department-badge">
+                            <i class="fas fa-hospital-alt me-2"></i>@Model.DepartmentName
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,31 +199,33 @@
             <!-- Alert Messages -->
             @if (TempData["Success"] != null)
             {
-                <div class="alert alert-success alert-custom">
+                <div class="alert alert-success alert-custom alert-dismissible fade show" role="alert">
                     <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
             @if (TempData["Error"] != null)
             {
-                <div class="alert alert-danger alert-custom">
+                <div class="alert alert-danger alert-custom alert-dismissible fade show" role="alert">
                     <i class="fas fa-exclamation-circle me-2"></i>@TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
 
             <div class="row">
                 <!-- Contact Information -->
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <div class="card info-card">
                         <div class="card-header">
                             <i class="fas fa-address-card me-2"></i>Contact Information
                         </div>
-                        <div class="card-body">
+                        <div class="card-body p-0">
                             <div class="info-item">
                                 <div class="info-icon">
                                     <i class="fas fa-envelope"></i>
                                 </div>
-                                <div>
-                                    <strong>Email:</strong><br>
+                                <div class="info-content">
+                                    <strong>Email</strong>
                                     <a href="mailto:@Model.Mail">@Model.Mail</a>
                                 </div>
                             </div>
@@ -158,8 +233,8 @@
                                 <div class="info-icon">
                                     <i class="fas fa-phone"></i>
                                 </div>
-                                <div>
-                                    <strong>Phone:</strong><br>
+                                <div class="info-content">
+                                    <strong>Phone</strong>
                                     <a href="tel:@Model.PhoneNumber">@Model.PhoneNumber</a>
                                 </div>
                             </div>
@@ -167,9 +242,9 @@
                                 <div class="info-icon">
                                     <i class="fas fa-hospital"></i>
                                 </div>
-                                <div>
-                                    <strong>Department:</strong><br>
-                                    @Model.DepartmentName
+                                <div class="info-content">
+                                    <strong>Department</strong>
+                                    <span>@Model.DepartmentName</span>
                                 </div>
                             </div>
                         </div>
@@ -177,37 +252,37 @@
                 </div>
 
                 <!-- Professional Information -->
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <div class="card info-card">
                         <div class="card-header">
                             <i class="fas fa-user-md me-2"></i>Professional Information
                         </div>
-                        <div class="card-body">
+                        <div class="card-body p-0">
                             <div class="info-item">
                                 <div class="info-icon">
                                     <i class="fas fa-id-badge"></i>
                                 </div>
-                                <div>
-                                    <strong>Doctor ID:</strong><br>
-                                    @Model.DoctorId
+                                <div class="info-content">
+                                    <strong>Doctor ID</strong>
+                                    <span>@Model.DoctorId</span>
                                 </div>
                             </div>
                             <div class="info-item">
                                 <div class="info-icon">
                                     <i class="fas fa-briefcase"></i>
                                 </div>
-                                <div>
-                                    <strong>Career Information:</strong><br>
-                                    @Model.CareerInfo
+                                <div class="info-content">
+                                    <strong>Career Information</strong>
+                                    <span>@Model.CareerInfo</span>
                                 </div>
                             </div>
                             <div class="info-item">
                                 <div class="info-icon">
                                     <i class="fas fa-star"></i>
                                 </div>
-                                <div>
-                                    <strong>Rating:</strong><br>
-                                    @Model.Rating.ToString("F1") / 5.0
+                                <div class="info-content">
+                                    <strong>Rating</strong>
+                                    <span>@Model.Rating.ToString("F1") / 5.0</span>
                                 </div>
                             </div>
                         </div>
@@ -216,9 +291,12 @@
             </div>
 
             <!-- Action Buttons -->
-            <div class="row mt-4">
+            <div class="row mt-4 mb-5">
                 <div class="col-12 text-center">
-                    <a href="/Doctor/Edit/@Model.DoctorId" class="btn btn-custom me-3">
+                    <a href="@Url.Action("Dashboard", "Doctor")" class="btn btn-custom btn-dashboard">
+                        <i class="fas fa-th-large me-2"></i>Dashboard
+                    </a>
+                    <a href="@Url.Action("Edit", "Doctor", new { userId = Model.DoctorId })" class="btn btn-custom">
                         <i class="fas fa-edit me-2"></i>Edit Profile
                     </a>
                 </div>

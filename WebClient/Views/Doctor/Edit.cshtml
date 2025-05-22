@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ClassLibrary.Model.DoctorModel
+@{
     ViewData["Title"] = "Edit Doctor Profile";
 }
 
@@ -11,114 +12,174 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <style>
+        :root {
+            --primary-color: #4723D9;
+            --secondary-color: #64C9CF;
+            --accent-color: #FF6B6B;
+            --light-color: #F8F9FA;
+            --dark-color: #343A40;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            font-family: 'Roboto', sans-serif;
+        }
+
         .edit-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
             color: white;
             padding: 2rem 0;
             margin-bottom: 2rem;
+            border-radius: 0 0 1rem 1rem;
         }
 
         .form-card {
             border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border-radius: 15px;
             overflow: hidden;
+            margin-bottom: 2rem;
         }
 
-            .form-card .card-header {
-                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-                color: white;
-                border: none;
-                font-weight: 600;
-                padding: 1.5rem;
-            }
+        .form-card .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 1.5rem;
+        }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
         }
 
         .form-label {
             font-weight: 600;
             color: #333;
             margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
         }
 
         .form-control, .form-select {
             border-radius: 10px;
             border: 2px solid #e9ecef;
-            padding: 0.75rem 1rem;
+            padding: 0.85rem 1rem;
             transition: all 0.3s ease;
+            font-size: 1rem;
         }
 
-            .form-control:focus, .form-select:focus {
-                border-color: #667eea;
-                box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-            }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(71, 35, 217, 0.25);
+        }
 
         .btn-save {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
             border: none;
             color: white;
-            padding: 0.75rem 2rem;
-            border-radius: 25px;
+            padding: 0.85rem 2.5rem;
+            border-radius: 50px;
             font-weight: 600;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(71, 35, 217, 0.3);
         }
 
-            .btn-save:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-                color: white;
-            }
+        .btn-save:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(71, 35, 217, 0.4);
+            color: white;
+        }
 
         .btn-cancel {
-            background: transparent;
-            border: 2px solid #6c757d;
-            color: #6c757d;
-            padding: 0.75rem 2rem;
-            border-radius: 25px;
+            background: white;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.85rem 2.5rem;
+            border-radius: 50px;
             font-weight: 600;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
+            margin-right: 1rem;
         }
 
-            .btn-cancel:hover {
-                background: #6c757d;
-                color: white;
-            }
+        .btn-cancel:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(71, 35, 217, 0.4);
+        }
 
         .preview-avatar {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #667eea;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             margin-bottom: 1rem;
         }
 
         .alert-custom {
             border: none;
-            border-radius: 10px;
-            margin-bottom: 1rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.5rem;
         }
 
         .input-group-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
             color: white;
             border: none;
             border-radius: 10px 0 0 10px;
+            width: 45px;
+            justify-content: center;
         }
 
         .validation-summary {
             background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
+            border: none;
+            border-radius: 15px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .validation-summary h6 {
+            font-weight: 600;
+            color: #721c24;
+            display: flex;
+            align-items: center;
+        }
+
+        .validation-summary h6 i {
+            margin-right: 0.5rem;
+        }
+
+        .validation-summary ul {
+            margin-top: 0.75rem;
+            margin-bottom: 0;
+            padding-left: 2rem;
+        }
+
+        .validation-summary ul li {
+            margin-bottom: 0.5rem;
+            color: #721c24;
+        }
+
+        .card-body {
+            padding: 2rem;
         }
     </style>
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid px-0">
         <!-- Header -->
         <div class="edit-header text-center">
             <div class="container">
@@ -133,14 +194,16 @@
             <!-- Alert Messages -->
             @if (TempData["Success"] != null)
             {
-                <div class="alert alert-success alert-custom">
+                <div class="alert alert-success alert-custom alert-dismissible fade show" role="alert">
                     <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
             @if (TempData["Error"] != null)
             {
-                <div class="alert alert-danger alert-custom">
+                <div class="alert alert-danger alert-custom alert-dismissible fade show" role="alert">
                     <i class="fas fa-exclamation-circle me-2"></i>@TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
 
@@ -148,8 +211,8 @@
             @if (!ViewData.ModelState.IsValid)
             {
                 <div class="validation-summary">
-                    <h6><i class="fas fa-exclamation-triangle me-2"></i>Please correct the following errors:</h6>
-                    <ul class="mb-0">
+                    <h6><i class="fas fa-exclamation-triangle"></i>Please correct the following errors:</h6>
+                    <ul>
                         @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
                         {
                             <li>@error.ErrorMessage</li>
@@ -164,15 +227,15 @@
 
                 <div class="row">
                     <!-- Basic Information -->
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <div class="card form-card">
                             <div class="card-header">
                                 <i class="fas fa-user me-2"></i>Basic Information
                             </div>
-                            <div class="card-body p-4">
+                            <div class="card-body">
                                 <div class="form-group">
                                     <label class="form-label" for="DoctorName">
-                                        <i class="fas fa-user me-2"></i>Doctor Name
+                                        <i class="fas fa-user"></i> Doctor Name
                                     </label>
                                     <input type="text" class="form-control" id="DoctorName" name="DoctorName"
                                            value="@Model.DoctorName" required />
@@ -180,7 +243,7 @@
 
                                 <div class="form-group">
                                     <label class="form-label" for="DepartmentId">
-                                        <i class="fas fa-hospital me-2"></i>Department
+                                        <i class="fas fa-hospital"></i> Department
                                     </label>
                                     <select class="form-select" id="DepartmentId" name="DepartmentId" required>
                                         @foreach (var dept in ViewBag.Departments as SelectList)
@@ -192,25 +255,25 @@
 
                                 <div class="form-group">
                                     <label class="form-label" for="CareerInfo">
-                                        <i class="fas fa-briefcase me-2"></i>Career Information
+                                        <i class="fas fa-briefcase"></i> Career Information
                                     </label>
                                     <textarea class="form-control" id="CareerInfo" name="CareerInfo"
-                                              rows="3" placeholder="Enter career details...">@Model.CareerInfo</textarea>
+                                              rows="4" placeholder="Enter your professional experience, qualifications, and specializations...">@Model.CareerInfo</textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Contact Information -->
-                    <div class="col-md-6">
+                    <div class="col-lg-6">
                         <div class="card form-card">
                             <div class="card-header">
                                 <i class="fas fa-address-card me-2"></i>Contact Information
                             </div>
-                            <div class="card-body p-4">
+                            <div class="card-body">
                                 <div class="form-group">
                                     <label class="form-label" for="Mail">
-                                        <i class="fas fa-envelope me-2"></i>Email Address
+                                        <i class="fas fa-envelope"></i> Email Address
                                     </label>
                                     <div class="input-group">
                                         <span class="input-group-text">
@@ -223,7 +286,7 @@
 
                                 <div class="form-group">
                                     <label class="form-label" for="PhoneNumber">
-                                        <i class="fas fa-phone me-2"></i>Phone Number
+                                        <i class="fas fa-phone"></i> Phone Number
                                     </label>
                                     <div class="input-group">
                                         <span class="input-group-text">
@@ -234,15 +297,15 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group mb-0">
                                     <label class="form-label" for="AvatarUrl">
-                                        <i class="fas fa-image me-2"></i>Avatar URL
+                                        <i class="fas fa-image"></i> Avatar URL
                                     </label>
                                     <input type="url" class="form-control" id="AvatarUrl" name="AvatarUrl"
                                            value="@Model.AvatarUrl" placeholder="https://example.com/avatar.jpg" />
-                                    <div class="text-center mt-3">
+                                    <div class="text-center mt-4">
                                         <img id="avatarPreview"
-                                             src="@(string.IsNullOrEmpty(Model.AvatarUrl) ? "/images/default-avatar.png" : Model.AvatarUrl)"
+                                             src="@(string.IsNullOrEmpty(Model.AvatarUrl) ? "https://via.placeholder.com/150" : Model.AvatarUrl)"
                                              alt="Avatar Preview" class="preview-avatar" />
                                     </div>
                                 </div>
@@ -251,15 +314,14 @@
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
-                <div class="row mt-4">
+                <div class="row mb-5">
                     <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-save me-3">
-                            <i class="fas fa-save me-2"></i>Save Changes
-                        </button>
-                        <a href="/Doctor/Profile/@Model.DoctorId" class="btn btn-cancel">
+                        <a href="@Url.Action("Profile", "Doctor", new { userId = Model.DoctorId })" class="btn btn-cancel">
                             <i class="fas fa-times me-2"></i>Cancel
                         </a>
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
                     </div>
                 </div>
             </form>
@@ -268,48 +330,13 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Avatar preview functionality
+        // Update avatar preview when URL changes
         document.getElementById('AvatarUrl').addEventListener('input', function() {
-            const url = this.value;
             const preview = document.getElementById('avatarPreview');
-
-            if (url && isValidUrl(url)) {
-                preview.src = url;
-                preview.onerror = function() {
-                    this.src = '/images/default-avatar.png';
-                };
+            if (this.value) {
+                preview.src = this.value;
             } else {
-                preview.src = '/images/default-avatar.png';
-            }
-        });
-
-        function isValidUrl(string) {
-            try {
-                new URL(string);
-                return true;
-            } catch (_) {
-                return false;
-            }
-        }
-
-        // Form validation
-        document.querySelector('form').addEventListener('submit', function(e) {
-            const requiredFields = ['DoctorName', 'DepartmentId', 'Mail'];
-            let isValid = true;
-
-            requiredFields.forEach(fieldName => {
-                const field = document.querySelector(`[name="${fieldName}"]`);
-                if (!field.value.trim()) {
-                    field.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    field.classList.remove('is-invalid');
-                }
-            });
-
-            if (!isValid) {
-                e.preventDefault();
-                alert('Please fill in all required fields.');
+                preview.src = 'https://via.placeholder.com/150';
             }
         });
     </script>

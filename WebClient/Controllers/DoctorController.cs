@@ -16,20 +16,50 @@ namespace WebClient.Controllers
         private readonly IDoctorService _doctorService;
         private readonly IAuthService _authService;
 
-        public async Task<IActionResult> Dashboard()
-        {
-            var model = new LogFilterViewModel
-            {
-                logs = new List<LogEntryModel>(),
-                selected_date = DateTime.Now
-            };
-            return View();
-        }
-
         public DoctorController(IDoctorService doctorService, IAuthService authService)
         {
             _doctorService = doctorService;
             _authService = authService;
+        }
+
+        // GET: Doctor/Dashboard
+        public async Task<IActionResult> Dashboard()
+        {
+            // Get current user ID from claims
+            int? userId = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int currentUserId))
+                {
+                    userId = currentUserId;
+                }
+            }
+
+            // If we don't have a userId, redirect to home
+            if (!userId.HasValue)
+            {
+                TempData["Error"] = "Unable to determine the doctor identity.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Load doctor information
+            var success = await _doctorService.LoadDoctorInformationByUserId(userId.Value);
+            if (!success)
+            {
+                TempData["Error"] = "Doctor not found or error loading information.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Create dashboard view model with doctor information
+            var model = new DoctorDashboardViewModel
+            {
+                Doctor = _doctorService.DoctorInformation,
+                RecentLogs = new List<LogEntryModel>(), // These would typically be fetched from a service
+                CurrentDate = DateTime.Now
+            };
+
+            return View(model);
         }
 
         // GET: Doctor/Profile
@@ -158,6 +188,5 @@ namespace WebClient.Controllers
             ViewBag.Departments = new SelectList(departmentList, "departmentId", "departmentName", model.DepartmentId);
             return View(model);
         }
-
     }
 }

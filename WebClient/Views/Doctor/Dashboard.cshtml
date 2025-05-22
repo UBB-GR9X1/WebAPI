@@ -1,4 +1,514 @@
-﻿@{
-    ViewData["Title"] = "Doctor Profile";
+﻿@model WebClient.Models.DoctorDashboardViewModel
+@{
+    ViewData["Title"] = "Doctor Dashboard";
 }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doctor Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary-color: #4723D9;
+            --secondary-color: #64C9CF;
+            --accent-color: #FF6B6B;
+            --light-color: #F8F9FA;
+            --dark-color: #343A40;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 1rem 1rem;
+        }
+
+        .dashboard-stats {
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .stat-primary {
+            background-color: var(--primary-color);
+        }
+
+        .stat-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .stat-accent {
+            background-color: var(--accent-color);
+        }
+
+        .stat-info {
+            background-color: #17A2B8;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .content-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .content-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0;
+        }
+
+        .btn-dashboard {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
+            border: none;
+            color: white;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-dashboard:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+
+        .list-item {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            background-color: #f8f9fa;
+            transition: all 0.2s ease;
+        }
+
+        .list-item:hover {
+            background-color: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .list-item-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .list-item-subtitle {
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+
+        .badge-custom {
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.75rem;
+        }
+
+        .quick-action {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .quick-action:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-action-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary-color);
+        }
+
+        .quick-action-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        .welcome-message {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-top: 0.5rem;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .department-badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            background-color: rgba(255,255,255,0.25);
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .rating-info {
+            margin-top: 0.5rem;
+        }
+
+        .rating-stars {
+            color: gold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid px-0">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="profile-info">
+                        <img src="@(string.IsNullOrEmpty(Model.Doctor.AvatarUrl) ? "https://via.placeholder.com/100" : Model.Doctor.AvatarUrl)" 
+                             alt="Dr. @Model.Doctor.DoctorName" class="user-avatar">
+                        <div>
+                            <h1 class="mb-0">Welcome, Dr. @Model.Doctor.DoctorName</h1>
+                            <p class="welcome-message mb-0">Here's your daily overview</p>
+                            <div class="department-badge">
+                                <i class="fas fa-hospital-alt me-1"></i> 
+                                @Model.Doctor.DepartmentName
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <div class="rating-info">
+                        <div class="rating-stars">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= Model.Doctor.Rating)
+                                {
+                                    <i class="fas fa-star"></i>
+                                }
+                                else if (i - 0.5 <= Model.Doctor.Rating)
+                                {
+                                    <i class="fas fa-star-half-alt"></i>
+                                }
+                                else
+                                {
+                                    <i class="far fa-star"></i>
+                                }
+                            }
+                            <span class="text-white ms-2">@Model.Doctor.Rating.ToString("F1")</span>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("Profile", "Doctor", new { userId = Model.Doctor.DoctorId })" class="btn btn-light mt-2">
+                        <i class="fas fa-user-md me-1"></i> View Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Alert Messages -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>@TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <!-- Stats Cards -->
+        <div class="row dashboard-stats">
+            <div class="col-md-3 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon stat-primary">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-value">@Model.AppointmentsToday</div>
+                    <div class="stat-label">Today's Appointments</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon stat-secondary">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="stat-value">@Model.PendingTasks</div>
+                    <div class="stat-label">Pending Tasks</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon stat-accent">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Total Patients</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon stat-info">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-value">@Model.Doctor.Rating.ToString("F1")</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Quick Actions -->
+            <div class="col-md-4">
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">Quick Actions</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="#" class="text-decoration-none">
+                                <div class="quick-action">
+                                    <div class="quick-action-icon">
+                                        <i class="fas fa-calendar-plus"></i>
+                                    </div>
+                                    <h5 class="quick-action-title">Schedule</h5>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="#" class="text-decoration-none">
+                                <div class="quick-action">
+                                    <div class="quick-action-icon">
+                                        <i class="fas fa-file-medical"></i>
+                                    </div>
+                                    <h5 class="quick-action-title">Records</h5>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="#" class="text-decoration-none">
+                                <div class="quick-action">
+                                    <div class="quick-action-icon">
+                                        <i class="fas fa-notes-medical"></i>
+                                    </div>
+                                    <h5 class="quick-action-title">Prescriptions</h5>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="@Url.Action("Edit", "Doctor", new { userId = Model.Doctor.DoctorId })" class="text-decoration-none">
+                                <div class="quick-action">
+                                    <div class="quick-action-icon">
+                                        <i class="fas fa-user-edit"></i>
+                                    </div>
+                                    <h5 class="quick-action-title">Edit Profile</h5>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">Contact Information</h2>
+                    </div>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="fas fa-envelope text-primary me-2"></i> 
+                            <strong>Email:</strong> @Model.Doctor.Mail
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-phone text-primary me-2"></i> 
+                            <strong>Phone:</strong> @Model.Doctor.PhoneNumber
+                        </li>
+                        <li>
+                            <i class="fas fa-hospital text-primary me-2"></i> 
+                            <strong>Department:</strong> @Model.Doctor.DepartmentName
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Today's Schedule -->
+            <div class="col-md-4">
+                <div class="content-card h-100">
+                    <div class="content-header">
+                        <h2 class="content-title">Today's Schedule</h2>
+                        <span class="badge bg-primary">@Model.CurrentDate.ToString("MMMM dd, yyyy")</span>
+                    </div>
+                    <div class="schedule-list">
+                        <!-- Sample appointments - would be populated from actual data -->
+                        <div class="list-item">
+                            <div class="d-flex justify-content-between">
+                                <div class="list-item-title">John Doe</div>
+                                <span class="badge bg-primary badge-custom">9:00 AM</span>
+                            </div>
+                            <div class="list-item-subtitle">Follow-up Consultation</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="d-flex justify-content-between">
+                                <div class="list-item-title">Sarah Johnson</div>
+                                <span class="badge bg-primary badge-custom">10:30 AM</span>
+                            </div>
+                            <div class="list-item-subtitle">Initial Assessment</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="d-flex justify-content-between">
+                                <div class="list-item-title">Department Meeting</div>
+                                <span class="badge bg-warning badge-custom">12:00 PM</span>
+                            </div>
+                            <div class="list-item-subtitle">Conference Room B</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="d-flex justify-content-between">
+                                <div class="list-item-title">Michael Brown</div>
+                                <span class="badge bg-primary badge-custom">2:15 PM</span>
+                            </div>
+                            <div class="list-item-subtitle">Treatment Review</div>
+                        </div>
+                        <div class="list-item">
+                            <div class="d-flex justify-content-between">
+                                <div class="list-item-title">Emma Wilson</div>
+                                <span class="badge bg-primary badge-custom">3:45 PM</span>
+                            </div>
+                            <div class="list-item-subtitle">New Patient Intake</div>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <a href="#" class="btn btn-dashboard">
+                            <i class="fas fa-calendar-alt me-1"></i> View Full Schedule
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="col-md-4">
+                <div class="content-card h-100">
+                    <div class="content-header">
+                        <h2 class="content-title">Recent Activity</h2>
+                    </div>
+                    @if (Model.RecentLogs != null && Model.RecentLogs.Any())
+                    {
+                        <div class="activity-list">
+                            @foreach (var log in Model.RecentLogs)
+                            {
+                                <div class="list-item">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="list-item-title">@log.ActionType</div>
+                                        <span class="badge bg-secondary badge-custom">
+                                            @log.DateTime.ToString("MMM dd, HH:mm")
+                                        </span>
+                                    </div>
+                                    <div class="list-item-subtitle">@log.Details</div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-history fa-3x mb-3 text-muted"></i>
+                            <p class="text-muted">No recent activities to display</p>
+                        </div>
+                    }
+                    <div class="mt-3 text-center">
+                        <a href="#" class="btn btn-dashboard">
+                            <i class="fas fa-history me-1"></i> View All Activity
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
+</body>
+</html>
 
