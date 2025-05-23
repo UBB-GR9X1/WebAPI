@@ -190,7 +190,8 @@ namespace WebClient.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await _auth_service.logAction(ActionType.LOGOUT);
+            // await _auth_service.logAction(ActionType.LOGOUT);
+            // for now do not log here (api doesnt like that)
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
