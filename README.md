@@ -45,6 +45,7 @@
 # ⚙️ In order to update your database, run the following:
 
 > ❗️ This assumes that you dropped your local database first!
+> ❗️ Edit: Osaki here, use the sql script, migrations are not working.
 
 1. Go into the WebAPI folder:
 ```bash
