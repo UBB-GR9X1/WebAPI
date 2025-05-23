@@ -61,6 +61,10 @@ namespace WinUI.View
         /// <param name="_navigation_evnt_args">Navigation event arguments</param>
         protected override void OnNavigatedTo(NavigationEventArgs _navigation_evnt_args)
         {
+            System.Diagnostics.Debug.WriteLine("OnNavigatedTo called in LogInView");
+            System.Diagnostics.Debug.WriteLine($"Parameter is null: {_navigation_evnt_args.Parameter == null}");
+            System.Diagnostics.Debug.WriteLine($"Parameter type: {_navigation_evnt_args.Parameter?.GetType()}");
+
             base.OnNavigatedTo(_navigation_evnt_args);
 
             // Reset UI state
@@ -69,6 +73,9 @@ namespace WinUI.View
 
             // Show login panel
             this.LoginPanel.Visibility = Visibility.Visible;
+
+            System.Diagnostics.Debug.WriteLine($"ViewModel is null: {_login_page_view_model == null}");
+            System.Diagnostics.Debug.WriteLine($"ViewModel type: {_login_page_view_model?.GetType()}");
         }
 
         /// <summary>
@@ -112,17 +119,19 @@ namespace WinUI.View
                     NavigationService.navigate(typeof(PatientDashboardView), parameters);
                     return;
                 }
-                //else if (this.loginPageViewModel.GetUserRole() == "Doctor")
-                //{
-                //    IDoctorRepository doctorRepository = new DoctorRepository();
-                //    IDoctorService doctorService = new DoctorService(doctorRepository);
-                //    IDoctorViewModel doctorViewModel = new DoctorViewModel(doctorService, this.loginPageViewModel.AuthService.allUserInformation.user_id);
+                else if (this._login_page_view_model.getUserRole() == "Doctor")
+                {
+                    DoctorsProxy doctorProxy = new DoctorsProxy(new HttpClient());
+                    UserProxy userProxy = new UserProxy(new HttpClient());
+                    IDoctorService doctorService = new DoctorService(doctorProxy, userProxy);
+                    IDoctorViewModel doctorViewModel = new DoctorViewModel(doctorService, this._login_page_view_model.authService.allUserInformation.userId);
 
-                //    var parameters = new Tuple<IDoctorViewModel, AuthViewModel>(doctorViewModel, this.loginPageViewModel);
-                //    this.mainFrame.navigate(typeof(DoctorDashboardPage), parameters);
-                //    return;
-                //}
-                
+                    System.Diagnostics.Debug.WriteLine($"Navigating to DoctorDashboard with doctorViewModel null: {doctorViewModel == null}");
+                    var parameters = new Tuple<IDoctorViewModel, AuthViewModel>(doctorViewModel, this._login_page_view_model);
+                    NavigationService.navigate(typeof(DoctorDashboard), parameters);
+                    return;
+                }
+
                 //  Admin Dashboard is done
                 else if (this._login_page_view_model.getUserRole() == "Admin")
                 {

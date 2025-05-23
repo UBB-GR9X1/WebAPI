@@ -93,6 +93,41 @@ namespace Controllers
         }
 
         /// <summary>
+        /// Updates a patient by user ID.
+        /// </summary>
+        /// <param name="id">The ID of the patient to update.</param>
+        /// <param name="patient">The updated patient object.</param>
+        /// <returns>An ActionResult indicating success or failure.</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> updatePatientById(int id, [FromBody] Patient patient)
+        {
+            if (patient == null || id != patient.userId)
+            {
+                return this.BadRequest("Invalid patient data or mismatched ID.");
+            }
+
+            try
+            {
+                await this._patient_repository.updatePatientAsync(id, patient);
+                return this.NoContent();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("not found", StringComparison.OrdinalIgnoreCase))
+                {
+                    return this.NotFound(ex.Message);
+                }
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while updating the patient. Error: {ex.Message}");
+            }
+        }
+
+
+        /// <summary>
         /// Deletes a patient by its ID.
         /// </summary>
         /// <param name="id">The ID of the patient to delete.</param>
