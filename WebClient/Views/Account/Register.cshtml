@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0">Register</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Register" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="mail" class="form-label">Mail</label>
+                        <input type="email" class="form-control" id="mail" name="mail" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="birth_date" class="form-label">Birth Date</label>
+                        <input type="date" class="form-control" id="birth_date" name="birth_date" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cnp" class="form-label">CNP</label>
+                        <input type="text" class="form-control" id="cnp" name="cnp" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="selected_blood_type" class="form-label">Blood Type</label>
+                        <input type="text" class="form-control" id="selected_blood_type" name="selected_blood_type" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="emergency_contact" class="form-label">Emergency Contact</label>
+                        <input type="text" class="form-control" id="emergency_contact" name="emergency_contact" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="weight" class="form-label">Weight</label>
+                        <input type="number" step="0.01" class="form-control" id="weight" name="weight" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="height" class="form-label">Height</label>
+                        <input type="number" step="1" class="form-control" id="height" name="height" required>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
