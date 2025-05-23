@@ -130,6 +130,59 @@ namespace Controllers
         }
 
         /// <summary>
+        /// Updates an existing user identified by name.
+        /// </summary>
+        /// <param name="name">The name of the user to update.</param>
+        /// <param name="user">The updated user data.</param>
+        /// <returns>An ActionResult indicating success or failure.</returns>
+        [HttpPut("by-name/{name}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> UpdateUserByName(string name, [FromBody] User user)
+        {
+            if (user == null)
+            {
+                return BadRequest("User data must be provided.");
+            }
+
+            if (!string.Equals(name, user.name, StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest("Name in URL must match the user's name in the request body.");
+            }
+
+            try
+            {
+                // Fetch users by name (assuming your repo returns a list)
+                var users = await _user_repository.getUsersByNameAsync(name);
+                if (users == null || users.Count == 0)
+                {
+                    return NotFound($"No user found with name '{name}'.");
+                }
+
+                if (users.Count > 1)
+                {
+                    return BadRequest($"Multiple users found with the name '{name}'. Please update by user ID instead.");
+                }
+
+                var existingUser = users[0];
+
+                // Optionally, ensure the userId matches or handle as needed
+                user.userId = existingUser.userId;
+
+                await _user_repository.updateUserAsync(user);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while updating the user. Error: {ex.Message}");
+            }
+        }
+
+
+        /// <summary>
         /// Deletes a user by ID.
         /// </summary>
         /// <param name="id">The ID of the user to delete.</param>
@@ -229,5 +282,7 @@ namespace Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving user by CNP. Error: {exception.Message}");
             }
         }
+
+
     }
 }

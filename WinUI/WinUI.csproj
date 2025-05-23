@@ -13,8 +13,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="View\DoctorDashboard.xaml" />
     <None Remove="View\PatientDashboardControl.xaml" />
     <None Remove="View\PatientDashboardView.xaml" />
+    <None Remove="View\SearchDoctorsDashboard.xaml" />
     <None Remove="View\Windows\NotificationWindow.xaml" />
   </ItemGroup>
 
@@ -63,10 +65,23 @@
     <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
     <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 	   
 	<ItemGroup>
 		<ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
+	</ItemGroup>
+	   
+	<ItemGroup>
+	  <Page Update="View\SearchDoctorsDashboard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	   
+	<ItemGroup>
+	  <Page Update="View\DoctorDashboard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 	   
 	<ItemGroup>

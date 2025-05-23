@@ -95,9 +95,25 @@ namespace WebApi.Repository
             await _db_context.SaveChangesAsync();
         }
 
-        public Task updatePatientAsync(Patient patient, User user)
+        public async Task updatePatientAsync(int id, Patient patient)
         {
-            throw new NotImplementedException();
+            var patientEntity = await _db_context.Patients
+                .Include(p => p.user) // Include the related user entity
+                .FirstOrDefaultAsync(p => p.userId == id);
+
+            if (patientEntity == null)
+            {
+                throw new Exception($"Patient with User ID {id} not found.");
+            }
+
+            // Update patient-specific fields
+            patientEntity.bloodType = patient.bloodType;
+            patientEntity.emergencyContact = patient.EmergencyContact;
+            patientEntity.allergies = patient.allergies;
+            patientEntity.weight = patient.weight;
+            patientEntity.height = patient.height;
+
+            await _db_context.SaveChangesAsync();
         }
 
         public Task<List<User>> getAllUserAsync()

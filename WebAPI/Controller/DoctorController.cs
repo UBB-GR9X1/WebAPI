@@ -112,6 +112,41 @@ namespace Controllers
         }
 
         /// <summary>
+        /// Updates a doctor by user ID.
+        /// </summary>
+        /// <param name="id">The ID of the doctor to update.</param>
+        /// <param name="doctor">The updated doctor object.</param>
+        /// <returns>An ActionResult indicating success or failure.</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> updateDoctorById(int id, [FromBody] Doctor doctor)
+        {
+            if (doctor == null || id != doctor.userId)
+            {
+                return this.BadRequest("Invalid doctor data or mismatched ID.");
+            }
+
+            try
+            {
+                await this._doctor_repository.updateDoctorByIdAsync(id, doctor);
+                return this.NoContent();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("not found"))
+                {
+                    return this.NotFound(ex.Message);
+                }
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while updating the doctor. Error: {ex.Message}");
+            }
+        }
+
+
+        /// <summary>
         /// Deletes a doctor by user ID.
         /// </summary>
         /// <param name="id">The ID of the doctor to delete.</param>

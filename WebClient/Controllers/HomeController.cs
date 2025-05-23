@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using WebClient.Models;
 
@@ -15,6 +16,12 @@ namespace WebClient.Controllers
 
         public IActionResult Index()
         {
+            // If user is logged in as a doctor, redirect to their profile page
+            if (User.Identity.IsAuthenticated && User.IsInRole("Doctor"))
+            {
+                return RedirectToAction("Profile", "Doctor");
+            }
+            
             return View();
         }
 
