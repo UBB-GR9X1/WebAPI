@@ -127,9 +127,9 @@ namespace WebClient.Controllers
                         }
                     }
 
-                if (selected_blood_type == null)
+                if (selected_blood_type_fin == null)
                 {
-                    /// error or something
+                    throw new AuthenticationException("Invalid Blood Type!");
                 }
 
                 UserCreateAccountModel create_account_model = new UserCreateAccountModel(username, password, mail, name, birth_date, cnp, (BloodType)selected_blood_type_fin, emergency_contact, weight, height);
