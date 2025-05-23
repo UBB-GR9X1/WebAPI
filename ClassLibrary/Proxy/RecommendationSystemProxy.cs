@@ -7,13 +7,12 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
-using WinUI.Model;
-using WinUI.Repository;
+using ClassLibrary.Model;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Diagnostics;
 
-namespace WinUI.Proxy
+namespace ClassLibrary.Proxy
 {
     /// <summary>
     /// Provides proxy methods to interact with the Notification Web API.

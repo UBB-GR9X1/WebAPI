@@ -1,0 +1,60 @@
+﻿@model WebClient.Models.RecommendationViewModel
+@{
+    ViewData["Title"] = "Recommendation";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="mb-4 text-center">Select Symptoms</h2>
+
+            <form asp-action="Recommend" method="post">
+                <div class="form-group mb-3">
+                    <label for="SymptomStart">When did the symptoms start?</label>
+                    <select class="form-select" id="SymptomStart" asp-for="SelectedSymptomStart" asp-items="Model.SymptomStartOptions">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="DiscomfortArea">Affected body area</label>
+                    <select class="form-select" id="DiscomfortArea" asp-for="SelectedDiscomfortArea" asp-items="Model.DiscomfortAreaOptions">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="PrimarySymptom">Primary symptom</label>
+                    <select class="form-select" id="PrimarySymptom" asp-for="SelectedSymptomPrimary" asp-items="Model.SymptomTypeOptions">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="SecondarySymptom">Secondary symptom</label>
+                    <select class="form-select" id="SecondarySymptom" asp-for="SelectedSymptomSecondary" asp-items="Model.SymptomTypeOptions">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="TertiarySymptom">Tertiary symptom</label>
+                    <select class="form-select" id="TertiarySymptom" asp-for="SelectedSymptomTertiary" asp-items="Model.SymptomTypeOptions">
+                        <option value="">-- Select --</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Find Matching Doctor</button>
+            </form>
+
+            @if (Model.DoctorName != null)
+            {
+                <div class="mt-4 p-3 border rounded shadow-sm">
+                    <h5 class="fw-semibold">@Model.DoctorName</h5>
+                    <p class="mb-1">@Model.DoctorDepartment</p>
+                    <p class="mb-0 text-success">@Model.DoctorRating</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
