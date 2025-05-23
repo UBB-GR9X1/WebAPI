@@ -1,4 +1,4 @@
-﻿namespace WinUITests
+﻿namespace WinUi_Test
 {
     [TestClass]
     public sealed class Test1
