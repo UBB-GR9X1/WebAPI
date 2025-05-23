@@ -1,4 +1,4 @@
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Repository;

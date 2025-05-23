@@ -39,3 +39,25 @@
 │   ├── ⚙️ WinUI.csproj.user
 │   └── ⚙️ app.manifest
 ```
+
+---
+
+# ⚙️ In order to update your database, run the following:
+
+> ❗️ This assumes that you dropped your local database first!
+> ❗️ Edit: Osaki here, use the sql script, migrations are not working.
+
+1. Go into the WebAPI folder:
+```bash
+cd WebAPI
+```
+
+2. Run the table creations script:
+```bash
+dotnet ef database update InitialCreate
+```
+
+3. Run the mock data seeding script:
+```bash
+dotnet ef database update SeedMockData
+```

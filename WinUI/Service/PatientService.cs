@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using ClassLibrary.Domain;
 using WinUI.Model;
 using WinUI.Service;

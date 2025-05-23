@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using ClassLibrary.Domain;
 using System;
 

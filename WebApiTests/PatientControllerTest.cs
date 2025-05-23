@@ -1,5 +1,5 @@
 using ClassLibrary.Domain;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
