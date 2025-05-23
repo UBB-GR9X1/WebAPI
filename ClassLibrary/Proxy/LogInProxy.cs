@@ -81,43 +81,33 @@ namespace ClassLibrary.Proxy
             HttpResponseMessage _post_response = await this._http_client.PostAsync(this.s_base_url + "user", _content);
             _post_response.EnsureSuccessStatusCode();
 
-            // Now fetch all patients to find the created userId
-            HttpResponseMessage get_patients_response = await this._http_client.GetAsync(this.s_base_url + "api/patient");
-            get_patients_response.EnsureSuccessStatusCode();
+            //// Cross-reference the new username in users list to find user_id
+            //int new_user_id = users.FirstOrDefault(u => u.username == model_for_creating_user_account.username)?.user_id ?? 0;
+            //if (new_user_id == 0)
+            //{
+            //    users = JsonSerializer.Deserialize<List<UserHttpModel>>(response_body, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            //    new_user_id = users.FirstOrDefault(u => u.username == model_for_creating_user_account.username)?.user_id ?? 0;
+            //}
 
-            string patient_response_body = await get_patients_response.Content.ReadAsStringAsync();
+            //if (new_user_id == 0)
+            //    throw new Exception("Unable to determine user ID for patient record creation.");
 
-            List<PatientHttpModel> patients = JsonSerializer.Deserialize<List<PatientHttpModel>>(patient_response_body, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            //// Create and post patient info
+            //PatientHttpModel patient = new PatientHttpModel
+            //{
+            //    user_id = new_user_id,
+            //    blood_type = model_for_creating_user_account.bloodType.ToString(),
+            //    emergency_contact = model_for_creating_user_account.emergencyContact,
+            //    weight = model_for_creating_user_account.weight,
+            //    height = model_for_creating_user_account.height,
+            //    allergies = ""
+            //};
 
-            // Cross-reference the new username in users list to find user_id
-            int new_user_id = users.FirstOrDefault(u => u.username == model_for_creating_user_account.username)?.user_id ?? 0;
-            if (new_user_id == 0)
-            {
-                users = JsonSerializer.Deserialize<List<UserHttpModel>>(response_body, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                new_user_id = users.FirstOrDefault(u => u.username == model_for_creating_user_account.username)?.user_id ?? 0;
-            }
-
-            if (new_user_id == 0)
-                throw new Exception("Unable to determine user ID for patient record creation.");
-
-            // Create and post patient info
-            PatientHttpModel patient = new PatientHttpModel
-            {
-                user_id = new_user_id,
-                blood_type = model_for_creating_user_account.bloodType.ToString(),
-                emergency_contact = model_for_creating_user_account.emergencyContact,
-                weight = model_for_creating_user_account.weight,
-                height = model_for_creating_user_account.height,
-                allergies = ""
-            };
-
-            var patient_json = JsonSerializer.Serialize(patient);
-            HttpContent patient_content = new StringContent(patient_json, Encoding.UTF8, "application/json");
-            HttpResponseMessage post_patient_response = await this._http_client.PostAsync(this.s_base_url + "api/patient", patient_content);
-            post_patient_response.EnsureSuccessStatusCode();
+            //var patient_json = JsonSerializer.Serialize(patient);
+            //HttpContent patient_content = new StringContent(patient_json, Encoding.UTF8, "application/json");
+            //HttpResponseMessage post_patient_response = await this._http_client.PostAsync(this.s_base_url + "patient", patient_content);
+            //post_patient_response.EnsureSuccessStatusCode();
+            // THIS IS BRAIN DEAD, ASK THE API PPL TO GIVE ID IN POST USER :
 
             return true;
         }
