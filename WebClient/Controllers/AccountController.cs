@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Xml.Linq;
+using System.Diagnostics;
 
 namespace WebClient.Controllers
 {
@@ -133,6 +134,7 @@ namespace WebClient.Controllers
                 }
 
                 UserCreateAccountModel create_account_model = new UserCreateAccountModel(username, password, mail, name, birth_date, cnp, (BloodType)selected_blood_type_fin, emergency_contact, weight, height);
+                Debug.WriteLine(create_account_model.ToString());
                 bool isValid = await _auth_service.createAccount(create_account_model);
 
                 if (!isValid)
