@@ -81,6 +81,44 @@ namespace ClassLibrary.Proxy
             HttpResponseMessage _post_response = await this._http_client.PostAsync(this.s_base_url + "user", _content);
             _post_response.EnsureSuccessStatusCode();
 
+            // Now fetch all patients to find the created userId
+            HttpResponseMessage get_patients_response = await this._http_client.GetAsync(this.s_base_url + "api/patient");
+            get_patients_response.EnsureSuccessStatusCode();
+
+            string patient_response_body = await get_patients_response.Content.ReadAsStringAsync();
+
+            List<PatientHttpModel> patients = JsonSerializer.Deserialize<List<PatientHttpModel>>(patient_response_body, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            // Cross-reference the new username in users list to find user_id
+            int new_user_id = users.FirstOrDefault(u => u.username == model_for_creating_user_account.username)?.user_id ?? 0;
+            if (new_user_id == 0)
+            {
+                users = JsonSerializer.Deserialize<List<UserHttpModel>>(response_body, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                new_user_id = users.FirstOrDefault(u => u.username == model_for_creating_user_account.username)?.user_id ?? 0;
+            }
+
+            if (new_user_id == 0)
+                throw new Exception("Unable to determine user ID for patient record creation.");
+
+            // Create and post patient info
+            PatientHttpModel patient = new PatientHttpModel
+            {
+                user_id = new_user_id,
+                blood_type = model_for_creating_user_account.bloodType.ToString(),
+                emergency_contact = model_for_creating_user_account.emergencyContact,
+                weight = model_for_creating_user_account.weight,
+                height = model_for_creating_user_account.height,
+                allergies = ""
+            };
+
+            var patient_json = JsonSerializer.Serialize(patient);
+            HttpContent patient_content = new StringContent(patient_json, Encoding.UTF8, "application/json");
+            HttpResponseMessage post_patient_response = await this._http_client.PostAsync(this.s_base_url + "api/patient", patient_content);
+            post_patient_response.EnsureSuccessStatusCode();
+
             return true;
         }
 
@@ -141,6 +179,26 @@ namespace ClassLibrary.Proxy
 
             [JsonPropertyName("registrationDate")]
             public DateTime registration_date { get; set; }
+        }
+        public class PatientHttpModel
+        {
+            [JsonPropertyName("userId")]
+            public int user_id { get; set; }
+
+            [JsonPropertyName("bloodType")]
+            public string blood_type { get; set; }
+
+            [JsonPropertyName("emergencyContact")]
+            public string emergency_contact { get; set; }
+
+            [JsonPropertyName("allergies")]
+            public string allergies { get; set; } = "";
+
+            [JsonPropertyName("weight")]
+            public double weight { get; set; }
+
+            [JsonPropertyName("height")]
+            public int height { get; set; }
         }
 
         private class UserLogHttpModel
