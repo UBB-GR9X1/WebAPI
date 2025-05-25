@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Controllers;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using ClassLibrary.Domain;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

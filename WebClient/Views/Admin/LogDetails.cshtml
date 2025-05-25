@@ -1,0 +1,41 @@
+﻿@model ClassLibrary.Model.LogEntryModel
+@{
+    ViewData["Title"] = "Log Details";
+}
+
+<div class="container py-4">
+    <h1>Log Details</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">Log Information</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Log ID</dt>
+                        <dd class="col-sm-9">@Model.log_id</dd>
+
+                        <dt class="col-sm-3">User ID</dt>
+                        <dd class="col-sm-9">@Model.user_id</dd>
+
+                        <dt class="col-sm-3">Action</dt>
+                        <dd class="col-sm-9">@Model.action_type</dd>
+
+                        <dt class="col-sm-3">Timestamp</dt>
+                        <dd class="col-sm-9">@Model.timestamp.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+                    </dl>
+                </div>
+                <div class="card-footer">
+                    <div class="btn-group" role="group">
+                        <a asp-action="Dashboard" class="btn btn-secondary">Back to Dashboard</a>
+                        <form asp-action="DeleteLog" asp-route-id="@Model.log_id" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this log?');">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

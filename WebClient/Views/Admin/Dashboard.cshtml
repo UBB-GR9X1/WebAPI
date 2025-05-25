@@ -1,0 +1,157 @@
+﻿@model WebClient.Models.LogFilterViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h1>Admin Dashboard</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Log Filters</h5>
+    </div>
+    <div class="card-body">
+        <form id="filterForm" asp-action="FilterLogs" method="post">
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="user_id" class="form-label">User ID</label>
+                    <input type="text" class="form-control" id="user_id" name="user_id" asp-for="user_id" placeholder="Enter user ID">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="selected_action_type" class="form-label">Action Type</label>
+                    <select class="form-select" id="selected_action_type" name="selected_action_type" asp-for="selected_action_type" asp-items="@(new SelectList(Model.action_types))">
+                        <option value="">-- Select Action Type --</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="selected_date" class="form-label">Before Date</label>
+                    <input type="date" class="form-control" id="selected_date" name="selected_date" asp-for="selected_date">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="mt-3">
+            <div class="btn-group" role="group">
+                <button type="button" id="loadAllBtn" class="btn btn-outline-secondary">Load All</button>
+                <button type="button" id="filterByUserIdBtn" class="btn btn-outline-secondary">Filter By User ID</button>
+                <button type="button" id="filterByActionTypeBtn" class="btn btn-outline-secondary">Filter By Action Type</button>
+                <button type="button" id="filterByDateBtn" class="btn btn-outline-secondary">Filter By Date</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h5 class="mb-0">System Logs</h5>
+    </div>
+    <div class="card-body">
+        <div id="logsTableContainer">
+            <partial name="_LogsTable" model="Model.logs" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Load all logs
+            $("#loadAllBtn").click(function() {
+                $.ajax({
+                    url: '@Url.Action("AllLogs")',
+                    type: 'GET',
+                    success: function(result) {
+                        $('#logsTableContainer').html(result);
+                    },
+                    error: function(error) {
+                        console.error('Error loading logs:', error);
+                    }
+                });
+            });
+
+            // Filter by user ID
+            $("#filterByUserIdBtn").click(function() {
+                const userId = $('#user_id').val();
+                if (!userId) {
+                    alert('Please enter a User ID');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("FilterByUserId")',
+                    type: 'GET',
+                    data: { userId: userId },
+                    success: function(result) {
+                        $('#logsTableContainer').html(result);
+                    },
+                    error: function(error) {
+                        alert('Invalid User ID');
+                    }
+                });
+            });
+
+            // Filter by action type
+            $("#filterByActionTypeBtn").click(function() {
+                const actionType = $('#selected_action_type').val();
+                if (!actionType) {
+                    alert('Please select an Action Type');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("FilterByActionType")',
+                    type: 'GET',
+                    data: { actionType: actionType },
+                    success: function(result) {
+                        $('#logsTableContainer').html(result);
+                    },
+                    error: function(error) {
+                        console.error('Error filtering logs:', error);
+                    }
+                });
+            });
+
+            // Filter by date
+            $("#filterByDateBtn").click(function() {
+                const timestamp = $('#selected_date').val();
+                if (!timestamp) {
+                    alert('Please select a date');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("FilterByTimestamp")',
+                    type: 'GET',
+                    data: { timestamp: timestamp },
+                    success: function(result) {
+                        $('#logsTableContainer').html(result);
+                    },
+                    error: function(error) {
+                        console.error('Error filtering logs:', error);
+                    }
+                });
+            });
+
+            // Apply all filters using the form
+            $("#filterForm").submit(function(e) {
+                e.preventDefault();
+
+                const formData = $(this).serialize();
+
+                $.ajax({
+                    url: '@Url.Action("FilterLogs")',
+                    type: 'POST',
+                    data: formData,
+                    success: function(result) {
+                        $('#logsTableContainer').html($(result).find('#logsTableContainer').html());
+                    },
+                    error: function(error) {
+                        console.error('Error applying filters:', error);
+                    }
+                });
+            });
+        });
+    </script>
+}

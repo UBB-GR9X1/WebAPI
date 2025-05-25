@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ClassLibrary.Domain;
 
-namespace ClassLibrary.IRepository
+namespace ClassLibrary.Repository
 {
     public interface INotificationRepository
     {

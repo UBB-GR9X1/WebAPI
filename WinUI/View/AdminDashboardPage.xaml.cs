@@ -8,7 +8,7 @@ namespace WinUI.View
     using System.Threading.Tasks;
     using WinUI.Service;
     using WinUI.ViewModel;
-    using ClassLibrary.IRepository;
+    using ClassLibrary.Repository;
     using Microsoft.UI.Xaml;
     using Microsoft.UI.Xaml.Controls;
     using Microsoft.UI.Xaml.Data;
