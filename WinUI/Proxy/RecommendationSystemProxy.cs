@@ -1,5 +1,5 @@
 ﻿using ClassLibrary.Domain;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

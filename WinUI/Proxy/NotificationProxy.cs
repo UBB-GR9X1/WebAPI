@@ -1,4 +1,4 @@
-﻿using ClassLibrary.IRepository;
+﻿using ClassLibrary.Repository;
 using ClassLibrary.Domain;
 using System;
 using System.Collections.Generic;
