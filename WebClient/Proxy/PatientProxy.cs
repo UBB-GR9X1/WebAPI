@@ -1,6 +1,6 @@
 using ClassLibrary.Domain;
-using ClassLibrary.IRepository;
-using static WebClient.Proxy.LogInProxy;
+using ClassLibrary.Repository;
+using static ClassLibrary.Proxy.LogInProxy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
