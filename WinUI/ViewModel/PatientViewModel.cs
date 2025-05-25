@@ -1,8 +1,10 @@
-﻿using System;
+﻿using ClassLibrary.Domain;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using WinUI.Model;
 using WinUI.Service;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WinUI.ViewModel
 {
@@ -346,6 +348,17 @@ namespace WinUI.ViewModel
         public async Task<bool> logUpdate(int user_id, ActionType action)
         {
             return await this._patient_service.logUpdate(user_id, action);
+        }
+
+        public async Task<bool> CreatePatient(int user_id, double weight, int height, string emergency_contact, string allergies, string blood_type)
+        {
+            try
+            {
+                this.is_loading = true;
+                bool added = await this._patient_service.createPatient(user_id, weight, height, emergency_contact, allergies, blood_type);
+                return added;
+            }
+            finally { this.is_loading = false; }
         }
     }
 }

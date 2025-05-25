@@ -62,9 +62,9 @@ namespace WinUI.ViewModel
         /// </summary>
         /// <param name="model_for_creating_user_account">The user's information Model given as UserCreateAccountModel.</param>
         /// <returns>.</returns>
-        public async Task createAccount(UserCreateAccountModel model_for_creating_user_account)
+        public async Task<int> createAccount(UserCreateAccountModel model_for_creating_user_account)
         {
-            await this.authService.createAccount(model_for_creating_user_account);
+           return await this.authService.createAccount(model_for_creating_user_account);
         }
 
         /// <summary>
