@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using ClassLibrary.IService;
 using WinUI.Service;
 using System.ComponentModel;
 

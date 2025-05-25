@@ -1,4 +1,4 @@
-﻿using ClassLibrary.Repository;
+﻿using ClassLibrary.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

@@ -7,7 +7,7 @@ using ClassLibrary.Domain;
 using ClassLibrary.Repository;
 using ClassLibrary;
 
-namespace WinUI.Service
+namespace ClassLibrary.IService
 
 {
     public interface INotificationService
