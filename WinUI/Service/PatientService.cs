@@ -12,6 +12,7 @@ using static WinUI.Proxy.LogInProxy;
 using Windows.System;
 using User = ClassLibrary.Domain.User;
 using System.Net;
+using ClassLibrary.Proxy;
 
 namespace WinUI.Service
 {
@@ -237,6 +238,28 @@ namespace WinUI.Service
             catch (Exception exception)
             {
                 Debug.WriteLine($"Error updating allergies: {exception.Message}");
+                return false;
+            }
+        }
+
+        public virtual async Task<bool> createPatient(int user_id, double weight, int height, string emergency_contact, string allergies, string blood_type)
+        {
+            try
+            {
+                //TODO: don't use hardcoded values
+                Patient patient = new Patient();
+                patient.userId = user_id;
+                patient.weight = weight;
+                patient.height = height;
+                patient.EmergencyContact = emergency_contact;
+                patient.allergies = allergies;
+                patient.bloodType = blood_type;
+                await _patient_repository.addPatientAsync(patient);
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine($"Error creating the patient: {exception.Message}");
                 return false;
             }
         }
