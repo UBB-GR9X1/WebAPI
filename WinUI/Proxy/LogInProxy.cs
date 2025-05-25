@@ -63,7 +63,7 @@ namespace WinUI.Proxy
 
             UserHttpModel _user_json = new UserHttpModel
             {
-                user_id = 0,
+                user_id = model_for_creating_user_account.,
                 username = model_for_creating_user_account.username,
                 password = model_for_creating_user_account.password,
                 mail = model_for_creating_user_account.mail,

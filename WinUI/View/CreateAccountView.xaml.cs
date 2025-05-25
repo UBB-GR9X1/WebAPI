@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using ClassLibrary.Repository;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -14,6 +15,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using WinUI.Exceptions;
 using WinUI.Model;
+using WinUI.Proxy;
 using WinUI.Service;
 using WinUI.ViewModel;
 
@@ -146,16 +148,19 @@ namespace WinUI.View
                 {
                     await this._view_model_create_account.createAccount(new UserCreateAccountModel(username, password, mail, name, birth_date, cnp, (BloodType)selected_blood_type, emergency_contact, weight, height));
 
-                    //PatientService patientService = new PatientService();
-                    //PatientViewModel patientViewModel = new PatientViewModel(patientService, this._view_model_create_account.AuthService.allUserInformation.UserId);
-                    //// Navigate to PatientDashboardPage
-                    //if (App.MainWindow is LoginWindow loginWindow)
-                    //{
-                    //    var parameters = new Tuple<IPatientViewModel, IAuthViewModel>(patientViewModel, this._view_model_create_account);
-                    //    loginWindow.ReturnToLogin();
-                    //    // Optionally navigate to patient dashboard if auto-login is desired
-                    //    // loginWindow.mainFrame.Navigate(typeof(PatientDashboardPage), parameters);
-                    //}
+
+
+                    await this.
+                    PatientService patientService = new PatientService(new PatientProxy(), );
+                    PatientViewModel patientViewModel = new PatientViewModel(patientService, this._view_model_create_account.AuthService.allUserInformation.UserId);
+                    // Navigate to PatientDashboardPage
+                    if (App.MainWindow is LoginWindow loginWindow)
+                    {
+                        var parameters = new Tuple<IPatientViewModel, IAuthViewModel>(patientViewModel, this._view_model_create_account);
+                        loginWindow.ReturnToLogin();
+                        // Optionally navigate to patient dashboard if auto-login is desired
+                        // loginWindow.mainFrame.Navigate(typeof(PatientDashboardPage), parameters);
+                    }
 
                     var validation_dialog = new ContentDialog
                     {
