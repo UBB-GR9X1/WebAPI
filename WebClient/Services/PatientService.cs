@@ -4,13 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ClassLibrary.IRepository;
+using ClassLibrary.Repository;
 using ClassLibrary.Domain;
-using WebClient.Services;
-using static WebClient.Proxy.LogInProxy;
+using ClassLibrary.Service;
+using ClassLibrary.IService;
+using static ClassLibrary.Proxy.LogInProxy;
 using User = ClassLibrary.Domain.User;
 using System.Net;
-using ClassLibrary.IService;
 
 namespace WebClient.Services
 {
@@ -26,7 +26,7 @@ namespace WebClient.Services
         {
             this._patient_repository = patient_repository;
 
-            this._logger_service = logger_service ?? new LoggerService(new WinUI.Proxy.LoggerProxy());
+            this._logger_service = logger_service ?? new LoggerService(new ClassLibrary.Proxy.LoggerProxy());
         }
 
         public async Task<bool> loadPatientInfoByUserId(int user_id)
