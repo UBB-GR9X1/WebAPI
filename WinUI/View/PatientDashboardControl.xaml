@@ -73,13 +73,13 @@
                 <TextBlock Text="Name" Foreground="White" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="10"/>
                 <TextBox Text="{Binding name, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Margin="10"/>
                 <TextBlock Text="Mail" Foreground="White" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding email}" IsReadOnly="True" Grid.Row="0" Grid.Column="3" Margin="10"/>
+                <TextBox Text="{Binding email, Mode=TwoWay}" Grid.Row="0" Grid.Column="3" Margin="10"/>
 
                 <!-- Row 2 -->
                 <TextBlock Text="Password" Foreground="White" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="10"/>
                 <TextBox Text="{Binding password, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Margin="10"/>
                 <TextBlock Text="Username" Foreground="White" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Text="{Binding username}" IsReadOnly="True" Grid.Row="1" Grid.Column="3" Margin="10"/>
+                <TextBox Text="{Binding username, Mode=TwoWay}" Grid.Row="1" Grid.Column="3" Margin="10"/>
 
                 <!-- Row 3 -->
                 <TextBlock Text="Address" Foreground="White" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="10"/>

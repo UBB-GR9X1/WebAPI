@@ -18,15 +18,16 @@ namespace WinUI.Service
     class PatientService : IPatientService
     {
         private readonly IPatientRepository _patient_repository; // ← From ClassLibrary.IRepository
+        private readonly IUserRepository _user_repository;
         private readonly ILoggerService _logger_service;
 
         public PatientJointModel patientInfo { get; private set; } = PatientJointModel.Default;
         public List<PatientJointModel> patientList { get; private set; } = new List<PatientJointModel>();
 
-        public PatientService(IPatientRepository patient_repository, ILoggerService logger_service)
+        public PatientService(IPatientRepository patient_repository, ILoggerService logger_service, IUserRepository user_repository)
         {
             this._patient_repository = patient_repository;
-
+            this._user_repository = user_repository;
             this._logger_service = logger_service ?? new LoggerService(new WinUI.Proxy.LoggerProxy());
         }
 
@@ -74,7 +75,7 @@ namespace WinUI.Service
 
         public virtual async Task<bool> updatePassword(int user_id, string _password)
         {
-            /*
+            
             Patient domain_patient = await _patient_repository.getPatientByUserIdAsync(user_id);
             List<User> domain_users = await this._patient_repository.getAllUserAsync();
             User filtered_user = domain_users.Find(user => user.userId == user_id);
@@ -85,16 +86,14 @@ namespace WinUI.Service
             }
 
             filtered_user.password = _password;
-            await this._patient_repository.updatePatientAsync(domain_patient.userId, filtered_user);
-
-            return true;
-            */
+            await this._user_repository.updateUserAsync(filtered_user);
+            
             return true;
         }
 
         public virtual async Task<bool> updateName(int user_id, string name)
         {
-            /*
+            
             Patient domain_patient = await _patient_repository.getPatientByUserIdAsync(user_id);
             List<User> domain_users = await this._patient_repository.getAllUserAsync();
             User filtered_user = domain_users.Find(user => user.userId == user_id);
@@ -105,14 +104,14 @@ namespace WinUI.Service
             }
 
             filtered_user.name = name;
-            await this._patient_repository.updatePatientAsync(domain_patient.userId, filtered_user);
-            */
+            await this._user_repository.updateUserAsync(filtered_user);
+            
             return true;
         }
 
         public virtual async Task<bool> updateAddress(int user_id, string address)
         {
-            /*
+            
             Patient domain_patient = await _patient_repository.getPatientByUserIdAsync(user_id);
             List<User> domain_users = await this._patient_repository.getAllUserAsync();
             User filtered_user = domain_users.Find(user => user.userId == user_id);
@@ -123,14 +122,14 @@ namespace WinUI.Service
             }
 
             filtered_user.address = address;
-            await this._patient_repository.updatePatientAsync(domain_patient.userId, filtered_user);
-            */
+            await this._user_repository.updateUserAsync(filtered_user);
+            
             return true;
         }
 
         public virtual async Task<bool> updatePhoneNumber(int user_id, string phone_number)
         {
-            /*
+        
             Patient domain_patient = await _patient_repository.getPatientByUserIdAsync(user_id);
             List<User> domain_users = await this._patient_repository.getAllUserAsync();
             User filtered_user = domain_users.Find(user => user.userId == user_id);
@@ -141,8 +140,38 @@ namespace WinUI.Service
             }
 
             filtered_user.phoneNumber = phone_number;
-            await this._patient_repository.updatePatientAsync(domain_patient.userId, filtered_user);
-            */
+            await this._user_repository.updateUserAsync(filtered_user);
+            
+            return true;
+        }
+
+        public virtual async Task<bool> updateEmail(int user_id, string email)
+        {
+            
+            Patient domain_patient = await _patient_repository.getPatientByUserIdAsync(user_id);
+            List<User> domain_users = await this._patient_repository.getAllUserAsync();
+            User filtered_user = domain_users.Find(user => user.userId == user_id);
+            if (domain_patient == null || filtered_user == null)
+            {
+                patientInfo = PatientJointModel.Default;
+                return false;
+            }
+            filtered_user.mail = email;
+            await this._user_repository.updateUserAsync(filtered_user);
+            
+            return true;
+        }
+
+        public virtual async Task<bool> updateUsername(int user_id, string username)
+        {
+            
+            Patient domain_patient = await _patient_repository.getPatientByUserIdAsync(user_id);
+            List<User> domain_users = await this._patient_repository.getAllUserAsync();
+            User filtered_user = domain_users.Find(user => user.userId == user_id);
+            if (domain_patient == null || filtered_user == null) return false;
+            filtered_user.username = username;
+            await this._user_repository.updateUserAsync(filtered_user);
+            
             return true;
         }
 

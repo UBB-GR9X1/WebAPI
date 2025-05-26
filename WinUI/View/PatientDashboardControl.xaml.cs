@@ -92,6 +92,18 @@ namespace WinUI.View
                     has_changes |= phone_number_updated;
                 }
 
+                if (this._patient_view_model.email != this._patient_view_model.original_patient.email)
+                {
+                    bool email_updated = await this._patient_view_model.updateEmail(this._patient_view_model.email);
+                    has_changes |= email_updated;
+                }
+
+                if (this._patient_view_model.username != this._patient_view_model.original_patient.username)
+                {
+                    bool username_updated = await this._patient_view_model.updateUsername(this._patient_view_model.username);
+                    has_changes |= username_updated;
+                }
+
                 if (this._patient_view_model.allergies != this._patient_view_model.original_patient.allergies)
                 {
                     bool allergies_updated = await this._patient_view_model.updateAllergies(this._patient_view_model.allergies);

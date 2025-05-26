@@ -111,8 +111,9 @@ namespace WinUI.View
                 if (this._login_page_view_model.getUserRole() == "Patient")
                 {
                     ClassLibrary.Repository.IPatientRepository patientRepository = new WinUI.Proxy.PatientProxy(new HttpClient());
+                    UserProxy user_proxy = new UserProxy(new HttpClient());
                     ILoggerService logger_service = new LoggerService(new LoggerProxy());
-                    IPatientService patient_service = new PatientService(patientRepository, logger_service);
+                    IPatientService patient_service = new PatientService(patientRepository, logger_service, user_proxy);
                     PatientViewModel patient_view_model = new PatientViewModel(patient_service, this._login_page_view_model.authService.allUserInformation.userId);
 
                     var parameters = new Tuple<PatientViewModel, AuthViewModel>(patient_view_model, this._login_page_view_model);
