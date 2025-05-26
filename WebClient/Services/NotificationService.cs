@@ -1,78 +1,45 @@
-﻿using ClassLibrary.Repository;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
-using ClassLibrary.Domain;
-using ClassLibrary.IService;
+using WebClient.Models;
 
-namespace WinUI.Service
+namespace WebClient.Services
 {
-    /// <summary>
-    /// Provides high-level notification operations on top of the _notification_repository.
-    /// </summary>
-    public class NotificationService : INotificationService
+    public class NotificationService
     {
-        private readonly INotificationRepository _notification_repository;
+        private readonly HttpClient _httpClient;
+        private const string BaseUrl = "api/notification";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationService"/> class.
-        /// </summary>
-        /// <param name="notification_repository">The notification repository used for data access.</param>
-        public NotificationService(INotificationRepository notification_repository)
+        public NotificationService(HttpClient httpClient)
         {
-            this._notification_repository = notification_repository;
+            _httpClient = httpClient;
         }
 
-        /// <summary>
-        /// Retrieves all notifications across all users.
-        /// </summary>
-        /// <returns>
-        /// A task representing the asynchronous operation, containing the list of all notifications.
-        /// </returns>
-        public Task<List<Notification>> getAllNotificationsAsync()
+        public async Task<List<Notification>> GetUserNotificationsAsync(int userId)
         {
-            return this._notification_repository.getAllNotificationsAsync();
+            try
+            {
+                return await _httpClient.GetFromJsonAsync<List<Notification>>($"{BaseUrl}/user/{userId}");
+            }
+            catch (Exception)
+            {
+                return new List<Notification>();
+            }
         }
 
-        /// <summary>
-        /// Retrieves all notifications for a specific user.
-        /// </summary>
-        /// <param name="user_id">The unique identifier of the user.</param>
-        /// <returns>
-        /// A task representing the asynchronous operation, containing the list of notifications for the given user.
-        /// </returns>
-        public Task<List<Notification>> getNotificationsByUserIdAsync(int user_id)
+        public async Task<bool> DeleteNotificationAsync(int notificationId)
         {
-            return this._notification_repository.getNotificationsByUserIdAsync(user_id);
-        }
-
-        /// <summary>
-        /// Deletes a single notification if it belongs to the specified user.
-        /// </summary>
-        /// <param name="notification_id">The unique identifier of the notification.</param>
-        /// <param name="user_id">The unique identifier of the user attempting the deletion.</param>
-        /// <returns>
-        /// A task representing the asynchronous delete operation.
-        /// </returns>
-        /// <exception cref="KeyNotFoundException">
-        /// Thrown when no notification with the specified ID exists.
-        /// </exception>
-        /// <exception cref="UnauthorizedAccessException">
-        /// Thrown when the notification does not belong to the given user.
-        /// </exception>
-        public async Task deleteNotificationAsync(int notification_id, int user_id)
-        {
-            Notification _notification = await this._notification_repository.getNotificationByIdAsync(notification_id);
-
-            if (_notification == null)
-                throw new KeyNotFoundException(
-                    $"Notification with ID {notification_id} not found.");
-
-            if (_notification.userId != user_id)
-                throw new UnauthorizedAccessException(
-                    $"User {user_id} is not allowed to delete notification {notification_id}.");
-
-            await this._notification_repository.deleteNotificationAsync(notification_id);
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"{BaseUrl}/delete/{notificationId}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
