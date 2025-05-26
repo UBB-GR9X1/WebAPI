@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WinUI.Model;
+using ClassLibrary.Model;
 
-namespace WinUI.Service
+namespace ClassLibrary.Service
 {
     public interface IPatientService
     {
@@ -23,5 +23,7 @@ namespace WinUI.Service
         Task<bool> updateBloodType(int user_id, string blood_type);
         Task<bool> updateAllergies(int user_id, string allergies);
         Task<bool> logUpdate(int user_id, ActionType action);
+
+        Task<bool> createPatient(int user_id, double weight, int height, string emergency_contact, string allergies, string blood_type);
     }
 }

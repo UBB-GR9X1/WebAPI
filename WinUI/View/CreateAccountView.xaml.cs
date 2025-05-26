@@ -2,7 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using ClassLibrary.Domain;
+using ClassLibrary.Model;
+using ClassLibrary.Repository;
+using ClassLibrary.Service;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -14,6 +19,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using WinUI.Exceptions;
 using WinUI.Model;
+using WinUI.Proxy;
 using WinUI.Service;
 using WinUI.ViewModel;
 
@@ -76,6 +82,7 @@ namespace WinUI.View
                 string cnp = this.cnp_textbox.Text;
 
                 BloodType? selected_blood_type = null;
+                string blood_type = "";
                 if (this.blood_type_combo_box.SelectedItem is ComboBoxItem selected_item)
                 {
                     string? selected_tag = selected_item.Tag.ToString();
@@ -85,27 +92,35 @@ namespace WinUI.View
                         {
                             case "A_POSITIVE":
                                 selected_blood_type = BloodType.A_POSITIVE;
+                                blood_type = "A+";
                                 break;
                             case "A_NEGATIVE":
                                 selected_blood_type = BloodType.A_NEGATIVE;
+                                blood_type = "A-";
                                 break;
                             case "B_POSITIVE":
                                 selected_blood_type = BloodType.B_POSITIVE;
+                                blood_type = "B+";
                                 break;
                             case "B_NEGATIVE":
                                 selected_blood_type = BloodType.B_NEGATIVE;
+                                blood_type = "B-";
                                 break;
                             case "AB_POSITIVE":
                                 selected_blood_type = BloodType.AB_POSITIVE;
+                                blood_type = "AB+";
                                 break;
                             case "AB_NEGATIVE":
                                 selected_blood_type = BloodType.AB_NEGATIVE;
+                                blood_type = "AB-";
                                 break;
                             case "O_POSITIVE":
                                 selected_blood_type = BloodType.O_POSITIVE;
+                                blood_type = "O+";
                                 break;
                             case "O_NEGATIVE":
                                 selected_blood_type = BloodType.O_NEGATIVE;
+                                blood_type = "O-";
                                 break;
                         }
                     }
@@ -144,18 +159,15 @@ namespace WinUI.View
 
                 try
                 {
-                    await this._view_model_create_account.createAccount(new UserCreateAccountModel(username, password, mail, name, birth_date, cnp, (BloodType)selected_blood_type, emergency_contact, weight, height));
+                   int user_id = await this._view_model_create_account.createAccount(new UserCreateAccountModel(username, password, mail, name, birth_date, cnp, (BloodType)selected_blood_type, emergency_contact, weight, height));
 
-                    //PatientService patientService = new PatientService();
-                    //PatientViewModel patientViewModel = new PatientViewModel(patientService, this._view_model_create_account.AuthService.allUserInformation.UserId);
-                    //// Navigate to PatientDashboardPage
-                    //if (App.MainWindow is LoginWindow loginWindow)
-                    //{
-                    //    var parameters = new Tuple<IPatientViewModel, IAuthViewModel>(patientViewModel, this._view_model_create_account);
-                    //    loginWindow.ReturnToLogin();
-                    //    // Optionally navigate to patient dashboard if auto-login is desired
-                    //    // loginWindow.mainFrame.Navigate(typeof(PatientDashboardPage), parameters);
-                    //}
+                    ClassLibrary.Repository.IPatientRepository patientRepository = new WinUI.Proxy.PatientProxy(new HttpClient());
+                    ILoggerService logger_service = new LoggerService(new LoggerProxy());
+                    IPatientService patient_service = new PatientService(patientRepository, logger_service);
+                    PatientViewModel patient_view_model = new PatientViewModel(patient_service, user_id);
+
+                    string allergies = "";
+                    await patient_view_model.CreatePatient(user_id, weight, height, emergency_contact, allergies, blood_type);
 
                     var validation_dialog = new ContentDialog
                     {

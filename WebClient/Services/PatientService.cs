@@ -9,12 +9,11 @@ using ClassLibrary.Domain;
 using ClassLibrary.Model;
 using ClassLibrary.Service;
 using static ClassLibrary.Proxy.LogInProxy;
-using Windows.System;
 using User = ClassLibrary.Domain.User;
 using System.Net;
 using ClassLibrary.Proxy;
 
-namespace WinUI.Service
+namespace WebClient.Services
 {
     class PatientService : ClassLibrary.Service.IPatientService
     {

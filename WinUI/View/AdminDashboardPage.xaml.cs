@@ -13,6 +13,7 @@ namespace WinUI.View
     using Microsoft.UI.Xaml.Controls;
     using Microsoft.UI.Xaml.Data;
     using Microsoft.UI.Xaml.Navigation;
+    using ClassLibrary.Service;
 
     /// <summary>
     /// Window for the Admin Dashboard functionality.
@@ -65,7 +66,7 @@ namespace WinUI.View
 
         private void initializeLogger(ILogRepository logger_repository)
         {
-            LoggerService logger_manager_model = new LoggerService(logger_repository);
+            ILoggerService logger_manager_model = new LoggerService(logger_repository);
             this._logger_view_model = new LoggerViewModel(logger_manager_model);
 
             this.loadInitialLogData();

@@ -22,7 +22,7 @@ namespace ClassLibrary.Service
         /// <returns>User action: LOGIN if the accout got created, LOGOUT otherwise.</returns>
         /// <exception cref="AuthenticationException">Exceptions if the inputs were not valid
         /// + messages for each validation error.</exception>
-        Task<bool> createAccount(UserCreateAccountModel model_for_creating_user_account);
+        Task<int> createAccount(UserCreateAccountModel model_for_creating_user_account);
 
         /// <summary>
         /// Loads the user page based on the username.

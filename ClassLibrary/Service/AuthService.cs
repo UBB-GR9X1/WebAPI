@@ -192,7 +192,7 @@ namespace ClassLibrary.Service
         /// <returns>User action: LOGIN if the accout got created, LOGOUT otherwise.</returns>
         /// <exception cref="AuthenticationException">Exceptions if the inputs were not valid
         /// + messages for each validation error.</exception>
-        public async Task<bool> createAccount(UserCreateAccountModel model_for_creating_user_account)
+        public async Task<int> createAccount(UserCreateAccountModel model_for_creating_user_account)
         {
             if (string.IsNullOrWhiteSpace(model_for_creating_user_account.username) || model_for_creating_user_account.username.Contains(' '))
             {
@@ -328,17 +328,18 @@ namespace ClassLibrary.Service
                 throw new AuthenticationException("Mismatch between Birth Day and cnp birth day");
             }
 
-            bool result = await _log_in_repository.createAccount(model_for_creating_user_account);
-            if (result)
+            int user_id = await _log_in_repository.createAccount(model_for_creating_user_account);
+            if (await loadUserByUsername(model_for_creating_user_account.username))
             {
-                if (await loadUserByUsername(model_for_creating_user_account.username))
+                await logAction(ActionType.CREATE_ACCOUNT);
+                bool res = await logAction(ActionType.LOGIN);
+                if (!res)
                 {
-                    await logAction(ActionType.CREATE_ACCOUNT);
-                    return await logAction(ActionType.LOGIN);
+                    throw new AuthenticationException("Error logging in after account creation.");
                 }
             }
 
-            return result;
+            return user_id;
         }
 
         /// <summary>

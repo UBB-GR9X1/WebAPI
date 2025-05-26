@@ -8,12 +8,14 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Xml.Linq;
 using System.Diagnostics;
+using ClassLibrary.Proxy;
 
 namespace WebClient.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IAuthService _auth_service;
+        private readonly IPatientService patient_service;
 
         public AccountController(IAuthService authService)
         {
@@ -135,13 +137,22 @@ namespace WebClient.Controllers
 
                 UserCreateAccountModel create_account_model = new UserCreateAccountModel(username, password, mail, name, birth_date, cnp, (BloodType)selected_blood_type_fin, emergency_contact, weight, height);
                 Debug.WriteLine(create_account_model.ToString());
-                bool isValid = await _auth_service.createAccount(create_account_model);
+                int user_id = await _auth_service.createAccount(create_account_model);
 
-                if (!isValid)
-                {
-                    ModelState.AddModelError("", "Invalid username or password");
-                    return View();
-                }
+                //if (!isValid)
+                //{
+                //    ModelState.AddModelError("", "Invalid username or password");
+                //    return View();
+                //}
+
+                await patient_service.createPatient(
+                    user_id,
+                    weight,
+                    height,
+                    emergency_contact,
+                    "", // allergies
+                    selected_blood_type_fin?.convertToString()
+                );
 
                 var user = _auth_service.allUserInformation;
 

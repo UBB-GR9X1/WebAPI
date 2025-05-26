@@ -12,6 +12,7 @@ using WinUI.Repository;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Diagnostics;
+using ClassLibrary.Model;
 
 namespace WinUI.Proxy
 {

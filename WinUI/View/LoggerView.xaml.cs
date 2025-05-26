@@ -13,6 +13,7 @@ namespace WinUI.View
     using ClassLibrary.Repository;
     using WinUI.Service;
     using WinUI.ViewModel;
+    using ClassLibrary.Service;
 
     /// <summary>
     /// View for displaying and managing system logs.
@@ -58,7 +59,7 @@ namespace WinUI.View
 
         private void initializeWithRepository(ILogRepository logger_repository)
         {
-            LoggerService logger_service = new LoggerService(logger_repository);
+            ILoggerService logger_service = new LoggerService(logger_repository);
             this._logger_view_model = new LoggerViewModel(logger_service);
 
             this.bindUserInterface();

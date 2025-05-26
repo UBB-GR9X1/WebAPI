@@ -60,7 +60,7 @@ namespace Data
 
                 entity.Property(p => p.bloodType)
                       .IsRequired()
-                      .HasMaxLength(3);
+                      .HasMaxLength(4);
 
                 entity.Property(p => p.emergencyContact)
                       .IsRequired()
