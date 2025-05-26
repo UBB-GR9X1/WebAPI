@@ -42,7 +42,7 @@ namespace ClassLibrary.Proxy
             return true;
         }
 
-        public async Task<bool> createAccount(UserCreateAccountModel model_for_creating_user_account)
+        public async Task<int> createAccount(UserCreateAccountModel model_for_creating_user_account)
         {
             HttpResponseMessage response = await this._http_client.GetAsync(this.s_base_url + "user");
             response.EnsureSuccessStatusCode();
@@ -59,11 +59,9 @@ namespace ClassLibrary.Proxy
                                       || u.mail == model_for_creating_user_account.mail);
 
             if (exists) throw new AuthenticationException("User already exists!");
-            if (exists) return false;
 
             UserHttpModel _user_json = new UserHttpModel
             {
-                user_id = 0,
                 username = model_for_creating_user_account.username,
                 password = model_for_creating_user_account.password,
                 mail = model_for_creating_user_account.mail,
@@ -81,35 +79,11 @@ namespace ClassLibrary.Proxy
             HttpResponseMessage _post_response = await this._http_client.PostAsync(this.s_base_url + "user", _content);
             _post_response.EnsureSuccessStatusCode();
 
-            //// Cross-reference the new username in users list to find user_id
-            //int new_user_id = users.FirstOrDefault(u => u.username == model_for_creating_user_account.username)?.user_id ?? 0;
-            //if (new_user_id == 0)
-            //{
-            //    users = JsonSerializer.Deserialize<List<UserHttpModel>>(response_body, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            //    new_user_id = users.FirstOrDefault(u => u.username == model_for_creating_user_account.username)?.user_id ?? 0;
-            //}
+            string response_content = await _post_response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(response_content);
+            int user_id = doc.RootElement.GetProperty("userId").GetInt32();
 
-            //if (new_user_id == 0)
-            //    throw new Exception("Unable to determine user ID for patient record creation.");
-
-            //// Create and post patient info
-            //PatientHttpModel patient = new PatientHttpModel
-            //{
-            //    user_id = new_user_id,
-            //    blood_type = model_for_creating_user_account.bloodType.ToString(),
-            //    emergency_contact = model_for_creating_user_account.emergencyContact,
-            //    weight = model_for_creating_user_account.weight,
-            //    height = model_for_creating_user_account.height,
-            //    allergies = ""
-            //};
-
-            //var patient_json = JsonSerializer.Serialize(patient);
-            //HttpContent patient_content = new StringContent(patient_json, Encoding.UTF8, "application/json");
-            //HttpResponseMessage post_patient_response = await this._http_client.PostAsync(this.s_base_url + "patient", patient_content);
-            //post_patient_response.EnsureSuccessStatusCode();
-            // THIS IS BRAIN DEAD, ASK THE API PPL TO GIVE ID IN POST USER :
-
-            return true;
+            return user_id;
         }
 
         public async Task<UserAuthModel> getUserByUsername(string username)

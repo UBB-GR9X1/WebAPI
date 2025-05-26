@@ -31,7 +31,7 @@ namespace ClassLibrary.Repository
         /// <returns> 1 if the user account was created, 0 otherwise.</returns>
         /// <exception cref="AuthenticationException">Throws an exception if the user already exists
         /// or if there was a database error.</exception>
-        Task<bool> createAccount(UserCreateAccountModel model_for_creating_user_account);
+        Task<int> createAccount(UserCreateAccountModel model_for_creating_user_account);
 
         /// <summary>
         /// Gets a user's information from the database based on the username.

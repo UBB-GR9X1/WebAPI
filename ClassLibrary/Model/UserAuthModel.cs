@@ -52,7 +52,7 @@ namespace ClassLibrary.Model
         O_NEGATIVE, // O-
     }
 
-    static class BloodTypeMethods
+    public static class BloodTypeMethods
     {
         public static String convertToString(this BloodType blood_type)
         {

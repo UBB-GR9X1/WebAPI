@@ -1,4 +1,5 @@
 using ClassLibrary.Repository;
+using ClassLibrary.Service;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -44,7 +45,7 @@ namespace WinUI.View
         {
             this.InitializeComponent();
 
-            Repository.ILogInRepository _log_in_service = new LogInProxy(new System.Net.Http.HttpClient());
+            ILogInRepository _log_in_service = new LogInProxy(new System.Net.Http.HttpClient());
             IAuthService _service = new AuthService(_log_in_service);
             this._login_page_view_model = new AuthViewModel(_service);
 

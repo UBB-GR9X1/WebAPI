@@ -1,4 +1,6 @@
 ﻿using ClassLibrary.Domain;
+using ClassLibrary.Model;
+using ClassLibrary.Service;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;

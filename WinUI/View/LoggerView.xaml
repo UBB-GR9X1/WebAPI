@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:viewModels="using:WinUI.ViewModel"
-    xmlns:models="using:WinUI.Model">
+    xmlns:models="using:ClassLibrary.Model">
 
     <!-- Grid layout for the page -->
     <Grid Margin="20">

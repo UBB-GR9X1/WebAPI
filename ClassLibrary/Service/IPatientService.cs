@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WinUI.Model;
+using ClassLibrary.Model;
 
-namespace WinUI.Service
+namespace ClassLibrary.Service
 {
     public interface IPatientService
     {
