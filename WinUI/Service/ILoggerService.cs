@@ -7,6 +7,7 @@ namespace WinUI.Service
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using ClassLibrary.Model;
     using WinUI.Model;
 
     /// <summary>
@@ -49,6 +50,7 @@ namespace WinUI.Service
         /// <param name="timestamp">The timestamp to filter by.</param>
         /// <returns>A task representing the asynchronous operation with a list of log entries.</returns>
         Task<List<LogEntryModel>> getLogsWithParameters(int? user_id, ActionType action_type, DateTime timestamp);
+
 
         /// <summary>
         /// Records a new action in the log.

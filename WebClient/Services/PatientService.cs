@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using ClassLibrary.Repository;
 using ClassLibrary.Domain;
 using ClassLibrary.Service;
-using ClassLibrary.IService;
 using static ClassLibrary.Proxy.LogInProxy;
 using User = ClassLibrary.Domain.User;
 using System.Net;
+using ClassLibrary.Model;
 
 namespace WebClient.Services
 {

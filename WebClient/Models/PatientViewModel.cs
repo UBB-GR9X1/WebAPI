@@ -2,7 +2,8 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using ClassLibrary.Domain;
-using ClassLibrary.IService;
+using ClassLibrary.Model;
+using ClassLibrary.Service;
 
 namespace WebClient.Models
 {

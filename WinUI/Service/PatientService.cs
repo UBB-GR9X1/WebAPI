@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using ClassLibrary.Repository;
 using ClassLibrary.Domain;
-using WinUI.Model;
-using WinUI.Service;
 using static WinUI.Proxy.LogInProxy;
 using Windows.System;
 using User = ClassLibrary.Domain.User;
 using System.Net;
+using ClassLibrary.Service;
+using WinUI.Model;
+using ClassLibrary.Model;
 
 namespace WinUI.Service
 {

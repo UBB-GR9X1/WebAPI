@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebClient.Models;
-using ClassLibrary.IService;
 using System.Threading.Tasks;
+using ClassLibrary.Service;
 
 public class PatientDashboardModel : PageModel
 {
