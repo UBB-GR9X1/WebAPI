@@ -26,6 +26,11 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ILoggerService, LoggerService>();
 
 // Configure cookie-based authentication
+builder.Services.AddScoped<IUserRepository, UserProxy>();
+
+builder.Services.AddScoped<IDoctorRepository, DoctorsProxy>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -50,6 +55,11 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Route for doctor pages
+app.MapControllerRoute(
+    name: "doctor",
+    pattern: "{controller=Doctor}/{action=Profile}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
