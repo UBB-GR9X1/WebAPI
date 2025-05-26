@@ -11,6 +11,10 @@
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="View\SearchDoctorsDashboard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+	  <Page Update="View\DoctorDashboard.xaml"> </Page>
     <Page Update="View\Windows\NotificationWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

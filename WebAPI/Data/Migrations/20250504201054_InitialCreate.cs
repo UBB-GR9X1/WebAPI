@@ -15,183 +15,177 @@ namespace WebApi.Data.Migrations
                 name: "Departments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Departments", x => x.Id);
+                    table.PrimaryKey("PK_Departments", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    userId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Mail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: "User"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    BirthDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    CNP = table.Column<string>(type: "nchar(13)", fixedLength: true, maxLength: 13, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: true),
-                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
+                    username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    mail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    role = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: "User"),
+                    name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    birthDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    cnp = table.Column<string>(type: "nchar(13)", fixedLength: true, maxLength: 13, nullable: false),
+                    address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    phoneNumber = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: true),
+                    registrationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.userId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Doctors",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    DepartmentId = table.Column<int>(type: "int", nullable: false),
-                    DoctorRating = table.Column<double>(type: "float", nullable: false, defaultValue: 0.0),
-                    LicenseNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    userId = table.Column<int>(type: "int", nullable: false),
+                    departmentId = table.Column<int>(type: "int", nullable: false),
+                    doctorRating = table.Column<double>(type: "float", nullable: false, defaultValue: 0.0),
+                    licenseNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Doctors", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Doctors_Departments_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Doctors_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Doctors", x => x.userId);
+                    // Foreign keys will be added later outside this block
                 });
+
+            // Create indexes and foreign keys for Doctors *after* table creation:
+            migrationBuilder.CreateIndex(
+                name: "IX_Doctors_departmentId",
+                table: "Doctors",
+                column: "departmentId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Doctors_Departments_departmentId",
+                table: "Doctors",
+                column: "departmentId",
+                principalTable: "Departments",
+                principalColumn: "id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Doctors_Users_userId",
+                table: "Doctors",
+                column: "userId",
+                principalTable: "Users",
+                principalColumn: "userId",
+                onDelete: ReferentialAction.Cascade);
+
+            // Repeat the same pattern for other tables like Logs, Notifications, Patients:
+            // Create tables, then create indexes and add foreign keys outside of CreateTable call.
 
             migrationBuilder.CreateTable(
                 name: "Logs",
                 columns: table => new
                 {
-                    LogId = table.Column<int>(type: "int", nullable: false)
+                    logId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    ActionType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
+                    userId = table.Column<int>(type: "int", nullable: true),
+                    actionType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    timestamp = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Logs", x => x.LogId);
-                    table.ForeignKey(
-                        name: "FK_Logs_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.SetNull);
+                    table.PrimaryKey("PK_Logs", x => x.logId);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Logs_userId",
+                table: "Logs",
+                column: "userId",
+                filter: "[userId] IS NOT NULL");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Logs_Users_userId",
+                table: "Logs",
+                column: "userId",
+                principalTable: "Users",
+                principalColumn: "userId",
+                onDelete: ReferentialAction.SetNull);
 
             migrationBuilder.CreateTable(
                 name: "Notifications",
                 columns: table => new
                 {
-                    NotificationId = table.Column<int>(type: "int", nullable: false)
+                    notificationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    DeliveryDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
+                    userId = table.Column<int>(type: "int", nullable: false),
+                    deliveryDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    message = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notifications", x => x.NotificationId);
-                    table.ForeignKey(
-                        name: "FK_Notifications_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Notifications", x => x.notificationId);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_userId",
+                table: "Notifications",
+                column: "userId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Notifications_Users_userId",
+                table: "Notifications",
+                column: "userId",
+                principalTable: "Users",
+                principalColumn: "userId",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.CreateTable(
                 name: "Patients",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    BloodType = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    EmergencyContact = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: false),
-                    Allergies = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Weight = table.Column<double>(type: "float", nullable: false),
-                    Height = table.Column<int>(type: "int", nullable: false)
+                    userId = table.Column<int>(type: "int", nullable: false),
+                    bloodType = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    emergencyContact = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: false),
+                    allergies = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    weight = table.Column<double>(type: "float", nullable: false),
+                    height = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Patients", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Patients_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Patients", x => x.userId);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Doctors_DepartmentId",
-                table: "Doctors",
-                column: "DepartmentId");
+            migrationBuilder.AddForeignKey(
+                name: "FK_Patients_Users_userId",
+                table: "Patients",
+                column: "userId",
+                principalTable: "Users",
+                principalColumn: "userId",
+                onDelete: ReferentialAction.Cascade);
 
+            // Unique indexes on Users
             migrationBuilder.CreateIndex(
-                name: "IX_Logs_UserId",
-                table: "Logs",
-                column: "UserId",
-                unique: true,
-                filter: "[UserId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Notifications_UserId",
-                table: "Notifications",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_CNP",
+                name: "IX_Users_cnp",
                 table: "Users",
-                column: "CNP",
+                column: "cnp",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Mail",
+                name: "IX_Users_mail",
                 table: "Users",
-                column: "Mail",
+                column: "mail",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Username",
+                name: "IX_Users_username",
                 table: "Users",
-                column: "Username",
+                column: "username",
                 unique: true);
         }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "Doctors");
-
-            migrationBuilder.DropTable(
-                name: "Logs");
-
-            migrationBuilder.DropTable(
-                name: "Notifications");
-
-            migrationBuilder.DropTable(
-                name: "Patients");
-
-            migrationBuilder.DropTable(
-                name: "Departments");
-
-            migrationBuilder.DropTable(
-                name: "Users");
-        }
     }
 }
