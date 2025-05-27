@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using ClassLibrary.Service;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using ClassLibrary.Model; // For shared interfaces
+using ClassLibrary.Model;
+using ClassLibrary.Service;
 
 namespace WebClient.Controllers
 {
@@ -18,17 +18,21 @@ namespace WebClient.Controllers
             _authService = authService;
         }
 
+        private int? GetCurrentUserId()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (int.TryParse(claim?.Value, out int userId))
+                    return userId;
+            }
+            return null;
+        }
+
         // GET: Patient/Profile/5
         public async Task<IActionResult> Profile(int? userId = null)
         {
-            if (!userId.HasValue && User.Identity.IsAuthenticated)
-            {
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int currentUserId))
-                {
-                    userId = currentUserId;
-                }
-            }
+            userId ??= GetCurrentUserId();
 
             if (!userId.HasValue)
             {
@@ -37,7 +41,7 @@ namespace WebClient.Controllers
             }
 
             var success = await _patientService.loadPatientInfoByUserId(userId.Value);
-            if (!success)
+            if (!success || _patientService.patientInfo == PatientJointModel.Default)
             {
                 TempData["Error"] = "Patient not found or error loading information.";
                 return RedirectToAction("Index", "Home");
@@ -49,14 +53,7 @@ namespace WebClient.Controllers
         // GET: Patient/Edit/5
         public async Task<IActionResult> Edit(int? id = null)
         {
-            if (!id.HasValue && User.Identity.IsAuthenticated)
-            {
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int currentUserId))
-                {
-                    id = currentUserId;
-                }
-            }
+            id ??= GetCurrentUserId();
 
             if (!id.HasValue)
             {
@@ -65,7 +62,7 @@ namespace WebClient.Controllers
             }
 
             var success = await _patientService.loadPatientInfoByUserId(id.Value);
-            if (!success)
+            if (!success || _patientService.patientInfo == PatientJointModel.Default)
             {
                 TempData["Error"] = "Patient not found or error loading data.";
                 return RedirectToAction("Index", "Home");
@@ -77,63 +74,75 @@ namespace WebClient.Controllers
         // POST: Patient/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PatientId,PatientName,Address,PhoneNumber,Weight,Height,EmergencyContact,BloodType,Allergies")] PatientJointModel patient)
+        public async Task<IActionResult> Edit(int id, [Bind("patientId,patientName,address,phoneNumber,weight,height,emergencyContact,bloodType,allergies,username,email,birthDate,cnp,userId,password")] PatientJointModel patient)
         {
-            if (id != patient.patientId)
+            // Debug logging
+            System.Diagnostics.Debug.WriteLine($"POST Edit - Route ID: {id}, Patient.userId: {patient.userId}, Patient.patientId: {patient.patientId}");
+            
+            // Use the current user ID instead of relying on route parameter
+            var currentUserId = GetCurrentUserId();
+            if (!currentUserId.HasValue)
             {
-                TempData["Error"] = "Invalid patient ID.";
+                TempData["Error"] = "Unable to determine current user.";
+                return RedirectToAction("Index", "Home");
+            }
+            
+            // Use the current user ID for validation and updates
+            id = currentUserId.Value;
+
+            if (!ModelState.IsValid)
+                return View(patient);
+
+            var existingSuccess = await _patientService.loadPatientInfoByUserId(id);
+            if (!existingSuccess || _patientService.patientInfo == PatientJointModel.Default)
+            {
+                TempData["Error"] = "Patient not found.";
                 return RedirectToAction("Index", "Home");
             }
 
-            if (ModelState.IsValid)
+            var existing = _patientService.patientInfo;
+            bool updateSuccess = true;
+
+            if (existing.patientName != patient.patientName)
+                updateSuccess &= await _patientService.updateName(id, patient.patientName);
+
+            if (existing.address != patient.address)
+                updateSuccess &= await _patientService.updateAddress(id, patient.address);
+
+            if (existing.phoneNumber != patient.phoneNumber)
+                updateSuccess &= await _patientService.updatePhoneNumber(id, patient.phoneNumber);
+
+            if (existing.weight != patient.weight && patient.weight > 0)
+                updateSuccess &= await _patientService.updateWeight(id, patient.weight);
+
+            if (existing.height != patient.height && patient.height > 0)
+                updateSuccess &= await _patientService.updateHeight(id, patient.height);
+
+            if (existing.emergencyContact != patient.emergencyContact)
+                updateSuccess &= await _patientService.updateEmergencyContact(id, patient.emergencyContact);
+
+            if (existing.bloodType != patient.bloodType)
+                updateSuccess &= await _patientService.updateBloodType(id, patient.bloodType);
+
+            if (existing.allergies != patient.allergies)
+                updateSuccess &= await _patientService.updateAllergies(id, patient.allergies);
+
+            if (existing.email != patient.email)
+                updateSuccess &= await _patientService.updateEmail(id, patient.email);
+
+            if (existing.username != patient.username)
+                updateSuccess &= await _patientService.updateUsername(id, patient.username);
+
+            if (existing.cnp != patient.cnp)
+                updateSuccess &= await _patientService.updateCnp(id, patient.cnp);
+
+            if (updateSuccess)
             {
-                bool updateSuccess = true;
-
-                // Use individual update methods based on the fields that were changed
-                if (!string.IsNullOrEmpty(patient.phoneNumber))
-                {
-                    updateSuccess &= await _patientService.updateName(id, patient.phoneNumber);
-                }
-                if (!string.IsNullOrEmpty(patient.address))
-                {
-                    updateSuccess &= await _patientService.updateAddress(id, patient.address);
-                }
-                if (!string.IsNullOrEmpty(patient.phoneNumber))
-                {
-                    updateSuccess &= await _patientService.updatePhoneNumber(id, patient.phoneNumber);
-                }
-                if (patient.weight > 0)
-                {
-                    updateSuccess &= await _patientService.updateWeight(id, patient.weight);
-                }
-                if (patient.height > 0)
-                {
-                    updateSuccess &= await _patientService.updateHeight(id, patient.height);
-                }
-                if (!string.IsNullOrEmpty(patient.emergencyContact))
-                {
-                    updateSuccess &= await _patientService.updateEmergencyContact(id, patient.emergencyContact);
-                }
-                if (!string.IsNullOrEmpty(patient.bloodType))
-                {
-                    updateSuccess &= await _patientService.updateBloodType(id, patient.bloodType);
-                }
-                if (!string.IsNullOrEmpty(patient.allergies))
-                {
-                    updateSuccess &= await _patientService.updateAllergies(id, patient.allergies);
-                }
-
-                if (updateSuccess)
-                {
-                    TempData["Success"] = "Profile updated successfully.";
-                    return RedirectToAction("Profile", new { userId = id });
-                }
-                else
-                {
-                    TempData["Error"] = "Failed to update profile.";
-                }
+                TempData["Success"] = "Profile updated successfully.";
+                return RedirectToAction("Profile", new { userId = id });
             }
 
+            ModelState.AddModelError("", "Failed to update profile.");
             return View(patient);
         }
     }

@@ -30,6 +30,8 @@ namespace ClassLibrary.Model
             -1, -1, string.Empty, string.Empty, string.Empty,
             DateOnly.MaxValue, string.Empty, string.Empty, string.Empty, DateTime.Now
         );
+        
+        public PatientJointModel() { }
 
         public PatientJointModel(
             int user_id,
