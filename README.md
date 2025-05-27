@@ -63,3 +63,5 @@ dotnet ef database update InitialCreate
 ```bash
 dotnet ef database update SeedMockData
 ```
+![Untitled555](https://github.com/user-attachments/assets/f43a058d-76c3-43cd-9e40-690882fa2599)
+
