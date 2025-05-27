@@ -8,6 +8,7 @@ namespace WinUI.Service
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using ClassLibrary.Domain;
+    using ClassLibrary.Model;
     using ClassLibrary.Repository;
     using WinUI.Model;
 

@@ -12,9 +12,20 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                @if (User.Identity.IsAuthenticated && User.IsInRole("Doctor"))
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <a class="navbar-brand" asp-controller="Doctor" asp-action="Profile">Hospital Management</a>
+                    @if (User.IsInRole("Doctor"))
+                    {
+                        <a class="navbar-brand" asp-controller="Doctor" asp-action="Profile">Hospital Management</a>
+                    }
+                    @if (User.IsInRole("Patient"))
+                    {
+                        <a class="navbar-brand" asp-controller="Patient" asp-action="Profile">Hospital Management</a>
+                    }
+                    @* else *@
+                    @* { *@
+                    @*     <a class="navbar-brand" asp-controller="Doctor" asp-action="Profile">Hospital Management</a> *@
+                    @* } *@
                 }
                 else
                 {
@@ -26,7 +37,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (!(User.Identity.IsAuthenticated && User.IsInRole("Doctor")))
+                        @if (!(User.Identity.IsAuthenticated))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
@@ -44,6 +55,12 @@
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-controller="Doctor" asp-action="Profile">My Profile</a>
+                                </li>
+                            }
+                            @if (User.IsInRole("Patient"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Patient" asp-action="Profile">My Profile</a>
                                 </li>
                             }
                         }
