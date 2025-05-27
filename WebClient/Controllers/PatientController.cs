@@ -136,6 +136,9 @@ namespace WebClient.Controllers
             if (existing.cnp != patient.cnp)
                 updateSuccess &= await _patientService.updateCnp(id, patient.cnp);
 
+            if (existing.birthDate != patient.birthDate)
+                updateSuccess &= await _patientService.updateBirthDate(id, patient.birthDate);
+
             if (updateSuccess)
             {
                 TempData["Success"] = "Profile updated successfully.";

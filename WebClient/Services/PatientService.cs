@@ -186,6 +186,18 @@ namespace WebClient.Services
             return true;
         }
 
+        public virtual async Task<bool> updateBirthDate(int user_id, DateOnly birthDate)
+        {
+            Patient domain_patient = await _patient_repository.getPatientByUserIdAsync(user_id);
+            List<User> domain_users = await this._patient_repository.getAllUserAsync();
+            User filtered_user = domain_users.Find(user => user.userId == user_id);
+            if (domain_patient == null || filtered_user == null) return false;
+            filtered_user.birthDate = birthDate;
+            await this._user_repository.updateUserAsync(filtered_user);
+
+            return true;
+        }
+
         public virtual async Task<bool> updateEmergencyContact(int user_id, string emergency_contact)
         {
 
