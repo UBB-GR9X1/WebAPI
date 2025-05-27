@@ -1,0 +1,202 @@
+﻿@model ClassLibrary.Model.DoctorModel
+@{
+    ViewData["Title"] = "Edit Doctor Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Adjust if using a different layout
+}
+
+<!-- Add CSS Styles -->
+<style>
+    /* Same CSS as your original message, unchanged */
+    /* ... */
+</style>
+
+<div class="container-fluid px-0">
+    <!-- Edit Header -->
+    <div class="edit-header text-center position-relative">
+        <a href="@Url.Action("Profile", "Doctor", new { userId = Model.DoctorId })" class="btn back-to-profile">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <h1 class="display-4 mb-2">Edit Profile</h1>
+                    <p class="lead">Update your professional information</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Alert Messages -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-custom alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-custom alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>@TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <!-- Validation Summary -->
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="validation-summary">
+                <h6><i class="fas fa-exclamation-triangle"></i>Please correct the following errors:</h6>
+                <ul>
+                    @foreach (var modelState in ViewData.ModelState.Values)
+                    {
+                        foreach (var error in modelState.Errors)
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    }
+                </ul>
+            </div>
+        }
+
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="DoctorId" />
+            <input type="hidden" asp-for="Rating" />
+            <input type="hidden" asp-for="DepartmentName" />
+
+            <!-- Basic Information -->
+            <div class="card form-card">
+                <div class="card-header">
+                    <i class="fas fa-user-md me-2"></i>Basic Information
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="DoctorName">
+                                    <i class="fas fa-id-card"></i>Full Name
+                                </label>
+                                <input asp-for="DoctorName" class="form-control" placeholder="Enter your full name" />
+                                <span asp-validation-for="DoctorName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="DepartmentId">
+                                    <i class="fas fa-hospital"></i>Department
+                                </label>
+                                <select asp-for="DepartmentId" class="form-select" asp-items="ViewBag.Departments">
+                                    <option value="">-- Select Department --</option>
+                                </select>
+                                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="card form-card">
+                <div class="card-header">
+                    <i class="fas fa-address-book me-2"></i>Contact Information
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="Mail">
+                                    <i class="fas fa-envelope"></i>Email Address
+                                </label>
+                                <input asp-for="Mail" class="form-control" placeholder="Enter your email address" />
+                                <span asp-validation-for="Mail" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="PhoneNumber">
+                                    <i class="fas fa-phone"></i>Phone Number
+                                </label>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Information -->
+            <div class="card form-card">
+                <div class="card-header">
+                    <i class="fas fa-briefcase me-2"></i>Professional Information
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label" for="CareerInfo">
+                            <i class="fas fa-briefcase"></i>Career Information
+                        </label>
+                        <textarea asp-for="CareerInfo" class="form-control" rows="5" placeholder="Enter your career information, education, certifications, etc."></textarea>
+                        <span asp-validation-for="CareerInfo" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="card form-card">
+                <div class="card-header">
+                    <i class="fas fa-image me-2"></i>Profile Picture
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            @if (!string.IsNullOrEmpty(Model.AvatarUrl))
+                            {
+                                <img src="@Model.AvatarUrl" alt="Current Avatar" class="preview-avatar" id="avatar-preview" />
+                            }
+                            else
+                            {
+                                <img src="https://via.placeholder.com/150" alt="Default Avatar" class="preview-avatar" id="avatar-preview" />
+                            }
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="form-label" for="AvatarUrl">
+                                    <i class="fas fa-link"></i>Profile Image URL
+                                </label>
+                                <input asp-for="AvatarUrl" class="form-control" placeholder="Enter image URL" id="avatar-url-input" />
+                                <span asp-validation-for="AvatarUrl" class="text-danger"></span>
+                                <small class="form-text text-muted mt-2">
+                                    Enter a URL to your profile picture
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="row mt-4 mb-5 justify-content-center">
+                <div class="col-12 text-center">
+                    <a href="@Url.Action("Profile", "Doctor", new { userId = Model.DoctorId })" class="btn btn-cancel">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </a>
+                    <button type="submit" class="btn btn-save">
+                        <i class="fas fa-save me-2"></i>Save Changes
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Live avatar preview update
+        document.getElementById("avatar-url-input").addEventListener("input", function () {
+            const preview = document.getElementById("avatar-preview");
+            const url = this.value;
+            preview.src = url || "https://via.placeholder.com/150";
+        });
+    </script>
+}
