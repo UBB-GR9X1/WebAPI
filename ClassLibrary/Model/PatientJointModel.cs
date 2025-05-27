@@ -25,12 +25,32 @@ namespace ClassLibrary.Model
         public string phoneNumber { get; set; }
         public DateTime registrationDate { get; set; }
 
+        public PatientJointModel()
+        {
+            userId = -1;
+            patientId = -1;
+            patientName = string.Empty;
+            bloodType = string.Empty;
+            emergencyContact = string.Empty;
+            allergies = string.Empty;
+            weight = -1;
+            height = -1;
+            username = string.Empty;
+            password = string.Empty;
+            email = string.Empty;
+            birthDate = DateOnly.MinValue;
+            cnp = string.Empty;
+            address = string.Empty;
+            phoneNumber = string.Empty;
+            registrationDate = DateTime.Now;
+        }
+
         public static readonly PatientJointModel Default = new(
             -1, -1, string.Empty, string.Empty, string.Empty, string.Empty,
             -1, -1, string.Empty, string.Empty, string.Empty,
             DateOnly.MaxValue, string.Empty, string.Empty, string.Empty, DateTime.Now
         );
-
+        
         public PatientJointModel(
             int user_id,
             int patient_id,

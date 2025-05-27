@@ -99,7 +99,7 @@ namespace WebClient.Services
             }
 
             filtered_user.name = name;
-            await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
+            await (_patient_repository as WebClient.Proxy.PatientProxy).updateUserAsync(user_id, filtered_user);
 
             return true;
         }
@@ -116,7 +116,7 @@ namespace WebClient.Services
             }
 
             filtered_user.address = address;
-            await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
+            await (_patient_repository as WebClient.Proxy.PatientProxy).updateUserAsync(user_id, filtered_user);
 
             return true;
         }
@@ -133,7 +133,7 @@ namespace WebClient.Services
             }
 
             filtered_user.phoneNumber = phone_number;
-            await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
+            await (_patient_repository as WebClient.Proxy.PatientProxy).updateUserAsync(user_id, filtered_user);
 
             return true;
         }
@@ -167,9 +167,9 @@ namespace WebClient.Services
                 List<User> domain_users = await this._patient_repository.getAllUserAsync();
                 User filtered_user = domain_users.Find(user => user.userId == user_id);
                 if (domain_patient == null || filtered_user == null) return false;
-
+                
                 domain_patient.weight = weight;
-                await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
+                await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient); 
 
                 return true;
             }

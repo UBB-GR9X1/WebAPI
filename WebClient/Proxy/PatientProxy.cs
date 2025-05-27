@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace WebClient.Proxy
 {
@@ -121,6 +122,26 @@ namespace WebClient.Proxy
             catch (Exception ex)
             {
                 throw new Exception($"Error updating patient data: {ex.Message}", ex);
+            }
+        }
+
+        public async Task updateUserAsync(int id, User user)
+        {
+            try
+            {
+                UserHttpModel user_http = mapUserToHttpModel(user);
+                string user_json = JsonSerializer.Serialize(user_http);
+
+                StringContent user_content = new StringContent(user_json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage user_response = await this._http_client.PutAsync($"{this.s_base_api_url}user/{id}", user_content);
+
+                user_response.EnsureSuccessStatusCode();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error updating user data: {ex.Message}");
+                throw new Exception($"Error updating user data: {ex.Message}", ex);
             }
         }
 
