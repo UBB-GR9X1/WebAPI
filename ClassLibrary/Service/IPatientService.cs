@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using ClassLibrary.Domain;
 using ClassLibrary.Model;
-using WinUI.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace WinUI.Service
+namespace ClassLibrary.Service
 {
     public interface IPatientService
     {
@@ -18,8 +20,6 @@ namespace WinUI.Service
         Task<bool> updateName(int user_id, string name);
         Task<bool> updateAddress(int user_id, string _address);
         Task<bool> updatePhoneNumber(int user_id, string phone_number);
-        Task<bool> updateEmail(int user_id, string email);
-        Task<bool> updateUsername(int user_id, string username);
         Task<bool> updateWeight(int user_id, double weight);
         Task<bool> updateHeight(int user_id, int height);
         Task<bool> updateEmergencyContact(int user_id, string emergency_contact);

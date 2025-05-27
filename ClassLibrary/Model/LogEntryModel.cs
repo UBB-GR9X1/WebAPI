@@ -39,7 +39,7 @@ namespace ClassLibrary.Model
         CREATE_ACCOUNT,
     }
 
-    static class ActionTypeMethods
+    public static class ActionTypeMethods
     {
         public static String convertToString(this ActionType actionType)
         {

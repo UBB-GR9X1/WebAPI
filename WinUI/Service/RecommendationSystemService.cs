@@ -1,4 +1,5 @@
-﻿using ClassLibrary.Repository;
+﻿using ClassLibrary.Model;
+using ClassLibrary.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

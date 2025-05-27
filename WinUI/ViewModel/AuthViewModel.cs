@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClassLibrary.Model;
 using WinUI.Exceptions;
 using WinUI.Model;
 using WinUI.Service;
