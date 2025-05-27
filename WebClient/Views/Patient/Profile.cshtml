@@ -1,0 +1,197 @@
+@model ClassLibrary.Model.PatientJointModel
+@{
+    ViewData["Title"] = "Patient Profile";
+}
+
+<style>
+    :root {
+        --primary-color: #4723D9;
+        --secondary-color: #64C9CF;
+        --accent-color: #FF6B6B;
+        --light-color: #F8F9FA;
+        --dark-color: #343A40;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
+        color: white;
+        padding: 2.5rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 1rem 1rem;
+    }
+
+    .profile-avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 5px solid white;
+        object-fit: cover;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .info-card {
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+    }
+
+        .info-card .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+        }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        background-color: #f0f0ff;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1.25rem;
+        color: var(--primary-color);
+        font-size: 1.25rem;
+    }
+
+    .info-content strong {
+        display: block;
+        color: #555;
+        margin-bottom: 0.25rem;
+    }
+
+    .info-content span {
+        color: #333;
+        font-weight: 500;
+        font-size: 1.1rem;
+    }
+
+    .edit-profile-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: rgba(255,255,255,0.3);
+        color: white;
+        border: 2px solid white;
+        border-radius: 50px;
+        padding: 0.5rem 1.25rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .edit-profile-btn:hover {
+            background-color: white;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .edit-profile-btn i {
+            margin-right: 0.5rem;
+        }
+</style>
+
+<div class="container-fluid px-0">
+    <!-- Profile Header -->
+    <div class="profile-header text-center position-relative">
+        <a href="@Url.Action("Edit", "Patient", new { userId = Model.userId })" class="btn edit-profile-btn">
+            <i class="fas fa-edit"></i> Edit Profile
+        </a>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <img src="https://via.placeholder.com/150" alt="Patient @Model.patientName" class="profile-avatar">
+                    <h1 class="display-4 mb-2">@Model.patientName</h1>
+                    <div class="department-badge">
+                        <i class="fas fa-user me-2"></i>ID: @Model.patientId
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Contact Information -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card info-card">
+                    <div class="card-header">
+                        <i class="fas fa-address-book me-2"></i>Personal Information
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="info-content"><strong>Email</strong><span>@Model.email</span></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-phone"></i></div>
+                            <div class="info-content"><strong>Phone</strong><span>@Model.phoneNumber</span></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="info-content"><strong>Address</strong><span>@Model.address</span></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-birthday-cake"></i></div>
+                            <div class="info-content"><strong>Birth Date</strong><span>@Model.birthDate.ToShortDateString()</span></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-id-card"></i></div>
+                            <div class="info-content"><strong>CNP</strong><span>@Model.cnp</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medical Information -->
+            <div class="col-lg-6">
+                <div class="card info-card">
+                    <div class="card-header">
+                        <i class="fas fa-notes-medical me-2"></i>Medical Information
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-weight"></i></div>
+                            <div class="info-content"><strong>Weight</strong><span>@Model.weight kg</span></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-ruler-vertical"></i></div>
+                            <div class="info-content"><strong>Height</strong><span>@Model.height cm</span></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-tint"></i></div>
+                            <div class="info-content"><strong>Blood Type</strong><span>@Model.bloodType</span></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-allergies"></i></div>
+                            <div class="info-content"><strong>Allergies</strong><span>@Model.allergies</span></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-user-shield"></i></div>
+                            <div class="info-content"><strong>Emergency Contact</strong><span>@Model.emergencyContact</span></div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon"><i class="fas fa-calendar-plus"></i></div>
+                            <div class="info-content"><strong>Registered On</strong><span>@Model.registrationDate.ToString("yyyy-MM-dd")</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

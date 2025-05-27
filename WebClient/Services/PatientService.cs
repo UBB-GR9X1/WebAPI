@@ -82,7 +82,7 @@ namespace WebClient.Services
             }
 
             filtered_user.password = _password;
-            await this._patient_repository.updatePatientAsync(domain_patient, filtered_user);
+            await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
 
             return true;
         }
@@ -99,7 +99,7 @@ namespace WebClient.Services
             }
 
             filtered_user.name = name;
-            await this._patient_repository.updatePatientAsync(domain_patient, filtered_user);
+            await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
 
             return true;
         }
@@ -116,7 +116,7 @@ namespace WebClient.Services
             }
 
             filtered_user.address = address;
-            await this._patient_repository.updatePatientAsync(domain_patient, filtered_user);
+            await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
 
             return true;
         }
@@ -133,7 +133,7 @@ namespace WebClient.Services
             }
 
             filtered_user.phoneNumber = phone_number;
-            await this._patient_repository.updatePatientAsync(domain_patient, filtered_user);
+            await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
 
             return true;
         }
@@ -148,7 +148,7 @@ namespace WebClient.Services
                 if (domain_patient == null || filtered_user == null) return false;
 
                 domain_patient.EmergencyContact = emergency_contact;
-                await this._patient_repository.updatePatientAsync(domain_patient, filtered_user);
+                await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
 
                 return true;
             }
@@ -169,7 +169,7 @@ namespace WebClient.Services
                 if (domain_patient == null || filtered_user == null) return false;
 
                 domain_patient.weight = weight;
-                await this._patient_repository.updatePatientAsync(domain_patient, filtered_user);
+                await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
 
                 return true;
             }
@@ -190,7 +190,7 @@ namespace WebClient.Services
                 if (domain_patient == null || filtered_user == null) return false;
 
                 domain_patient.height = height;
-                await this._patient_repository.updatePatientAsync(domain_patient, filtered_user);
+                await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
 
                 return true;
             }
@@ -210,7 +210,7 @@ namespace WebClient.Services
                 User filtered_user = domain_users.Find(user => user.userId == user_id);
                 if (domain_patient == null || filtered_user == null) return false;
                 domain_patient.bloodType = blood_type;
-                await this._patient_repository.updatePatientAsync(domain_patient, filtered_user);
+                await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
 
                 return true;
             }
@@ -230,7 +230,7 @@ namespace WebClient.Services
                 User filtered_user = domain_users.Find(user => user.userId == user_id);
                 if (domain_patient == null || filtered_user == null) return false;
                 domain_patient.allergies = allergies;
-                await this._patient_repository.updatePatientAsync(domain_patient, filtered_user);
+                await this._patient_repository.updatePatientAsync(filtered_user.userId, domain_patient);
                 return true;
             }
             catch (Exception exception)

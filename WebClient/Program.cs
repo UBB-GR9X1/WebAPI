@@ -4,6 +4,8 @@ using ClassLibrary.Repository;
 using ClassLibrary.Proxy;
 using ClassLibrary.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using WebClient.Proxy;
+using WebClient.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,9 @@ builder.Services.AddScoped<IUserRepository, UserProxy>();
 
 builder.Services.AddScoped<IDoctorRepository, DoctorsProxy>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
+
+builder.Services.AddScoped<IPatientRepository, PatientProxy>();
+builder.Services.AddScoped<IPatientService, PatientService>();  
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -56,6 +61,9 @@ app.MapControllerRoute(
     name: "doctor",
     pattern: "{controller=Doctor}/{action=Profile}/{id?}");
 
+app.MapControllerRoute(
+    name: "patient",
+    pattern: "{controller=Patient}/{action=Profile}/{id?}");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
