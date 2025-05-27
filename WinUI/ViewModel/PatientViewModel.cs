@@ -312,6 +312,38 @@ namespace WinUI.ViewModel
             finally { this.is_loading = false; }
         }
 
+        public async Task<bool> updateEmail(string email)
+        {
+            try
+            {
+                this.is_loading = true;
+                bool updated = await this._patient_service.updateEmail(user_id, email);
+                if (updated)
+                {
+                    this.email = email;
+                    this.original_patient.email = email;
+                }
+                return updated;
+            }
+            finally { this.is_loading = false; }
+        }
+
+        public async Task<bool> updateUsername(string username)
+        {
+            try
+            {
+                this.is_loading = true;
+                bool updated = await this._patient_service.updateUsername(user_id, username);
+                if (updated)
+                {
+                    this.username = username;
+                    this.original_patient.username = username;
+                }
+                return updated;
+            }
+            finally { this.is_loading = false; }
+        }
+
         public async Task<bool> updateBloodType(string blood_type)
         {
             try
