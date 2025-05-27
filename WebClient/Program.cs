@@ -27,7 +27,7 @@ builder.Services.AddScoped<IUserRepository, UserProxy>();
 builder.Services.AddScoped<IDoctorRepository, DoctorsProxy>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 
-builder.Services.AddScoped<IPatientRepository, PatientProxy>();
+builder.Services.AddScoped<IPatientRepository, WebClient.Proxy.PatientProxy>();
 builder.Services.AddScoped<IPatientService, PatientService>();  
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

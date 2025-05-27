@@ -20,6 +20,10 @@ namespace ClassLibrary.Service
         Task<bool> updateName(int user_id, string name);
         Task<bool> updateAddress(int user_id, string _address);
         Task<bool> updatePhoneNumber(int user_id, string phone_number);
+        Task<bool> updateEmail(int user_id, string email);
+        Task<bool> updateUsername(int user_id, string username);
+        Task<bool> updateCnp(int user_id, string cnp);
+        Task<bool> updateBirthDate(int user_id, DateOnly birthDate);
         Task<bool> updateWeight(int user_id, double weight);
         Task<bool> updateHeight(int user_id, int height);
         Task<bool> updateEmergencyContact(int user_id, string emergency_contact);
