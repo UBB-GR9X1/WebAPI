@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ClassLibrary.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -77,11 +78,11 @@ namespace WebClient.Controllers
         // POST: Patient/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PatientId,PatientName,Address,PhoneNumber,Weight,Height,EmergencyContact,BloodType,Allergies")] PatientJointModel patient)
+        public async Task<IActionResult> Edit(int id, [Bind("patientId,userId,patientName,address,phoneNumber,weight,height,emergencyContact,bloodType,allergies")] PatientJointModel patient)
         {
-            if (id != patient.patientId)
+            if (id != patient.userId)
             {
-                TempData["Error"] = "Invalid patient ID.";
+                TempData["Error"] = $"Invalid user ID.";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -89,38 +90,45 @@ namespace WebClient.Controllers
             {
                 bool updateSuccess = true;
 
-                // Use individual update methods based on the fields that were changed
-                if (!string.IsNullOrEmpty(patient.phoneNumber))
+                if (!string.IsNullOrEmpty(patient.patientName))
                 {
-                    updateSuccess &= await _patientService.updateName(id, patient.phoneNumber);
+                    bool result = await _patientService.updateName(id, patient.patientName);
+                    updateSuccess &= result;
                 }
                 if (!string.IsNullOrEmpty(patient.address))
                 {
-                    updateSuccess &= await _patientService.updateAddress(id, patient.address);
+                    bool result = await _patientService.updateAddress(id, patient.address);
+                    updateSuccess &= result;
                 }
                 if (!string.IsNullOrEmpty(patient.phoneNumber))
                 {
-                    updateSuccess &= await _patientService.updatePhoneNumber(id, patient.phoneNumber);
+                    bool result = await _patientService.updatePhoneNumber(id, patient.phoneNumber);
+                    updateSuccess &= result;
                 }
                 if (patient.weight > 0)
                 {
-                    updateSuccess &= await _patientService.updateWeight(id, patient.weight);
+                    bool result = await _patientService.updateWeight(id, patient.weight);
+                    updateSuccess &= result;
                 }
                 if (patient.height > 0)
                 {
-                    updateSuccess &= await _patientService.updateHeight(id, patient.height);
+                    bool result = await _patientService.updateHeight(id, patient.height);
+                    updateSuccess &= result;
                 }
                 if (!string.IsNullOrEmpty(patient.emergencyContact))
                 {
-                    updateSuccess &= await _patientService.updateEmergencyContact(id, patient.emergencyContact);
+                    bool result = await _patientService.updateEmergencyContact(id, patient.emergencyContact);
+                    updateSuccess &= result;
                 }
                 if (!string.IsNullOrEmpty(patient.bloodType))
                 {
-                    updateSuccess &= await _patientService.updateBloodType(id, patient.bloodType);
+                    bool result = await _patientService.updateBloodType(id, patient.bloodType);
+                    updateSuccess &= result;
                 }
                 if (!string.IsNullOrEmpty(patient.allergies))
                 {
-                    updateSuccess &= await _patientService.updateAllergies(id, patient.allergies);
+                    bool result = await _patientService.updateAllergies(id, patient.allergies);
+                    updateSuccess &= result;
                 }
 
                 if (updateSuccess)
@@ -133,7 +141,7 @@ namespace WebClient.Controllers
                     TempData["Error"] = "Failed to update profile.";
                 }
             }
-
+ 
             return View(patient);
         }
     }

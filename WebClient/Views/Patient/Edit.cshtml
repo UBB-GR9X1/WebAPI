@@ -1,26 +1,207 @@
-﻿@model ClassLibrary.Model.DoctorModel
+﻿@model ClassLibrary.Model.PatientJointModel
 @{
-    ViewData["Title"] = "Edit Doctor Profile";
-    Layout = "~/Views/Shared/_Layout.cshtml"; // Adjust if using a different layout
+    ViewData["Title"] = "Edit Patient Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!-- Add CSS Styles -->
 <style>
-    /* Same CSS as your original message, unchanged */
-    /* ... */
+    :root {
+        --primary-color: #4723D9;
+        --secondary-color: #64C9CF;
+        --accent-color: #FF6B6B;
+        --light-color: #F8F9FA;
+        --dark-color: #343A40;
+    }
+
+    .edit-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 1rem 1rem;
+        position: relative;
+    }
+
+    .form-card {
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        overflow: hidden;
+        margin-bottom: 2rem;
+    }
+
+        .form-card .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 1.5rem;
+        }
+
+    .form-group {
+        margin-bottom: 1.75rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+        .form-label i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        padding: 0.85rem 1rem;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(71, 35, 217, 0.25);
+        }
+
+    .btn-save {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
+        border: none;
+        color: white;
+        padding: 0.75rem 2.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(71, 35, 217, 0.3);
+    }
+
+        .btn-save:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(71, 35, 217, 0.4);
+            color: white;
+        }
+
+    .btn-cancel {
+        background: white;
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+        padding: 0.75rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        margin-right: 1.5rem;
+    }
+
+        .btn-cancel:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(71, 35, 217, 0.4);
+        }
+
+    .preview-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        margin-bottom: 1rem;
+    }
+
+    .alert-custom {
+        border: none;
+        border-radius: 15px;
+        margin-bottom: 1.5rem;
+        padding: 1rem 1.5rem;
+    }
+
+    .input-group-text {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #7045e8 100%);
+        color: white;
+        border: none;
+        border-radius: 10px 0 0 10px;
+        width: 45px;
+        justify-content: center;
+    }
+
+    .validation-summary {
+        background: #f8d7da;
+        border: none;
+        border-radius: 15px;
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+        .validation-summary h6 {
+            font-weight: 600;
+            color: #721c24;
+            display: flex;
+            align-items: center;
+        }
+
+            .validation-summary h6 i {
+                margin-right: 0.5rem;
+            }
+
+        .validation-summary ul {
+            margin-top: 0.75rem;
+            margin-bottom: 0;
+            padding-left: 2rem;
+        }
+
+            .validation-summary ul li {
+                margin-bottom: 0.5rem;
+                color: #721c24;
+            }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .back-to-profile {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: rgba(255,255,255,0.3);
+        color: white;
+        border: 2px solid white;
+        border-radius: 50px;
+        padding: 0.5rem 1.25rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .back-to-profile:hover {
+            background-color: white;
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .back-to-profile i {
+            margin-right: 0.5rem;
+        }
 </style>
 
 <div class="container-fluid px-0">
     <!-- Edit Header -->
     <div class="edit-header text-center position-relative">
-        <a href="@Url.Action("Profile", "Doctor", new { userId = Model.DoctorId })" class="btn back-to-profile">
+        <a href="@Url.Action("Profile", "Patient", new { userId = Model.patientId })" class="btn back-to-profile">
             <i class="fas fa-arrow-left"></i> Back
         </a>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <h1 class="display-4 mb-2">Edit Profile</h1>
-                    <p class="lead">Update your professional information</p>
+                    <p class="lead">Update your personal and health information</p>
                 </div>
             </div>
         </div>
@@ -60,116 +241,112 @@
             </div>
         }
 
-        <form asp-action="Edit" method="post">
-            <input type="hidden" asp-for="DoctorId" />
-            <input type="hidden" asp-for="Rating" />
-            <input type="hidden" asp-for="DepartmentName" />
+        <form asp-action="Edit" asp-route-id="@Model.userId" method="post">
+            <input type="hidden" asp-for="patientId"/>
+            <input type="hidden" asp-for="userId"/>
+            <input type="hidden" asp-for="cnp"/>
+            <input type="hidden" asp-for="birthDate"/>
+            <input type="hidden" asp-for="registrationDate"/>
+            <input type="hidden" asp-for="email"/>
 
             <!-- Basic Information -->
             <div class="card form-card">
                 <div class="card-header">
-                    <i class="fas fa-user-md me-2"></i>Basic Information
+                    <i class="fas fa-user me-2"></i>Basic Information
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label" for="DoctorName">
+                                <label class="form-label" for="patientName">
                                     <i class="fas fa-id-card"></i>Full Name
                                 </label>
-                                <input asp-for="DoctorName" class="form-control" placeholder="Enter your full name" />
-                                <span asp-validation-for="DoctorName" class="text-danger"></span>
+                                <input asp-for="patientName" class="form-control" placeholder="Enter your full name"/>
+                                <span asp-validation-for="patientName" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label" for="DepartmentId">
-                                    <i class="fas fa-hospital"></i>Department
-                                </label>
-                                <select asp-for="DepartmentId" class="form-select" asp-items="ViewBag.Departments">
-                                    <option value="">-- Select Department --</option>
-                                </select>
-                                <span asp-validation-for="DepartmentId" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contact Information -->
-            <div class="card form-card">
-                <div class="card-header">
-                    <i class="fas fa-address-book me-2"></i>Contact Information
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label" for="Mail">
-                                    <i class="fas fa-envelope"></i>Email Address
-                                </label>
-                                <input asp-for="Mail" class="form-control" placeholder="Enter your email address" />
-                                <span asp-validation-for="Mail" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label" for="PhoneNumber">
+                                <label class="form-label" for="phoneNumber">
                                     <i class="fas fa-phone"></i>Phone Number
                                 </label>
-                                <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your phone number" />
-                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                <input asp-for="phoneNumber" class="form-control" placeholder="Enter your phone number"/>
+                                <span asp-validation-for="phoneNumber" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Professional Information -->
-            <div class="card form-card">
-                <div class="card-header">
-                    <i class="fas fa-briefcase me-2"></i>Professional Information
-                </div>
-                <div class="card-body">
                     <div class="form-group">
-                        <label class="form-label" for="CareerInfo">
-                            <i class="fas fa-briefcase"></i>Career Information
+                        <label class="form-label" for="address">
+                            <i class="fas fa-map-marker-alt"></i>Address
                         </label>
-                        <textarea asp-for="CareerInfo" class="form-control" rows="5" placeholder="Enter your career information, education, certifications, etc."></textarea>
-                        <span asp-validation-for="CareerInfo" class="text-danger"></span>
+                        <input asp-for="address" class="form-control" placeholder="Enter your address"/>
+                        <span asp-validation-for="address" class="text-danger"></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Profile Picture -->
+            <!-- Health Information -->
             <div class="card form-card">
                 <div class="card-header">
-                    <i class="fas fa-image me-2"></i>Profile Picture
+                    <i class="fas fa-heartbeat me-2"></i>Health Information
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4 text-center">
-                            @if (!string.IsNullOrEmpty(Model.AvatarUrl))
-                            {
-                                <img src="@Model.AvatarUrl" alt="Current Avatar" class="preview-avatar" id="avatar-preview" />
-                            }
-                            else
-                            {
-                                <img src="https://via.placeholder.com/150" alt="Default Avatar" class="preview-avatar" id="avatar-preview" />
-                            }
-                        </div>
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label" for="AvatarUrl">
-                                    <i class="fas fa-link"></i>Profile Image URL
+                                <label class="form-label" for="weight">
+                                    <i class="fas fa-weight"></i>Weight (kg)
                                 </label>
-                                <input asp-for="AvatarUrl" class="form-control" placeholder="Enter image URL" id="avatar-url-input" />
-                                <span asp-validation-for="AvatarUrl" class="text-danger"></span>
-                                <small class="form-text text-muted mt-2">
-                                    Enter a URL to your profile picture
-                                </small>
+                                <input asp-for="weight" class="form-control" type="number" step="0.1" placeholder="Enter your weight in kg"/>
+                                <span asp-validation-for="weight" class="text-danger"></span>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="height">
+                                    <i class="fas fa-ruler-vertical"></i>Height (cm)
+                                </label>
+                                <input asp-for="height" class="form-control" type="number" placeholder="Enter your height in cm"/>
+                                <span asp-validation-for="height" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="bloodType">
+                                    <i class="fas fa-tint"></i>Blood Type
+                                </label>
+                                <select asp-for="bloodType" class="form-select">
+                                    <option value="">-- Select Blood Type --</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                                <span asp-validation-for="bloodType" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="emergencyContact">
+                                    <i class="fas fa-phone-alt"></i>Emergency Contact
+                                </label>
+                                <input asp-for="emergencyContact" class="form-control" placeholder="Enter emergency contact number"/>
+                                <span asp-validation-for="emergencyContact" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="allergies">
+                            <i class="fas fa-allergies"></i>Allergies
+                        </label>
+                        <textarea asp-for="allergies" class="form-control" rows="3" placeholder="Enter any allergies or write 'None' if not applicable"></textarea>
+                        <span asp-validation-for="allergies" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -177,7 +354,7 @@
             <!-- Action Buttons -->
             <div class="row mt-4 mb-5 justify-content-center">
                 <div class="col-12 text-center">
-                    <a href="@Url.Action("Profile", "Doctor", new { userId = Model.DoctorId })" class="btn btn-cancel">
+                    <a href="@Url.Action("Profile", "Patient", new { userId = Model.patientId })" class="btn btn-cancel">
                         <i class="fas fa-times me-2"></i>Cancel
                     </a>
                     <button type="submit" class="btn btn-save">
@@ -191,12 +368,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        // Live avatar preview update
-        document.getElementById("avatar-url-input").addEventListener("input", function () {
-            const preview = document.getElementById("avatar-preview");
-            const url = this.value;
-            preview.src = url || "https://via.placeholder.com/150";
-        });
-    </script>
 }

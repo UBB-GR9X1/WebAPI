@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -113,9 +114,12 @@ namespace WinUI.Proxy
             {
                 PatientHttpModel patient_http = mapToHttpModel(patient);
                 string patient_json = JsonSerializer.Serialize(patient_http);
+                Debug.WriteLine($"Sending JSON to API: {patient_json}");
+
                 StringContent patient_content = new StringContent(patient_json, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage patient_response = await this._http_client.PutAsync($"{this.s_base_api_url}patient/{id}", patient_content);
+
                 patient_response.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
