@@ -12,16 +12,22 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Configure ApiSettings from configuration
 builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
 
-builder.Services.AddHttpClient();
+// Configure HttpClient for NotificationService with BaseAddress from ApiSettings
+builder.Services.AddHttpClient<WebClient.Services.NotificationService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]);
+});
 
+// Register scoped services
 builder.Services.AddScoped<ILogRepository, LoggerProxy>();
 builder.Services.AddScoped<ILogInRepository, LogInProxy>();
-
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ILoggerService, LoggerService>();
 
+// Configure cookie-based authentication
 builder.Services.AddScoped<IUserRepository, UserProxy>();
 
 builder.Services.AddScoped<IDoctorRepository, DoctorsProxy>();
@@ -44,7 +50,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

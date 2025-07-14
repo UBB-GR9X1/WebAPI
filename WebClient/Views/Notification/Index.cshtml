@@ -1,0 +1,44 @@
+@model IEnumerable<WebClient.Models.Notification>
+
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<div class="container mt-4">
+    <h2>Your Notifications</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            You have no notifications.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var notification in Model)
+            {
+                <div class="col-md-12 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <p class="card-text">@notification.message</p>
+                                    <small class="text-muted">@notification.deliveryDateTime.ToString("g")</small>
+                                </div>
+                                <form asp-action="Delete" method="post" class="d-inline">
+                                    <input type="hidden" name="notificationId" value="@notification.notificationId" />
+                                    <input type="hidden" name="userId" value="@notification.userId" />
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Are you sure you want to delete this notification?')">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
